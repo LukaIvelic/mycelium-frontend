@@ -21,7 +21,8 @@ export default function Page() {
     if (!email) return;
 
     setIsLoading(true);
-    const isValid = await validateEmail(email);
+    const res = await validateEmail(email);
+    const isValid = res.exists;
     setIsLoading(false);
 
     router.push(isValid ? ProxyRoute.LOGIN : ProxyRoute.SIGNUP);
