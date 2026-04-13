@@ -5,12 +5,25 @@ import { Input } from '@/components/features/input';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Alternative, alternatives } from './_page.config';
+import { useMyceliumAuth } from '@/hooks/use-mycelium-auth';
+import { ProxyRoute } from '@/_proxy.utils';
 
 export default function Page() {
   const router = useRouter();
   const emailRef = useRef<HTMLInputElement>(null);
+  const { validateEmail } = useMyceliumAuth();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleContinueClick = async () => {
+    if (!emailRef.current) return;
+    setIsLoading(true);
+    const res = await validateEmail(emailRef.current.value);
+    setIsLoading(false);
+    if (res) router.push(ProxyRoute.LOGIN);
+    else router.push(ProxyRoute.SIGNUP);
+  };
 
   useEffect(() => {
     emailRef.current?.focus();
@@ -33,7 +46,11 @@ export default function Page() {
 
       <div className={cn('w-full', 'flex flex-col gap-2')}>
         <Input placeholder="Email address" type="text" ref={emailRef} />
-        <Button className={cn(`inverted`)} isLoading={false}>
+        <Button
+          className={cn(`inverted`)}
+          onClick={handleContinueClick}
+          isLoading={isLoading}
+        >
           Continue
         </Button>
       </div>

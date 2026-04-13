@@ -6,6 +6,7 @@ export type Alternative = {
   title: string;
   img: string | null;
   icon: LucideIcon | null;
+  onClick?: () => void;
 };
 
 export const alternatives: Alternative[] = [
