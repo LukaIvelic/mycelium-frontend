@@ -2,9 +2,8 @@ import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Log into Mycelium',
-  description:
-    'Log into Mycelium to get access to internal workflows, finances and more',
+  title: 'Mycelium - Passive Trace & Microservice Dependency Mapping ',
+  description: 'Untangle your project using Mycelium.',
 };
 
 interface AuthLayoutProps {

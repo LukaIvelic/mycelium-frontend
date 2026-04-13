@@ -27,7 +27,7 @@ export default function Page() {
       <div className={cn('flex flex-col gap-2', 'text-center')}>
         <h1 className="text-xl font-medium">Log in or sign up</h1>
         <p>
-          You'll get access to internal workflows,<br></br> finances and more
+          Untangle and visualize your microservice architecture using Mycelium
         </p>
       </div>
 
