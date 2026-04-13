@@ -17,12 +17,14 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleContinueClick = async () => {
-    if (!emailRef.current) return;
+    const email = emailRef.current?.value;
+    if (!email) return;
+
     setIsLoading(true);
-    const res = await validateEmail(emailRef.current.value);
+    const isValid = await validateEmail(email);
     setIsLoading(false);
-    if (res) router.push(ProxyRoute.LOGIN);
-    else router.push(ProxyRoute.SIGNUP);
+
+    router.push(isValid ? ProxyRoute.LOGIN : ProxyRoute.SIGNUP);
   };
 
   useEffect(() => {
@@ -70,9 +72,17 @@ export default function Page() {
               className={cn(
                 `hover:bg-foreground/10 hover:border-foreground/10`,
               )}
-              onClick={() => {}}
+              onClick={() => {
+                if (alternative.route) {
+                  router.push(alternative.route);
+                  return;
+                }
+
+                alternative.onClick?.();
+              }}
               icon={alternative.icon}
               key={index}
+              type="button"
             >
               {alternative.title}
             </Button>

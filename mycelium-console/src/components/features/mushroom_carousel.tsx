@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 interface MushroomCarouselProps {
-    className?: string;
+  className?: string;
 }
 
 const base_path = '/console/images/shrooms/';
@@ -12,13 +12,13 @@ const mushroom_hrefs = Array.from({ length: 6 }).map((_, index) => {
   return `${base_path}shroom_${index + 1}.svg`;
 });
 
-export function MushroomCarousel({className}: MushroomCarouselProps) {
+export function MushroomCarousel({ className }: MushroomCarouselProps) {
   const mushroomDisplayTimeMs = 500;
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveIndex(prev => (prev + 1) % mushroom_hrefs.length);
+      setActiveIndex((prev) => (prev + 1) % mushroom_hrefs.length);
     }, mushroomDisplayTimeMs);
 
     return () => {
@@ -36,7 +36,11 @@ export function MushroomCarousel({className}: MushroomCarouselProps) {
             width={100}
             height={100}
             alt={altName}
-            style={{ display: activeIndex === index ? 'block' : 'none' }}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            style={{
+              display: activeIndex === index ? 'block' : 'none',
+              height: 'auto',
+            }}
             key={index}
           />
         );

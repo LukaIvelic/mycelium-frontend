@@ -1,30 +1,39 @@
 import { AuthService } from '@/api/services/auth/AuthService';
+import { tokenStorage } from '@/api/token-storage';
+import { LoginPayload, SignupPayload } from '@/types/Auth.types';
 
 export function useMyceliumAuth() {
   const authService = new AuthService();
 
   const validateEmail = async (email: string) => {
-    try {
-      const response = await authService.validateEmail(email);
-      return response.exists;
-    } catch (error) {
-      console.error('Error validating email:', error);
-      throw error;
-    }
+    return await authService.validateEmail(email);
   };
 
-  const login = async (email: string, password: string) => {
-    try {
-      const response = await authService.login(email, password);
-      console.log(response);
-      return response;
-    } catch (error) {
-      console.error('Error during login:', error);
-    }
+  const logIn = async (loginPayload: LoginPayload) => {
+    const response = await authService.login(loginPayload);
+    tokenStorage.setToken(response.access_token);
+    return response;
+  };
+
+  const signUp = async (signupPayload: SignupPayload) => {
+    const response = await authService.signup(signupPayload);
+    tokenStorage.setToken(response.access_token);
+    return response;
+  };
+
+  const signOut = () => {
+    tokenStorage.removeToken();
+  };
+
+  const isAuthenticated = () => {
+    return !!tokenStorage.getToken();
   };
 
   return {
     validateEmail,
-    login,
+    logIn,
+    signUp,
+    signOut,
+    isAuthenticated,
   };
 }
