@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@layer components {
+  .mycelium-input-wrapper {
+    @apply relative w-full;
+
+    .mycelium-input-label {
+      @apply text-foreground/70 transition-all absolute left-4 px-1 pointer-events-none -translate-y-1/2 select-none;
+      @apply top-1/2;
+
+      &.mycelium-floating {
+        @apply top-0 text-xs bg-background;
+      }
+    }
+
+    .mycelium-input-field {
+      @apply border border-foreground/20 py-3 px-4 rounded-full outline-none w-full placeholder:text-transparent transition-all focus:ring-1 focus:ring-foreground/50;
+    }
+  }
+}

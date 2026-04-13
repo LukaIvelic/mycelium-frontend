@@ -1,0 +1,32 @@
+.mycelium-btn {
+  @apply border border-foreground/20 transition-all text-foreground;
+  @apply py-3 px-4 rounded-full outline-none flex items-center gap-4;
+
+  &:hover {
+    @apply cursor-pointer bg-foreground/10;
+  }
+
+  &.inverted {
+    @apply bg-foreground text-background border-transparent;
+
+    &:hover {
+      @apply bg-foreground/90;
+    }
+
+    .mycelium-btn-icon-wrapper {
+      @apply invert;
+    }
+  }
+
+  .mycelium-btn-icon-wrapper {
+    @apply w-5 aspect-square relative shrink-0;
+
+    .mycelium-btn-image {
+      @apply object-cover;
+    }
+  }
+
+  .mycelium-btn-text-wrapper {
+    @apply w-full flex gap-2 justify-center items-center text-center;
+  }
+}
