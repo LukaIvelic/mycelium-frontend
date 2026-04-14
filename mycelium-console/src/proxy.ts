@@ -6,16 +6,21 @@ import {
   PublicRoutes,
   SecureAuthJsSessionToken,
   TokenKey,
+  verifyJwt,
 } from './_proxy.utils';
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get(TokenKey)?.value;
   const isPublicRoute = PublicRoutes.includes(pathname as ProxyRoute);
-  const authJsToken =
-    request.cookies.get(AuthJsSessionToken)?.value ||
-    request.cookies.get(SecureAuthJsSessionToken)?.value;
-  const isAuthenticated = Boolean(token || authJsToken);
+  const authJsSessionToken = request.cookies.get(AuthJsSessionToken)?.value;
+  const secureAuthJsSessionToken = request.cookies.get(
+    SecureAuthJsSessionToken,
+  )?.value;
+
+  const isAuthenticated =
+    (token && (await verifyJwt(token))) ||
+    Boolean(authJsSessionToken || secureAuthJsSessionToken);
 
   if (!isAuthenticated && !isPublicRoute) {
     const url = request.nextUrl.clone();

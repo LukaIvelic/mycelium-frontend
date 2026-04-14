@@ -1,3 +1,5 @@
+import { jwtVerify } from 'jose';
+
 export enum ProxyRoute {
   AUTH = '/auth',
   LOGIN = '/auth/login',
@@ -14,3 +16,14 @@ export const PublicRoutes: ProxyRoute[] = [
   ProxyRoute.LOGIN,
   ProxyRoute.SIGNUP,
 ];
+
+export async function verifyJwt(token: string): Promise<boolean> {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) return false;
+  try {
+    await jwtVerify(token, new TextEncoder().encode(secret));
+    return true;
+  } catch {
+    return false;
+  }
+}

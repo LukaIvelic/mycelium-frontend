@@ -3,7 +3,6 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 import { satoshi } from '@/lib/config/satoshi';
-import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'Mycelium',
@@ -20,7 +19,7 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
       <body
         className={cn('min-h-full flex flex-col font-sans', satoshi.variable)}
       >
-        <Providers>{children}</Providers>
+        {children}
       </body>
     </html>
   );

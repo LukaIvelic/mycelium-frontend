@@ -1,6 +1,5 @@
 import { ProxyRoute } from '@/_proxy.utils';
 import { AtSign, LucideIcon } from 'lucide-react';
-import { signIn } from 'next-auth/react';
 
 const BASE_PATH = '/console';
 
@@ -17,9 +16,6 @@ export const alternatives: Alternative[] = [
     title: 'Continue with Google',
     img: `${BASE_PATH}/images/google_logo.png`,
     icon: null,
-    onClick: () => {
-      signIn('google', { callbackUrl: ProxyRoute.DEFAULT });
-    },
   },
   {
     title: 'Continue with GitHub',
