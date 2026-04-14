@@ -12,15 +12,15 @@ export class AuthService {
   async validateEmail(email: string): Promise<ValidateEmailResponse> {
     const encodedEmail = encodeURIComponent(email);
     return this.apiClient.get<ValidateEmailResponse>(
-      `/auth/validate?email=${encodedEmail}`,
+      `/authentication/validate?email=${encodedEmail}`,
     );
   }
 
   async login(loginPayload: LoginPayload): Promise<AuthResponse> {
-    return this.apiClient.post('/auth/login', loginPayload);
+    return this.apiClient.post('/authentication/login', loginPayload);
   }
 
   async signup(signupPayload: SignupPayload): Promise<AuthResponse> {
-    return this.apiClient.post('/auth/signup', signupPayload);
+    return this.apiClient.post('/authentication/signup', signupPayload);
   }
 }
