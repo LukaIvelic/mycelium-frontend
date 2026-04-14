@@ -6,6 +6,8 @@ export enum ProxyRoute {
 }
 
 export const TokenKey = 'access_token';
+export const AuthJsSessionToken = 'authjs.session-token';
+export const SecureAuthJsSessionToken = '__Secure-authjs.session-token';
 
 export const PublicRoutes: ProxyRoute[] = [
   ProxyRoute.AUTH,
