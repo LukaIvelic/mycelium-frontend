@@ -1,8 +1,10 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const redirectProxyUrl = (() => {
-  if (process.env.AUTH_REDIRECT_PROXY_URL) {
+  if (!isProduction && process.env.AUTH_REDIRECT_PROXY_URL) {
     return process.env.AUTH_REDIRECT_PROXY_URL;
   }
 
@@ -22,6 +24,7 @@ const redirectProxyUrl = (() => {
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   basePath: '/api/auth',
+  trustHost: true,
   redirectProxyUrl,
   callbacks: {
     redirect({ url, baseUrl }) {
