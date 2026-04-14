@@ -18,8 +18,8 @@ export const alternatives: Alternative[] = [
     img: `${BASE_PATH}/images/google_logo.png`,
     icon: null,
     onClick: () => {
-      signIn('google', {callbackUrl: ProxyRoute.DEFAULT});
-    }
+      signIn('google', { callbackUrl: BASE_PATH });
+    },
   },
   {
     title: 'Continue with GitHub',

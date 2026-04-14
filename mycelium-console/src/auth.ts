@@ -23,6 +23,23 @@ const redirectProxyUrl = (() => {
 export const { handlers, signIn, signOut, auth } = NextAuth({
   basePath: '/api/auth',
   redirectProxyUrl,
+  callbacks: {
+    redirect({ url, baseUrl }) {
+      if (url === baseUrl || url === `${baseUrl}/`) {
+        return `${baseUrl}/console`;
+      }
+
+      if (url.startsWith('/')) {
+        return `${baseUrl}${url}`;
+      }
+
+      if (url.startsWith(baseUrl)) {
+        return url;
+      }
+
+      return `${baseUrl}/console`;
+    },
+  },
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
