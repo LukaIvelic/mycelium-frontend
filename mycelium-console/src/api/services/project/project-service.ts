@@ -1,6 +1,5 @@
 import { apiClient, ApiClient } from "../../api-client";
 import { Project } from "@/lib/types/project";
-import { ApiKey } from "@/lib/types/api-key";
 import {
   AddApiKeyPayload,
   AddApiKeyResponse,

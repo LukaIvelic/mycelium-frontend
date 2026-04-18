@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, Key } from "lucide-react";
+import { Check, Copy, KeyRound } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -24,15 +24,15 @@ export function ApiKeyCopyField({ apiKey }: { apiKey: string }) {
       )}
     >
       <div className={cn("gap-3", "flex items-center")}>
-        <Key className={cn("text-foreground")} size={18} />
-        <div>{apiKey}</div>
+        <KeyRound className={cn("text-foreground")} size={18} />
+        <div className="scroll-auto w-100 overflow-scroll no-scrollbar">{apiKey}</div>
       </div>
       <Button
         size="sm"
         onClick={handleCopy}
         className={cn(
           "w-20",
-          "absolute right-1 top-1/2 -translate-y-1/2",
+          "absolute right-1 inset-y-0 my-auto",
           "rounded-sm",
           "hover:cursor-pointer",
         )}

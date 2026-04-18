@@ -12,6 +12,7 @@ const apiKeyKeys = {
   project: (apiKeyId: string) =>
     [...apiKeyKeys.all, apiKeyId, "project"] as const,
 };
+const projectKeys = ["projects"] as const;
 
 function useApiKeysByUserId(userId: string | undefined) {
   return useQuery({
@@ -38,6 +39,7 @@ function useCreateApiKey() {
     mutationFn: (projectId: string) => apiKeyService.create(projectId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: apiKeyKeys.all });
+      queryClient.invalidateQueries({ queryKey: projectKeys });
     },
   });
 }
@@ -55,6 +57,7 @@ function useRevokeApiKey() {
         },
       );
       queryClient.invalidateQueries({ queryKey: apiKeyKeys.all });
+      queryClient.invalidateQueries({ queryKey: projectKeys });
     },
   });
 }

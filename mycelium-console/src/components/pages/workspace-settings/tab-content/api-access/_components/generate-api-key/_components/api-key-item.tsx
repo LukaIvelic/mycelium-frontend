@@ -46,25 +46,25 @@ export function ApiKeyItem({ apiKey }: { apiKey: ApiKey }) {
           "transition-all",
         )}
       >
-        <div className={cn("p-2", "border border-foreground/10 rounded-md")}>
+        <div className={cn("p-2", "border border-foreground/10 rounded-md group hover:cursor-pointer")}>
           <Eye
             className={cn(
               "text-foreground/50",
-              "hover:cursor-pointer hover:text-foreground",
+              "group-hover:text-foreground",
             )}
             size={20}
             strokeWidth={1.5}
           />
         </div>
-        <div className={cn("p-2", "border border-foreground/10 rounded-md")}>
+        <div className={cn("p-2", "border border-foreground/10 rounded-md group hover:cursor-pointer")} 
+            onClick={handleApiKeyRevoke}>
           <Trash
             className={cn(
               "text-foreground/50",
-              "hover:cursor-pointer hover:text-red-400",
+              "group-hover:text-red-400",
             )}
             size={20}
             strokeWidth={1.5}
-            onClick={handleApiKeyRevoke}
           />
         </div>
       </div>

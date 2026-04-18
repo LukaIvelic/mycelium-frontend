@@ -76,6 +76,7 @@ function useAddApiKey(projectId: string) {
       projectService.addApiKey(projectId, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["api-keys"] });
+      queryClient.invalidateQueries({ queryKey: projectKeys.all });
     },
   });
 }
