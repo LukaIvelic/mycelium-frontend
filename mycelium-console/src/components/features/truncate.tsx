@@ -24,7 +24,9 @@ export function Truncate({ text, max, className }: TruncateProps) {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger render={<span className={cn(className)}>{truncated}</span>} />
+        <TooltipTrigger
+          render={<span className={cn(className)}>{truncated}</span>}
+        />
         <TooltipContent>{text}</TooltipContent>
       </Tooltip>
     </TooltipProvider>

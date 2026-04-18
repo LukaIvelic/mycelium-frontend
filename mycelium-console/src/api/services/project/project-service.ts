@@ -4,6 +4,7 @@ import {
   AddApiKeyPayload,
   AddApiKeyResponse,
   CreateProjectPayload,
+  HasApiKeyResponse,
   UpdateProjectPayload,
 } from "./project-service.types";
 
@@ -19,7 +20,8 @@ export class ProjectService {
   }
 
   async findByUserId(user_id: string, hasApiKey?: boolean) {
-    return this.apiClient.get<Project[]>(`/projects/user/${user_id}?hasApiKey=${hasApiKey}`);
+    const query = hasApiKey !== undefined ? `?hasApiKey=${hasApiKey}` : "";
+    return this.apiClient.get<Project[]>(`/projects/user/${user_id}${query}`);
   }
 
   async create(payload: CreateProjectPayload) {
@@ -35,6 +37,13 @@ export class ProjectService {
   }
 
   async addApiKey(id: string, payload: AddApiKeyPayload) {
-    return this.apiClient.post<AddApiKeyResponse>(`/projects/${id}/api-key`, payload);
+    return this.apiClient.post<AddApiKeyResponse>(
+      `/projects/${id}/api-key`,
+      payload,
+    );
+  }
+
+  async hasApiKey(id: string) {
+    return this.apiClient.get<HasApiKeyResponse>(`/projects/${id}/has-api-key`);
   }
 }

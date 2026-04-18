@@ -16,6 +16,13 @@ const projectKeys = {
     [...projectKeys.all, "user", userId, hasApiKey ?? "all"] as const,
 };
 
+function useAllProjects() {
+  return useQuery({
+    queryKey: projectKeys.all,
+    queryFn: () => projectService.findAll(),
+  });
+}
+
 function useProject(id: string) {
   return useQuery({
     queryKey: projectKeys.one(id),
@@ -32,6 +39,10 @@ function useProjectsByUserId(userId: string | undefined, hasApiKey?: boolean) {
   });
 }
 
+function useAllProjectsByUserId(userId: string | undefined) {
+  return useProjectsByUserId(userId);
+}
+
 function useActiveProjectsByUserId(userId: string | undefined) {
   return useProjectsByUserId(userId, true);
 }
@@ -39,7 +50,8 @@ function useActiveProjectsByUserId(userId: string | undefined) {
 function useCreateProject() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (payload: CreateProjectPayload) => projectService.create(payload),
+    mutationFn: (payload: CreateProjectPayload) =>
+      projectService.create(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: projectKeys.all });
     },
@@ -69,6 +81,14 @@ function useInvalidateProject() {
   });
 }
 
+function useHasApiKey(projectId: string) {
+  return useQuery({
+    queryKey: [...projectKeys.one(projectId), "has-api-key"],
+    queryFn: () => projectService.hasApiKey(projectId),
+    enabled: Boolean(projectId),
+  });
+}
+
 function useAddApiKey(projectId: string) {
   const queryClient = useQueryClient();
   return useMutation({
@@ -83,12 +103,15 @@ function useAddApiKey(projectId: string) {
 
 export function useProjects() {
   return {
+    useAllProjects,
     useProject,
     useProjectsByUserId,
+    useAllProjectsByUserId,
     useActiveProjectsByUserId,
     useCreateProject,
     useUpdateProject,
     useInvalidateProject,
+    useHasApiKey,
     useAddApiKey,
   };
 }

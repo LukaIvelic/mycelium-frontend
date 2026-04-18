@@ -25,7 +25,9 @@ export function ApiKeyCopyField({ apiKey }: { apiKey: string }) {
     >
       <div className={cn("gap-3", "flex items-center")}>
         <KeyRound className={cn("text-foreground")} size={18} />
-        <div className="scroll-auto w-100 overflow-scroll no-scrollbar">{apiKey}</div>
+        <div className="scroll-auto w-100 overflow-scroll no-scrollbar">
+          {apiKey}
+        </div>
       </div>
       <Button
         size="sm"

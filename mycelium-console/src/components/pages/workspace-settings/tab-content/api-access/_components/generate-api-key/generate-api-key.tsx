@@ -51,11 +51,11 @@ export function GenerateApiKey() {
             No projects with active API keys found.
           </div>
         ) : (
-          <div className="flex flex-col gap-2">{
-            apiKeys.map((apiKey) => (
+          <div className="flex flex-col gap-2">
+            {apiKeys.map((apiKey) => (
               <ApiKeyItem key={apiKey.id} apiKey={apiKey} />
-            ))
-          }</div>
+            ))}
+          </div>
         )}
       </div>
     </div>
