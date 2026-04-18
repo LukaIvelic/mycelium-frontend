@@ -7,13 +7,13 @@ import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { Alternative, alternatives } from './_page.config';
-import { useMyceliumAuth } from '@/hooks/use-mycelium-auth';
 import { ProxyRoute } from '@/_proxy.utils';
+import { useAuth } from '@/hooks/use-auth.hook';
 
 export default function Page() {
   const router = useRouter();
   const emailRef = useRef<HTMLInputElement>(null);
-  const { validateEmail } = useMyceliumAuth();
+  const { validateEmail } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleContinueClick = async () => {

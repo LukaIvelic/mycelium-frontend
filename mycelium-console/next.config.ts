@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  basePath: "/console",
-  async redirects() {
+  basePath: '/console',
+    async redirects() {
     return [
       {
         source: '/api/auth/:path*',

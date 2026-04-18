@@ -4,16 +4,19 @@ import { Button } from '@/components/features/button';
 import { Input } from '@/components/features/input';
 import { cn } from '@/lib/utils';
 import { useEffect, useRef, useState } from 'react';
-import { useMyceliumAuth } from '@/hooks/use-mycelium-auth';
-import { MushroomCarousel } from '@/components/features/mushroom_carousel';
+import { MushroomCarousel } from '@/components/features/mushroom-carousel';
+import { useRouter } from 'next/navigation';
+import { ProxyRoute } from '@/_proxy.utils';
+import { useAuth } from '@/hooks/use-auth.hook';
 
 export default function Page() {
+  const router = useRouter();
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
-  const { signUp } = useMyceliumAuth();
+  const { signUp } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSignUp = async () => {
@@ -33,6 +36,7 @@ export default function Page() {
       password: passwordRef.current.value,
     });
     setIsLoading(false);
+    router.push(ProxyRoute.DEFAULT);
   };
 
   useEffect(() => {

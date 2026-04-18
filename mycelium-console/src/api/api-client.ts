@@ -1,88 +1,84 @@
-import { tokenStorage } from './token-storage';
-import { API_BASE_URL } from './endpoints';
+import { HttpMethod } from "@/lib/types/web-api";
+import { BASE_API_URL } from "@/lib/constants/routes";
+import { tokenStorage } from "./token-storage";
 
-export interface RequestOptions extends Omit<RequestInit, 'body'> {
-  body?: unknown;
-}
+export class ApiClient {
+    private readonly baseUrl: string = BASE_API_URL;
 
-class ApiClient {
-  private baseUrl: string;
-
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
-  }
-
-  private async request<T>(
-    endpoint: string,
-    options: RequestOptions = {},
-  ): Promise<T> {
-    const token = tokenStorage.getToken();
-    const { body, ...restOptions } = options;
-
-    const res = await fetch(`${this.baseUrl}${endpoint}`, {
-      ...restOptions,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { Authorization: `Bearer ${token}` }),
-        ...options.headers,
-      },
-      ...(body !== undefined && { body: JSON.stringify(body) }),
-    });
-
-    if (!res.ok) {
-      if (res.status === 401 && !endpoint.startsWith('/auth/')) {
-        tokenStorage.removeToken();
-        if (typeof window !== 'undefined') {
-          window.location.href = '/login';
-        }
-      }
-
-      const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.message || `API Error: ${res.status}`);
+    async get<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
+        return this.request<T>(endpoint, HttpMethod.GET, undefined, params);
     }
 
-    return res.json();
-  }
+    async post<T, B = unknown>(endpoint: string, body: B): Promise<T> {
+        return this.request<T>(endpoint, HttpMethod.POST, body);
+    }
 
-  get<T>(endpoint: string, options?: RequestOptions): Promise<T> {
-    return this.request<T>(endpoint, { ...options, method: 'GET' });
-  }
+    async patch<T, B = unknown>(endpoint: string, body: B): Promise<T> {
+        return this.request<T>(endpoint, HttpMethod.PATCH, body);
+    }
 
-  post<T>(
-    endpoint: string,
-    data?: unknown,
-    options?: RequestOptions,
-  ): Promise<T> {
-    return this.request<T>(endpoint, {
-      ...options,
-      method: 'POST',
-      body: data,
-    });
-  }
+    async delete<T>(endpoint: string): Promise<T> {
+        return this.request<T>(endpoint, HttpMethod.DELETE);
+    }
 
-  patch<T>(
-    endpoint: string,
-    data?: unknown,
-    options?: RequestOptions,
-  ): Promise<T> {
-    return this.request<T>(endpoint, {
-      ...options,
-      method: 'PATCH',
-      body: data,
-    });
-  }
+    private async request<T>(
+        endpoint: string, 
+        method: HttpMethod, 
+        body?: unknown, 
+        params?: Record<string, any>
+    ): Promise<T> {
+        const url = this.buildUrl(endpoint, params);
+        const includeBody = body !== undefined;
+        const headers = this.getHeaders(includeBody);
 
-  put<T>(
-    endpoint: string,
-    data?: unknown,
-    options?: RequestOptions,
-  ): Promise<T> {
-    return this.request<T>(endpoint, { ...options, method: 'PUT', body: data });
-  }
+        const response = await fetch(url, {
+            method,
+            headers,
+            ...(includeBody && { body: JSON.stringify(body) }),
+        });
 
-  delete<T>(endpoint: string, options?: RequestOptions): Promise<T> {
-    return this.request<T>(endpoint, { ...options, method: 'DELETE' });
-  }
+        const text = await response.text();
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${text}`);
+        }
+
+        return text ? JSON.parse(text) : ({} as T);
+    }
+
+    private getHeaders(includeBody: boolean = false): HeadersInit {
+        const base: Record<string, string> = {
+            "Accept": "application/json",
+            ...(includeBody && { "Content-Type": "application/json" }),
+        };
+
+        if (typeof window === "undefined") {
+            return base;
+        }
+
+        const token = tokenStorage.getToken();
+
+        return {
+            ...base,
+            ...(token && { Authorization: `Bearer ${token}` }),
+        };
+    }
+
+    private buildUrl(
+        endpoint: string,
+        params?: Record<string, any>
+    ): string {
+        const url = new URL(`${this.baseUrl}${endpoint}`);
+
+        if (params) {
+            Object.entries(params).forEach(([key, value]) => {
+                if(value === undefined || value === null) return;
+                url.searchParams.append(key, String(value));
+            });
+        }
+
+        return url.toString();
+    }
 }
 
-export const api = new ApiClient(API_BASE_URL);
+export const apiClient = new ApiClient();
