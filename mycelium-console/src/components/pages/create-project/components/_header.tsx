@@ -1,12 +1,18 @@
 "use client";
 
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useUsers } from "@/hooks/use-users.hook";
 import { cn } from "@/lib/utils";
 import { LayoutGrid, Plus } from "lucide-react";
 
+import { CreateProjectCommand } from "./create-dialog/create-project-command";
+
 export function CreateProjectHeader() {
+  const [createOpen, setCreateOpen] = useState(false);
+
   const { useMe, useUserProjectsCount } = useUsers();
   const { data: user } = useMe();
   const { data: projectCount = 0 } = useUserProjectsCount(user?.id ?? "");
@@ -22,9 +28,11 @@ export function CreateProjectHeader() {
           "justify-self-end",
           "hover:cursor-pointer",
         )}
+        onClick={() => setCreateOpen(true)}
       >
         <Plus /> <span className="text-base font-normal">New</span>
       </Button>
+      <CreateProjectCommand open={createOpen} onOpenChange={setCreateOpen} />
 
       <div className={cn("col-1 row-2", "flex gap-2")}>
         <div className="flex items-center gap-2 text-foreground/50">
