@@ -1,9 +1,9 @@
 import { ProxyRoute } from "@/_proxy.utils";
-import { AuthService } from "@/api/services/auth-service/auth-service";
+import { AuthService } from "@/api/services/auth/auth-service";
 import {
   LoginPayload,
   SignUpPayload,
-} from "@/api/services/auth-service/auth-service.types";
+} from "@/api/services/auth/auth-service.types";
 import { tokenStorage } from "@/api/token-storage";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 

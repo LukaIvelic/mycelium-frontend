@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { UsersService } from "@/api/services/user-service/user-service";
+import { UsersService } from "@/api/services/user/user-service";
 import {
   CreateUserPayload,
   UpdateUserPayload,
-} from "@/api/services/user-service/user-service.types";
+} from "@/api/services/user/user-service.types";
 
 const usersService = new UsersService();
 

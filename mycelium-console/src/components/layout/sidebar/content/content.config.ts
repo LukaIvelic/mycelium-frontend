@@ -23,17 +23,17 @@ export const standaloneEntries: SidebarEntry[] = [
     icon: LayoutGrid,
     onClick: (appRouter) => appRouter?.push("/projects"),
   },
+  { label: "Billing", icon: CreditCard },
+  { label: "Usage", icon: SlidersHorizontal },
+];
+
+export const settingsEntries: SidebarEntry[] = [
   { label: "Account", icon: UserRound },
   {
     label: "Workspace",
     icon: Code,
     onClick: (appRouter) => appRouter?.push("/workspace/settings"),
   },
-  { label: "Usage", icon: SlidersHorizontal },
-];
-
-export const settingsEntries: SidebarEntry[] = [
-  { label: "Billing", icon: CreditCard },
 ];
 
 export const helpEntries: SidebarEntry[] = [

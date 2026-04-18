@@ -4,23 +4,17 @@ import { Sidebar, SidebarHeader } from "@/components/ui/sidebar";
 import { AppSidebarFooter } from "@/components/layout/sidebar/footer/app-sidebar-footer";
 import { AppSidebarContent } from "@/components/layout/sidebar/app-sidebar-content";
 import { useEffect, useState } from "react";
-import { tokenStorage } from "@/api/token-storage";
 import { User } from "@/lib/types/user";
-import { UsersService } from "@/api/services/user-service/user-service";
+import { useUsers } from "@/hooks/use-users.hook";
 
 export function AppSidebar() {
   const [user, setUser] = useState<User | null>(null);
+  const { useMe } = useUsers();
+  const { data: userData } = useMe();
 
   useEffect(() => {
-    const token = tokenStorage.getToken();
-    if (!token) return;
-
-    const usersService = new UsersService();
-    usersService
-      .findMe()
-      .then(setUser)
-      .catch(() => setUser(null));
-  }, []);
+    setUser(userData || null);
+  }, [userData]);
 
   return (
     <Sidebar className="border-none">

@@ -30,7 +30,7 @@ interface TabsProps {
 
 export function Tabs({ items, activeTab, setActiveTab }: TabsProps) {
   return (
-    <div className="flex relative w-fit items-end">
+    <div className="flex relative items-end">
       <Separator className="bg-foreground/10 absolute bottom-0 w-fit" />
       {items.map((item) => (
         <TabItem

@@ -2,24 +2,30 @@
 
 import { Centered } from "@/components/features/centered";
 import { useTabs } from "@/components/features/tabs";
+import { ApiAccess } from "@/components/pages/workspace-settings/tab-content/api-access/api-access";
 import { cn } from "@/lib/utils";
 
 export default function Page() {
-  const { activeTab, tabs } = useTabs({
-    items: [
-      "API Access Management",
-      "Region & Localization",
-      "Alert Configuration",
+  const tab_content = new Map<string, React.ReactNode>([
+    ["API Access Management", <ApiAccess />],
+    ["Region & Localization", <div>Region & Localization Content</div>],
+    ["Alert Configuration", <div>Alert Configuration Content</div>],
+    [
       "Data Tracing Customization",
-      "Integrations",
+      <div>Data Tracing Customization Content</div>,
     ],
+    ["Integrations", <div>Integrations Content</div>],
+  ]);
+
+  const { activeTab, tabs } = useTabs({
+    items: tab_content.keys().toArray(),
   });
 
   return (
     <Centered>
       <div
         className={cn(
-          "grid grid-cols-4 grid-rows-[auto_auto] items-center gap-4",
+          "grid grid-cols-4 grid-rows-[auto_auto_auto] items-center gap-4",
         )}
       >
         <div className="col-span-2 pb-4">
@@ -29,7 +35,10 @@ export default function Page() {
           </p>
         </div>
       </div>
-      <div className="col-span-4 row-start-2 h-full">{tabs}</div>
+      <div className="col-span-4 row-start-2 w-full">{tabs}</div>
+      <div className="col-span-4 row-start-3 pt-12">
+        {tab_content.get(activeTab)}
+      </div>
     </Centered>
   );
 }
