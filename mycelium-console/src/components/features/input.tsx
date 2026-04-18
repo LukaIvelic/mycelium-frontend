@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { cn } from '@/lib/utils';
-import { useState, useMemo, FocusEvent } from 'react';
+import { cn } from "@/lib/utils";
+import { useState, useMemo, FocusEvent } from "react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
@@ -13,7 +13,7 @@ export function Input({
   placeholder,
   className,
   ref,
-  type = 'text',
+  type = "text",
   value,
   defaultValue,
   onFocus,
@@ -21,7 +21,7 @@ export function Input({
   ...rest
 }: InputProps) {
   const [isFocused, setIsFocused] = useState(false);
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>("");
 
   const hasValue = useMemo(() => {
     return Boolean(value || defaultValue || inputValue);
@@ -43,7 +43,7 @@ export function Input({
   return (
     <div className={cn(`mycelium-input-wrapper`)}>
       <label
-        htmlFor={'input-' + placeholder}
+        htmlFor={"input-" + placeholder}
         className={cn(
           `mycelium-input-label`,
           isFloating && `mycelium-floating`,
@@ -52,7 +52,7 @@ export function Input({
         {placeholder}
       </label>
       <input
-        id={'input-' + placeholder}
+        id={"input-" + placeholder}
         className={cn(`mycelium-input-field`, className)}
         ref={ref}
         type={type}

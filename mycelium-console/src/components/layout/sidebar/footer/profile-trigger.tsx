@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { EllipsisVertical } from 'lucide-react';
+import { EllipsisVertical } from "lucide-react";
 
 type ProfileTriggerProps = {
   fullName?: string;
@@ -8,7 +8,11 @@ type ProfileTriggerProps = {
   onClick: () => void;
 };
 
-export function ProfileTrigger({ fullName, initials, onClick }: ProfileTriggerProps) {
+export function ProfileTrigger({
+  fullName,
+  initials,
+  onClick,
+}: ProfileTriggerProps) {
   return (
     <button
       type="button"

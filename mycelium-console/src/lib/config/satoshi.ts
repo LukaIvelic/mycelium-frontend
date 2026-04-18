@@ -1,4 +1,4 @@
-import localFont from 'next/font/local';
+import localFont from "next/font/local";
 
 /**
  * Loads the Satoshi font family locally with multiple weights and styles using Next.js localFont utility.
@@ -16,38 +16,38 @@ export const satoshi = localFont({
   src: [
     // Normal styles
     {
-      path: '../../../public/fonts/normal/satoshi-light.otf',
-      weight: '300',
-      style: 'normal',
+      path: "../../../public/fonts/normal/satoshi-light.otf",
+      weight: "300",
+      style: "normal",
     },
     {
-      path: '../../../public/fonts/normal/satoshi-regular.otf',
-      weight: '400',
-      style: 'normal',
+      path: "../../../public/fonts/normal/satoshi-regular.otf",
+      weight: "400",
+      style: "normal",
     },
     {
-      path: '../../../public/fonts/normal/satoshi-medium.otf',
-      weight: '500',
-      style: 'normal',
+      path: "../../../public/fonts/normal/satoshi-medium.otf",
+      weight: "500",
+      style: "normal",
     },
 
     // Italic styles
     {
-      path: '../../../public/fonts/italic/satoshi-light.otf',
-      weight: '300',
-      style: 'italic',
+      path: "../../../public/fonts/italic/satoshi-light.otf",
+      weight: "300",
+      style: "italic",
     },
     {
-      path: '../../../public/fonts/italic/satoshi-regular.otf',
-      weight: '400',
-      style: 'italic',
+      path: "../../../public/fonts/italic/satoshi-regular.otf",
+      weight: "400",
+      style: "italic",
     },
     {
-      path: '../../../public/fonts/italic/satoshi-medium.otf',
-      weight: '500',
-      style: 'italic',
+      path: "../../../public/fonts/italic/satoshi-medium.otf",
+      weight: "500",
+      style: "italic",
     },
   ],
-  variable: '--font-satoshi',
-  display: 'swap',
+  variable: "--font-satoshi",
+  display: "swap",
 });

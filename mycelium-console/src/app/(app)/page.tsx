@@ -1,9 +1,12 @@
-import { CreateProjectPage } from '@/components/pages/create-project/create-project';
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
-  return (
-    <main className="w-full h-full">
-      <CreateProjectPage />
-    </main>
-  );
+  const router = useRouter();
+  useEffect(() => {
+    router.push("/projects");
+  }, [router]);
+  return <></>;
 }

@@ -1,13 +1,13 @@
-import { jwtVerify } from 'jose';
+import { jwtVerify } from "jose";
 
 export enum ProxyRoute {
-  AUTH = '/auth',
-  LOGIN = '/auth/login',
-  SIGNUP = '/auth/signup',
-  DEFAULT = '/',
+  AUTH = "/auth",
+  LOGIN = "/auth/login",
+  SIGNUP = "/auth/signup",
+  DEFAULT = "/",
 }
 
-export const TokenKey = 'access_token';
+export const TokenKey = "access_token";
 
 export const PublicRoutes: ProxyRoute[] = [
   ProxyRoute.AUTH,

@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { Centered } from '@/components/features/centered';
-import { useTabs } from '@/components/features/tabs';
-import { cn } from '@/lib/utils';
+import { Centered } from "@/components/features/centered";
+import { useTabs } from "@/components/features/tabs";
+import { cn } from "@/lib/utils";
 
 export default function Page() {
   const { activeTab, tabs } = useTabs({
     items: [
-      'API Access Management',
-      'Region & Localization',
-      'Alert Configuration',
-      'Data Tracing Customization',
-      'Integrations',
+      "API Access Management",
+      "Region & Localization",
+      "Alert Configuration",
+      "Data Tracing Customization",
+      "Integrations",
     ],
   });
 
@@ -19,7 +19,7 @@ export default function Page() {
     <Centered>
       <div
         className={cn(
-          'grid grid-cols-4 grid-rows-[auto_auto] items-center gap-4',
+          "grid grid-cols-4 grid-rows-[auto_auto] items-center gap-4",
         )}
       >
         <div className="col-span-2 pb-4">

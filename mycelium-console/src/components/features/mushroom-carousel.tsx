@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface MushroomCarouselProps {
   className?: string;
 }
 
-const base_path = '/console/images/shrooms/';
+const base_path = "/console/images/shrooms/";
 const mushroom_hrefs = Array.from({ length: 6 }).map((_, index) => {
   return `${base_path}shroom_${index + 1}.svg`;
 });
@@ -29,17 +29,17 @@ export function MushroomCarousel({ className }: MushroomCarouselProps) {
   return (
     <div className={className}>
       {mushroom_hrefs.map((src, index) => {
-        const altName = src.replace(base_path, '').replace('.svg', '');
+        const altName = src.replace(base_path, "").replace(".svg", "");
         return (
           <Image
             src={src}
             width={100}
             height={100}
             alt={altName}
-            loading={index === 0 ? 'eager' : 'lazy'}
+            loading={index === 0 ? "eager" : "lazy"}
             style={{
-              display: activeIndex === index ? 'block' : 'none',
-              height: 'auto',
+              display: activeIndex === index ? "block" : "none",
+              height: "auto",
             }}
             key={index}
           />

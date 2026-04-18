@@ -1,11 +1,6 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import {
-  ProxyRoute,
-  PublicRoutes,
-  TokenKey,
-  verifyJwt,
-} from './_proxy.utils';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { ProxyRoute, PublicRoutes, TokenKey, verifyJwt } from "./_proxy.utils";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -30,5 +25,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)'],
+  matcher: ["/", "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
 };

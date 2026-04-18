@@ -1,9 +1,9 @@
-import { Metadata } from 'next';
-import { ReactNode } from 'react';
+import { Metadata } from "next";
+import { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: 'Mycelium - Passive Trace & Microservice Dependency Mapping ',
-  description: 'Untangle your project using Mycelium.',
+  title: "Mycelium - Passive Trace & Microservice Dependency Mapping ",
+  description: "Untangle your project using Mycelium.",
 };
 
 interface AuthLayoutProps {

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { cn } from '@/lib/utils';
-import { LucideIcon } from 'lucide-react';
-import { Spinner } from '../ui/spinner';
-import { ReactNode } from 'react';
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { LucideIcon } from "lucide-react";
+import { Spinner } from "../ui/spinner";
+import { ReactNode } from "react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -25,7 +25,7 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`mycelium-btn ${className ?? ''}`}
+      className={`mycelium-btn ${className ?? ""}`}
       {...rest}
       disabled={isLoading}
     >
@@ -50,8 +50,8 @@ export function Button({
       <div
         className={cn(
           `mycelium-btn-text-wrapper`,
-          (!imageSrc && !Icon) || centerContent ? '' : '-translate-x-5',
-          isLoading ? 'justify-center' : 'justify-start',
+          (!imageSrc && !Icon) || centerContent ? "" : "-translate-x-5",
+          isLoading ? "justify-center" : "justify-start",
         )}
       >
         {isLoading && <Spinner />}

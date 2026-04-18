@@ -1,17 +1,17 @@
-'use client';
+﻿"use client";
 
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar';
-import { getMenuItemClass } from '@/components/layout/sidebar/footer/footer.utils';
-import type { MenuEntry } from '@/components/layout/sidebar/footer/footer.config';
-import { useRouter } from 'next/navigation';
+} from "@/components/ui/sidebar";
+import { getMenuItemClass } from "@/components/layout/sidebar/footer/footer.utils";
+import type { MenuEntry } from "@/components/layout/sidebar/footer/footer.config";
+import { useRouter } from "next/navigation";
 
 type EntryListProps = {
   entries: MenuEntry[];
-  onSelect: () => void;
+  onSelect?: () => void;
 };
 
 export function EntryList({ entries, onSelect }: EntryListProps) {
@@ -25,7 +25,7 @@ export function EntryList({ entries, onSelect }: EntryListProps) {
             className={getMenuItemClass(danger)}
             onClick={() => {
               onClick?.(router);
-              onSelect();
+              onSelect?.();
             }}
           >
             <Icon className="size-4" />

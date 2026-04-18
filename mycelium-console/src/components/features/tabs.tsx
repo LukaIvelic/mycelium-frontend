@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Separator } from '../ui/separator';
+import { useState } from "react";
+import { Separator } from "../ui/separator";
 
 interface TabItemProps {
   label: string;
@@ -13,8 +13,8 @@ function TabItem({ label, active, onClick }: TabItemProps) {
       onClick={onClick}
       className={`px-8 py-2 cursor-pointer rounded-t-lg border-x border-t z-1 transition-all ${
         active
-          ? 'border-foreground/10 bg-[#1d1d1d] text-foreground'
-          : 'border-transparent hover:bg-muted text-foreground/50 hover:text-foreground'
+          ? "border-foreground/10 bg-[#1d1d1d] text-foreground"
+          : "border-transparent hover:bg-muted text-foreground/50 hover:text-foreground"
       }`}
     >
       {label}
