@@ -6,12 +6,15 @@ import { Project } from "@/lib/types/project";
 export class ApiKeyService {
   private apiClient: ApiClient = apiClient;
 
-  async create() {
-    return this.apiClient.post<CreateApiKeyResponse>("/api-keys", null);
+  async create(projectId: string) {
+    return this.apiClient.post<CreateApiKeyResponse>(
+      `/api-keys/${projectId}`,
+      null,
+    );
   }
 
-  async revoke() {
-    return this.apiClient.delete("/api-keys");
+  async revoke(id: string) {
+    return this.apiClient.delete(`/api-keys/${id}`);
   }
 
   async findApiKeyByUserId(userId: string) {

@@ -19,8 +19,8 @@ export class ProjectService {
     return this.apiClient.get<Project>(`/projects/${id}`);
   }
 
-  async findByUserId(user_id: string) {
-    return this.apiClient.get<Project[]>(`/projects/user/${user_id}`);
+  async findByUserId(user_id: string, hasApiKey?: boolean) {
+    return this.apiClient.get<Project[]>(`/projects/user/${user_id}?hasApiKey=${hasApiKey}`);
   }
 
   async create(payload: CreateProjectPayload) {
@@ -33,12 +33,6 @@ export class ProjectService {
 
   async invalidate(id: string) {
     return this.apiClient.delete<void>(`/projects/${id}`);
-  }
-
-  async getProjectsWithActiveApiKeys(user_id: string) {
-    return this.apiClient.get<Project[]>(
-      `/projects/active-projects/${user_id}`,
-    );
   }
 
   async addApiKey(id: string, payload: AddApiKeyPayload) {

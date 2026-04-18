@@ -12,9 +12,8 @@ const projectService = new ProjectService();
 const projectKeys = {
   all: ["projects"] as const,
   one: (id: string) => [...projectKeys.all, id] as const,
-  byUser: (userId: string) => [...projectKeys.all, "user", userId] as const,
-  activeByUser: (userId: string) =>
-    [...projectKeys.all, "active", userId] as const,
+  byUser: (userId: string, hasApiKey?: boolean) =>
+    [...projectKeys.all, "user", userId, hasApiKey ?? "all"] as const,
 };
 
 function useProject(id: string) {
@@ -25,20 +24,16 @@ function useProject(id: string) {
   });
 }
 
-function useProjectsByUserId(userId: string | undefined) {
+function useProjectsByUserId(userId: string | undefined, hasApiKey?: boolean) {
   return useQuery({
-    queryKey: projectKeys.byUser(userId ?? ""),
-    queryFn: () => projectService.findByUserId(userId!),
+    queryKey: projectKeys.byUser(userId ?? "", hasApiKey),
+    queryFn: () => projectService.findByUserId(userId!, hasApiKey),
     enabled: Boolean(userId),
   });
 }
 
 function useActiveProjectsByUserId(userId: string | undefined) {
-  return useQuery({
-    queryKey: projectKeys.activeByUser(userId ?? ""),
-    queryFn: () => projectService.getProjectsWithActiveApiKeys(userId!),
-    enabled: Boolean(userId),
-  });
+  return useProjectsByUserId(userId, true);
 }
 
 function useCreateProject() {

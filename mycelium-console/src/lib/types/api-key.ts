@@ -5,7 +5,7 @@ export type ApiKey = {
   key_prefix: string;
   valid_from: string;
   valid_to: null;
-  revoked_at: null;
+  revoked_at: string | null;
   created_at: string;
   last_used_at: string;
   usage_count: number;

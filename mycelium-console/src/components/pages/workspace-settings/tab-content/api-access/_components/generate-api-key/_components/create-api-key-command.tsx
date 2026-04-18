@@ -30,7 +30,7 @@ export function CreateApiKeyCommand({
   const { data: user } = useMe();
 
   const { useProjectsByUserId, useAddApiKey } = useProjects();
-  const { data: projects = [] } = useProjectsByUserId(user?.id);
+  const { data: projects = [] } = useProjectsByUserId(user?.id, false);
   const addApiKey = useAddApiKey(selectedProject?.id ?? "");
 
   const canGenerate =

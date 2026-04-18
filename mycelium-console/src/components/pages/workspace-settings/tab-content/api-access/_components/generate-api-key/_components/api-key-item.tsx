@@ -13,8 +13,9 @@ export function ApiKeyItem({ apiKey }: { apiKey: ApiKey }) {
   const { useMe } = useUsers();
   const { data: user } = useMe();
 
-  const { useProjectByApiKeyId } = useApiKeys();
+  const { useProjectByApiKeyId, useRevokeApiKey } = useApiKeys();
   const { data: project } = useProjectByApiKeyId(apiKey.id);
+  const revokeApiKey = useRevokeApiKey();
 
   const fields = [
     { label: "Name", value: apiKey.name },
@@ -25,6 +26,10 @@ export function ApiKeyItem({ apiKey }: { apiKey: ApiKey }) {
     },
     { label: "Bound to", value: user?.email ?? "—" },
   ];
+
+  const handleApiKeyRevoke = () => {
+    revokeApiKey.mutate(apiKey.id);
+  };
 
   return (
     <div
@@ -59,6 +64,7 @@ export function ApiKeyItem({ apiKey }: { apiKey: ApiKey }) {
             )}
             size={20}
             strokeWidth={1.5}
+            onClick={handleApiKeyRevoke}
           />
         </div>
       </div>

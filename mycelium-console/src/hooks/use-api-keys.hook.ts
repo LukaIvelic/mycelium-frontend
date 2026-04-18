@@ -1,11 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { ApiKeyService } from "@/api/services/api-key/api-key-service";
+import { ApiKey } from "@/lib/types/api-key";
 
 const apiKeyService = new ApiKeyService();
 
 const apiKeyKeys = {
   all: ["api-keys"] as const,
+  users: ["api-keys", "user"] as const,
   byUser: (userId: string) => [...apiKeyKeys.all, "user", userId] as const,
   project: (apiKeyId: string) =>
     [...apiKeyKeys.all, apiKeyId, "project"] as const,
@@ -14,7 +16,10 @@ const apiKeyKeys = {
 function useApiKeysByUserId(userId: string | undefined) {
   return useQuery({
     queryKey: apiKeyKeys.byUser(userId ?? ""),
-    queryFn: () => apiKeyService.findApiKeyByUserId(userId!),
+    queryFn: async () => {
+      const apiKeys = await apiKeyService.findApiKeyByUserId(userId!);
+      return apiKeys.filter((apiKey) => !apiKey.revoked_at);
+    },
     enabled: Boolean(userId),
   });
 }
@@ -30,7 +35,7 @@ function useProjectByApiKeyId(apiKeyId: string) {
 function useCreateApiKey() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => apiKeyService.create(),
+    mutationFn: (projectId: string) => apiKeyService.create(projectId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: apiKeyKeys.all });
     },
@@ -40,8 +45,15 @@ function useCreateApiKey() {
 function useRevokeApiKey() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => apiKeyService.revoke(),
-    onSuccess: () => {
+    mutationFn: (id: string) => apiKeyService.revoke(id),
+    onSuccess: (_, id) => {
+      queryClient.setQueriesData(
+        { queryKey: apiKeyKeys.users },
+        (oldData: ApiKey[] | undefined) => {
+          if (!oldData) return oldData;
+          return oldData.filter((apiKey) => apiKey.id !== id);
+        },
+      );
       queryClient.invalidateQueries({ queryKey: apiKeyKeys.all });
     },
   });
