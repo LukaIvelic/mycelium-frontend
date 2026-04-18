@@ -5,6 +5,7 @@ import {
   SignUpPayload,
 } from "@/api/services/auth/auth-service.types";
 import { tokenStorage } from "@/api/token-storage";
+import { queryClient } from "@/components/features/providers";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export function useAuth() {
@@ -24,6 +25,7 @@ export function useAuth() {
 
   const signOut = (router?: AppRouterInstance) => {
     tokenStorage.removeToken();
+    queryClient.clear();
 
     if (!router) return;
     router.push(ProxyRoute.DEFAULT);
