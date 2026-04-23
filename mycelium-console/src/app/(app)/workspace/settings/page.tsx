@@ -35,7 +35,7 @@ export default function Page() {
           </p>
         </div>
       </div>
-      <div className="col-span-4 row-start-2 w-full">{tabs}</div>
+      <div className="col-span-4 row-start-2 w-full bg-[#1d1d1d]">{tabs}</div>
       <div className="col-span-4 row-start-3 pt-12">
         {tab_content.get(activeTab)}
       </div>

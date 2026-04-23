@@ -30,7 +30,9 @@ export function CreateProjectCommand({
   const createProject = useCreateProject();
 
   const canCreate =
-    projectName.trim().length > 0 && !createProject.isPending && Boolean(user?.id);
+    projectName.trim().length > 0 &&
+    !createProject.isPending &&
+    Boolean(user?.id);
 
   const handleCreate = async () => {
     if (!canCreate || !user?.id) return;
