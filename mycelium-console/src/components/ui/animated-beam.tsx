@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
+
 import { type RefObject, useEffect, useId, useState } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -125,11 +126,11 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
 
   return (
     <svg
-      aria-hidden='true'
-      fill='none'
+      aria-hidden="true"
+      fill="none"
       width={svgDimensions.width}
       height={svgDimensions.height}
-      xmlns='http://www.w3.org/2000/svg'
+      xmlns="http://www.w3.org/2000/svg"
       className={cn(
         'pointer-events-none absolute top-0 left-0 transform-gpu stroke-2',
         className,
@@ -141,18 +142,18 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
         stroke={pathColor}
         strokeWidth={pathWidth}
         strokeOpacity={pathOpacity}
-        strokeLinecap='round'
+        strokeLinecap="round"
       />
       <path
         d={pathD}
         strokeWidth={pathWidth}
         stroke={`url(#${id})`}
-        strokeOpacity='1'
-        strokeLinecap='round'
+        strokeOpacity="1"
+        strokeLinecap="round"
       />
       <defs>
         <motion.linearGradient
-          className='transform-gpu'
+          className="transform-gpu"
           id={id}
           gradientUnits={'userSpaceOnUse'}
           initial={{
@@ -175,13 +176,13 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
             repeatDelay,
           }}
         >
-          <stop stopColor={gradientStartColor} stopOpacity='0'></stop>
+          <stop stopColor={gradientStartColor} stopOpacity="0"></stop>
           <stop stopColor={gradientStartColor}></stop>
-          <stop offset='32.5%' stopColor={gradientStopColor}></stop>
+          <stop offset="32.5%" stopColor={gradientStopColor}></stop>
           <stop
-            offset='100%'
+            offset="100%"
             stopColor={gradientStopColor}
-            stopOpacity='0'
+            stopOpacity="0"
           ></stop>
         </motion.linearGradient>
       </defs>
