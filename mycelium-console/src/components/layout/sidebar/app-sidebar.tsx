@@ -1,11 +1,11 @@
-﻿"use client";
+﻿'use client';
 
-import { Sidebar, SidebarHeader } from "@/components/ui/sidebar";
-import { AppSidebarFooter } from "@/components/layout/sidebar/footer/app-sidebar-footer";
-import { AppSidebarContent } from "@/components/layout/sidebar/app-sidebar-content";
-import { useEffect, useState } from "react";
-import { User } from "@/lib/types/user";
-import { useUsers } from "@/hooks/use-users.hook";
+import { useEffect, useState } from 'react';
+import { AppSidebarContent } from '@/components/layout/sidebar/app-sidebar-content';
+import { AppSidebarFooter } from '@/components/layout/sidebar/footer/app-sidebar-footer';
+import { Sidebar, SidebarHeader } from '@/components/ui/sidebar';
+import { useUsers } from '@/hooks/use-users.hook';
+import type { User } from '@/lib/types/user';
 
 export function AppSidebar() {
   const [user, setUser] = useState<User | null>(null);
@@ -17,8 +17,8 @@ export function AppSidebar() {
   }, [userData]);
 
   return (
-    <Sidebar className="border-none">
-      <SidebarHeader className="h-12 p-0" />
+    <Sidebar className='border-none'>
+      <SidebarHeader className='h-12 p-0' />
       <AppSidebarContent user={user} />
       <AppSidebarFooter user={user} />
     </Sidebar>

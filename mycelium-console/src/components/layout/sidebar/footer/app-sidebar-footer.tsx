@@ -1,11 +1,11 @@
-﻿"use client";
+﻿'use client';
 
-import { useCallback, useRef, useState } from "react";
-import { SidebarFooter } from "@/components/ui/sidebar";
-import { usePopupDismiss } from "@/components/layout/sidebar/footer/footer.utils";
-import { ProfilePopup } from "@/components/layout/sidebar/footer/profile-popup";
-import { ProfileTrigger } from "@/components/layout/sidebar/footer/profile-trigger";
-import { User } from "@/lib/types/user";
+import { useCallback, useRef, useState } from 'react';
+import { usePopupDismiss } from '@/components/layout/sidebar/footer/footer.utils';
+import { ProfilePopup } from '@/components/layout/sidebar/footer/profile-popup';
+import { ProfileTrigger } from '@/components/layout/sidebar/footer/profile-trigger';
+import { SidebarFooter } from '@/components/ui/sidebar';
+import type { User } from '@/lib/types/user';
 
 type AppSidebarFooterProps = {
   user?: User | null;
@@ -19,8 +19,8 @@ export function AppSidebarFooter({ user }: AppSidebarFooterProps) {
   usePopupDismiss(open, rootRef, closePopup);
 
   return (
-    <SidebarFooter className="mt-auto p-2">
-      <div ref={rootRef} className="relative">
+    <SidebarFooter className='mt-auto p-2'>
+      <div ref={rootRef} className='relative'>
         {open ? (
           <ProfilePopup
             fullName={user?.full_name}

@@ -1,23 +1,23 @@
-import { apiClient, ApiClient } from "../../api-client";
-import {
+import { type ApiClient, apiClient } from '../../api-client';
+import type {
   LoginPayload,
   SignUpPayload,
   TokenResponse,
   ValidateEmailResponse,
-} from "./auth-service.types";
+} from './auth-service.types';
 
 export class AuthService {
   private apiClient: ApiClient = apiClient;
 
   async signUp(payload: SignUpPayload) {
     return this.apiClient.post<TokenResponse>(
-      "/authentication/signup",
+      '/authentication/signup',
       payload,
     );
   }
 
   async logIn(payload: LoginPayload) {
-    return this.apiClient.post<TokenResponse>("/authentication/login", payload);
+    return this.apiClient.post<TokenResponse>('/authentication/login', payload);
   }
 
   async validateEmail(email: string) {

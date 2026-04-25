@@ -4,7 +4,8 @@
 @import "../styles/button-styles.css";
 @import "../styles/text-input-styles.css";
 
-html, body {
+html,
+body {
   @apply h-full;
 }
 
@@ -148,11 +149,6 @@ body {
     @apply font-sans;
   }
 }
-
-
-
-
-
 
 @theme {
   /* Define the animation token */

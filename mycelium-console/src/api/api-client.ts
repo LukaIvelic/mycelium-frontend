@@ -1,11 +1,11 @@
-import { HttpMethod } from "@/lib/types/web-api";
-import { BASE_API_URL } from "@/lib/constants/routes";
-import { tokenStorage } from "./token-storage";
+import { BASE_API_URL } from '@/lib/constants/routes';
+import { HttpMethod } from '@/lib/types/web-api';
+import { tokenStorage } from './token-storage';
 
 export class ApiClient {
   private readonly baseUrl: string = BASE_API_URL;
 
-  async get<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
+  async get<T>(endpoint: string, params?: Record<string, unknown>): Promise<T> {
     return this.request<T>(endpoint, HttpMethod.GET, undefined, params);
   }
 
@@ -25,7 +25,7 @@ export class ApiClient {
     endpoint: string,
     method: HttpMethod,
     body?: unknown,
-    params?: Record<string, any>,
+    params?: Record<string, unknown>,
   ): Promise<T> {
     const url = this.buildUrl(endpoint, params);
     const includeBody = body !== undefined;
@@ -48,11 +48,11 @@ export class ApiClient {
 
   private getHeaders(includeBody: boolean = false): HeadersInit {
     const base: Record<string, string> = {
-      Accept: "application/json",
-      ...(includeBody && { "Content-Type": "application/json" }),
+      Accept: 'application/json',
+      ...(includeBody && { 'Content-Type': 'application/json' }),
     };
 
-    if (typeof window === "undefined") {
+    if (typeof window === 'undefined') {
       return base;
     }
 
@@ -64,7 +64,7 @@ export class ApiClient {
     };
   }
 
-  private buildUrl(endpoint: string, params?: Record<string, any>): string {
+  private buildUrl(endpoint: string, params?: Record<string, unknown>): string {
     const url = new URL(`${this.baseUrl}${endpoint}`);
 
     if (params) {

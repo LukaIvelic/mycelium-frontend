@@ -1,19 +1,20 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { ProjectService } from "@/api/services/project/project-service";
-import {
+import { ProjectService } from '@/api/services/project/project-service';
+import type {
   AddApiKeyPayload,
   CreateProjectPayload,
   UpdateProjectPayload,
-} from "@/api/services/project/project-service.types";
+} from '@/api/services/project/project-service.types';
 
 const projectService = new ProjectService();
 
 const projectKeys = {
-  all: ["projects"] as const,
+  all: ['projects'] as const,
   one: (id: string) => [...projectKeys.all, id] as const,
   byUser: (userId: string, hasApiKey?: boolean) =>
-    [...projectKeys.all, "user", userId, hasApiKey ?? "all"] as const,
+    [...projectKeys.all, 'user', userId, hasApiKey ?? 'all'] as const,
+  hasApiKey: (id: string) => [...projectKeys.one(id), 'has-api-key'] as const,
 };
 
 function useAllProjects() {
@@ -33,8 +34,8 @@ function useProject(id: string) {
 
 function useProjectsByUserId(userId: string | undefined, hasApiKey?: boolean) {
   return useQuery({
-    queryKey: projectKeys.byUser(userId ?? "", hasApiKey),
-    queryFn: () => projectService.findByUserId(userId!, hasApiKey),
+    queryKey: projectKeys.byUser(userId ?? '', hasApiKey),
+    queryFn: () => projectService.findByUserId(userId as string, hasApiKey),
     enabled: Boolean(userId),
   });
 }
@@ -83,7 +84,7 @@ function useInvalidateProject() {
 
 function useHasApiKey(projectId: string) {
   return useQuery({
-    queryKey: [...projectKeys.one(projectId), "has-api-key"],
+    queryKey: projectKeys.hasApiKey(projectId),
     queryFn: () => projectService.hasApiKey(projectId),
     enabled: Boolean(projectId),
   });
@@ -95,7 +96,7 @@ function useAddApiKey(projectId: string) {
     mutationFn: (payload: AddApiKeyPayload) =>
       projectService.addApiKey(projectId, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["api-keys"] });
+      queryClient.invalidateQueries({ queryKey: ['api-keys'] });
       queryClient.invalidateQueries({ queryKey: projectKeys.all });
     },
   });

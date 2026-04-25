@@ -2,5 +2,8 @@
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "tags": [
     "-lintignore"
+  ],
+  "ignore": [
+    "src/components/ui/**"
   ]
 }

@@ -3,12 +3,11 @@ import {
   Code,
   CreditCard,
   LayoutGrid,
-  Settings,
+  type LucideIcon,
   SlidersHorizontal,
   UserRound,
-  type LucideIcon,
-} from "lucide-react";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+} from 'lucide-react';
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export type SidebarEntry = {
   label: string;
@@ -19,24 +18,24 @@ export type SidebarEntry = {
 
 export const standaloneEntries: SidebarEntry[] = [
   {
-    label: "Projects",
+    label: 'Projects',
     icon: LayoutGrid,
-    onClick: (appRouter) => appRouter?.push("/projects"),
+    onClick: (appRouter) => appRouter?.push('/projects'),
   },
-  { label: "Billing", icon: CreditCard },
-  { label: "Usage", icon: SlidersHorizontal },
+  { label: 'Billing', icon: CreditCard },
+  { label: 'Usage', icon: SlidersHorizontal },
 ];
 
 export const settingsEntries: SidebarEntry[] = [
-  { label: "Account", icon: UserRound },
+  { label: 'Account', icon: UserRound },
   {
-    label: "Workspace",
+    label: 'Workspace',
     icon: Code,
-    onClick: (appRouter) => appRouter?.push("/workspace/settings"),
+    onClick: (appRouter) => appRouter?.push('/workspace/settings'),
   },
 ];
 
 export const helpEntries: SidebarEntry[] = [
-  { label: "Documentation", icon: CircleHelp },
-  { label: "Support", icon: CircleHelp },
+  { label: 'Documentation', icon: CircleHelp },
+  { label: 'Support', icon: CircleHelp },
 ];

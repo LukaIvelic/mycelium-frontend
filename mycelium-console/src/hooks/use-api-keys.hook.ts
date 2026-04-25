@@ -1,24 +1,24 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { ApiKeyService } from "@/api/services/api-key/api-key-service";
-import { ApiKey } from "@/lib/types/api-key";
+import { ApiKeyService } from '@/api/services/api-key/api-key-service';
+import type { ApiKey } from '@/lib/types/api-key';
 
 const apiKeyService = new ApiKeyService();
 
 const apiKeyKeys = {
-  all: ["api-keys"] as const,
-  users: ["api-keys", "user"] as const,
-  byUser: (userId: string) => [...apiKeyKeys.all, "user", userId] as const,
+  all: ['api-keys'] as const,
+  users: ['api-keys', 'user'] as const,
+  byUser: (userId: string) => [...apiKeyKeys.all, 'user', userId] as const,
   project: (apiKeyId: string) =>
-    [...apiKeyKeys.all, apiKeyId, "project"] as const,
+    [...apiKeyKeys.all, apiKeyId, 'project'] as const,
 };
-const projectKeys = ["projects"] as const;
+const projectKeys = ['projects'] as const;
 
 function useApiKeysByUserId(userId: string | undefined) {
   return useQuery({
-    queryKey: apiKeyKeys.byUser(userId ?? ""),
+    queryKey: apiKeyKeys.byUser(userId ?? ''),
     queryFn: async () => {
-      const apiKeys = await apiKeyService.findApiKeyByUserId(userId!);
+      const apiKeys = await apiKeyService.findApiKeyByUserId(userId as string);
       return apiKeys.filter((apiKey) => !apiKey.revoked_at);
     },
     enabled: Boolean(userId),

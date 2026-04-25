@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 
 interface TruncateProps {
   text: string;
@@ -19,7 +19,7 @@ export function Truncate({ text, max, className }: TruncateProps) {
     return <span className={className}>{text}</span>;
   }
 
-  const truncated = text.slice(0, max) + "…";
+  const truncated = `${text.slice(0, max)}…`;
 
   return (
     <TooltipProvider>

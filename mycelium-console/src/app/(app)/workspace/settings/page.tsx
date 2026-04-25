@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { Centered } from "@/components/features/centered";
-import { useTabs } from "@/components/features/tabs";
-import { ApiAccess } from "@/components/pages/workspace-settings/tab-content/api-access/api-access";
-import { cn } from "@/lib/utils";
+import { Centered } from '@/components/features/centered';
+import { useTabs } from '@/components/features/tabs';
+import { ApiAccess } from '@/components/pages/workspace-settings/tab-content/api-access/api-access';
+import { cn } from '@/lib/utils';
 
 export default function Page() {
   const tab_content = new Map<string, React.ReactNode>([
-    ["API Access Management", <ApiAccess />],
-    ["Region & Localization", <div>Region & Localization Content</div>],
-    ["Alert Configuration", <div>Alert Configuration Content</div>],
+    ['API Access Management', <ApiAccess />],
+    ['Region & Localization', <div>Region & Localization Content</div>],
+    ['Alert Configuration', <div>Alert Configuration Content</div>],
     [
-      "Data Tracing Customization",
+      'Data Tracing Customization',
       <div>Data Tracing Customization Content</div>,
     ],
-    ["Integrations", <div>Integrations Content</div>],
+    ['Integrations', <div>Integrations Content</div>],
   ]);
 
   const { activeTab, tabs } = useTabs({
@@ -25,7 +25,7 @@ export default function Page() {
     <Centered>
       <div
         className={cn(
-          "grid grid-cols-4 grid-rows-[auto_auto_auto] items-center gap-4",
+          'grid grid-cols-4 grid-rows-[auto_auto_auto] items-center gap-4',
         )}
       >
         <div className="col-span-2 pb-4">

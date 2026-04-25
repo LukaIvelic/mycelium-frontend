@@ -62,25 +62,3 @@ export type TraceGraph = {
   nodes: TraceGraphNode[];
   edges: TraceGraphEdge[];
 };
-
-export type ProjectTopologyNode = {
-  id: string;
-  label: string;
-  origin: string | null;
-  serviceKey: string | null;
-  serviceName: string | null;
-  serviceVersion: string | null;
-  observedCount: number;
-  firstSeenAt: string;
-  lastSeenAt: string;
-};
-
-export type ProjectTopologyEdge = {
-  id: string;
-  source: string;
-  target: string;
-  callCount: number;
-  firstSeenAt: string;
-  lastSeenAt: string;
-  latestTraceId: string | null;
-};

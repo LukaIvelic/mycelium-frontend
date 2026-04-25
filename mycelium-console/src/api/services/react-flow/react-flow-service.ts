@@ -1,5 +1,5 @@
-import { apiClient, ApiClient } from "../../api-client";
-import { ReactFlowLayout } from "./react-flow-service.types";
+import { type ApiClient, apiClient } from '../../api-client';
+import type { ReactFlowLayout } from './react-flow-service.types';
 
 export class ReactFlowService {
   private apiClient: ApiClient = apiClient;

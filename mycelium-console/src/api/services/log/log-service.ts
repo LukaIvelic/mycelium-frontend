@@ -1,6 +1,6 @@
-import { Log, LogDetail, TraceGraph } from "@/lib/types/log";
-import { apiClient, ApiClient } from "../../api-client";
-import { FindLogsQuery } from "./log-service.types";
+import type { Log, LogDetail, TraceGraph } from '@/lib/types/log';
+import { type ApiClient, apiClient } from '../../api-client';
+import type { FindLogsQuery } from './log-service.types';
 
 export class LogService {
   private apiClient: ApiClient = apiClient;

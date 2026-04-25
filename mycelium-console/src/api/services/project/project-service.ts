@@ -1,18 +1,18 @@
-import { apiClient, ApiClient } from "../../api-client";
-import { Project } from "@/lib/types/project";
-import {
+import type { Project } from '@/lib/types/project';
+import { type ApiClient, apiClient } from '../../api-client';
+import type {
   AddApiKeyPayload,
   AddApiKeyResponse,
   CreateProjectPayload,
   HasApiKeyResponse,
   UpdateProjectPayload,
-} from "./project-service.types";
+} from './project-service.types';
 
 export class ProjectService {
   private apiClient: ApiClient = apiClient;
 
   async findAll() {
-    return this.apiClient.get<Project[]>("/projects");
+    return this.apiClient.get<Project[]>('/projects');
   }
 
   async findOne(id: string) {
@@ -20,12 +20,12 @@ export class ProjectService {
   }
 
   async findByUserId(user_id: string, hasApiKey?: boolean) {
-    const query = hasApiKey !== undefined ? `?hasApiKey=${hasApiKey}` : "";
+    const query = hasApiKey !== undefined ? `?hasApiKey=${hasApiKey}` : '';
     return this.apiClient.get<Project[]>(`/projects/user/${user_id}${query}`);
   }
 
   async create(payload: CreateProjectPayload) {
-    return this.apiClient.post<Project>("/projects", payload);
+    return this.apiClient.post<Project>('/projects', payload);
   }
 
   async update(id: string, payload: UpdateProjectPayload) {

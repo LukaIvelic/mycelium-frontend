@@ -1,5 +1,5 @@
-import { apiClient, ApiClient } from "../../api-client";
-import { Service } from "./services-service.types";
+import { type ApiClient, apiClient } from '../../api-client';
+import type { Service } from './services-service.types';
 
 export class ServicesService {
   private apiClient: ApiClient = apiClient;

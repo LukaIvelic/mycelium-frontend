@@ -1,13 +1,16 @@
-import { User } from "@/lib/types/user";
-import { apiClient, ApiClient } from "../../api-client";
-import { CreateUserPayload, UpdateUserPayload } from "./user-service.types";
-import { Project } from "@/lib/types/project";
+import type { Project } from '@/lib/types/project';
+import type { User } from '@/lib/types/user';
+import { type ApiClient, apiClient } from '../../api-client';
+import type {
+  CreateUserPayload,
+  UpdateUserPayload,
+} from './user-service.types';
 
 export class UsersService {
   private apiClient: ApiClient = apiClient;
 
   async findMe() {
-    return this.apiClient.get<User>("/users/me");
+    return this.apiClient.get<User>('/users/me');
   }
 
   async findOne(id: string) {
@@ -15,7 +18,7 @@ export class UsersService {
   }
 
   async create(payload: CreateUserPayload) {
-    return this.apiClient.post<User>("/users", payload);
+    return this.apiClient.post<User>('/users', payload);
   }
 
   async update(id: string, payload: UpdateUserPayload) {

@@ -1,4 +1,4 @@
-import { ApiKey } from "@/lib/types/api-key";
+import type { ApiKey } from '@/lib/types/api-key';
 
 export type CreateProjectPayload = {
   name: string;

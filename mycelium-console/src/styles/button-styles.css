@@ -6,6 +6,14 @@
     @apply cursor-pointer bg-foreground/10;
   }
 
+  .mycelium-btn-icon-wrapper {
+    @apply w-5 aspect-square relative shrink-0;
+
+    .mycelium-btn-image {
+      @apply object-cover;
+    }
+  }
+
   &.inverted {
     @apply bg-foreground text-background border-transparent;
 
@@ -15,14 +23,6 @@
 
     .mycelium-btn-icon-wrapper {
       @apply invert;
-    }
-  }
-
-  .mycelium-btn-icon-wrapper {
-    @apply w-5 aspect-square relative shrink-0;
-
-    .mycelium-btn-image {
-      @apply object-cover;
     }
   }
 

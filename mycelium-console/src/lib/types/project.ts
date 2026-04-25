@@ -1,5 +1,5 @@
-import { ApiKey } from "./api-key";
-import { User } from "./user";
+import type { ApiKey } from './api-key';
+import type { User } from './user';
 
 export type Project = {
   id: string;

@@ -1,5 +1,5 @@
-import { ProxyRoute } from "@/_proxy.utils";
-import { AtSign, LucideIcon } from "lucide-react";
+import { AtSign, type LucideIcon } from 'lucide-react';
+import { ProxyRoute } from '@/_proxy.utils';
 
 export type Alternative = {
   title: string;
@@ -11,7 +11,7 @@ export type Alternative = {
 
 export const alternatives: Alternative[] = [
   {
-    title: "Continue to Sign up",
+    title: 'Continue to Sign up',
     img: null,
     icon: AtSign,
     route: ProxyRoute.SIGNUP,

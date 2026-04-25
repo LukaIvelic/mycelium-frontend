@@ -1,7 +1,7 @@
-import { ApiKey } from "@/lib/types/api-key";
-import { apiClient, ApiClient } from "../../api-client";
-import { CreateApiKeyResponse } from "./api-key-service.types";
-import { Project } from "@/lib/types/project";
+import type { ApiKey } from '@/lib/types/api-key';
+import type { Project } from '@/lib/types/project';
+import { type ApiClient, apiClient } from '../../api-client';
+import type { CreateApiKeyResponse } from './api-key-service.types';
 
 export class ApiKeyService {
   private apiClient: ApiClient = apiClient;

@@ -1,30 +1,29 @@
-import { useQuery } from "@tanstack/react-query";
-
-import { LogService } from "@/api/services/log/log-service";
-import { FindLogsQuery } from "@/api/services/log/log-service.types";
+import { useQuery } from '@tanstack/react-query';
+import { LogService } from '@/api/services/log/log-service';
+import type { FindLogsQuery } from '@/api/services/log/log-service.types';
 
 const logService = new LogService();
 const DEFAULT_LIMIT = 100;
 const DEFAULT_OFFSET = 0;
 
 const logKeys = {
-  all: ["logs"] as const,
+  all: ['logs'] as const,
   byProject: (projectId: string, query?: FindLogsQuery) =>
     [
       ...logKeys.all,
-      "project",
+      'project',
       projectId,
       query?.limit ?? DEFAULT_LIMIT,
       query?.offset ?? DEFAULT_OFFSET,
     ] as const,
   detail: (projectId: string, logId: string) =>
-    [...logKeys.all, "project", projectId, "detail", logId] as const,
+    [...logKeys.all, 'project', projectId, 'detail', logId] as const,
   topology: (projectId: string) =>
-    [...logKeys.all, "project", projectId, "topology"] as const,
+    [...logKeys.all, 'project', projectId, 'topology'] as const,
   trace: (projectId: string, traceId: string) =>
-    [...logKeys.all, "project", projectId, "trace", traceId] as const,
+    [...logKeys.all, 'project', projectId, 'trace', traceId] as const,
   traceGraph: (projectId: string, traceId: string) =>
-    [...logKeys.trace(projectId, traceId), "graph"] as const,
+    [...logKeys.trace(projectId, traceId), 'graph'] as const,
 };
 
 function useLogsByProject(
@@ -32,8 +31,8 @@ function useLogsByProject(
   query?: FindLogsQuery,
 ) {
   return useQuery({
-    queryKey: logKeys.byProject(projectId ?? "", query),
-    queryFn: () => logService.findByProject(projectId!, query),
+    queryKey: logKeys.byProject(projectId ?? '', query),
+    queryFn: () => logService.findByProject(projectId as string, query),
     enabled: Boolean(projectId),
   });
 }
@@ -43,8 +42,8 @@ function useLogDetail(
   logId: string | undefined,
 ) {
   return useQuery({
-    queryKey: logKeys.detail(projectId ?? "", logId ?? ""),
-    queryFn: () => logService.findDetail(projectId!, logId!),
+    queryKey: logKeys.detail(projectId ?? '', logId ?? ''),
+    queryFn: () => logService.findDetail(projectId as string, logId as string),
     enabled: Boolean(projectId && logId),
   });
 }
@@ -54,8 +53,9 @@ function useTraceLogs(
   traceId: string | undefined,
 ) {
   return useQuery({
-    queryKey: logKeys.trace(projectId ?? "", traceId ?? ""),
-    queryFn: () => logService.findByTrace(projectId!, traceId!),
+    queryKey: logKeys.trace(projectId ?? '', traceId ?? ''),
+    queryFn: () =>
+      logService.findByTrace(projectId as string, traceId as string),
     enabled: Boolean(projectId && traceId),
   });
 }
@@ -65,8 +65,9 @@ function useTraceGraph(
   traceId: string | undefined,
 ) {
   return useQuery({
-    queryKey: logKeys.traceGraph(projectId ?? "", traceId ?? ""),
-    queryFn: () => logService.findTraceGraph(projectId!, traceId!),
+    queryKey: logKeys.traceGraph(projectId ?? '', traceId ?? ''),
+    queryFn: () =>
+      logService.findTraceGraph(projectId as string, traceId as string),
     enabled: Boolean(projectId && traceId),
   });
 }

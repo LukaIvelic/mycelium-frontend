@@ -1,17 +1,17 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { UsersService } from "@/api/services/user/user-service";
-import {
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { UsersService } from '@/api/services/user/user-service';
+import type {
   CreateUserPayload,
   UpdateUserPayload,
-} from "@/api/services/user/user-service.types";
+} from '@/api/services/user/user-service.types';
 
 const usersService = new UsersService();
 
 const userKeys = {
-  all: ["users"] as const,
-  me: () => [...userKeys.all, "me"] as const,
+  all: ['users'] as const,
+  me: () => [...userKeys.all, 'me'] as const,
   one: (id: string) => [...userKeys.all, id] as const,
-  projects: (id: string) => [...userKeys.all, id, "projects"] as const,
+  projects: (id: string) => [...userKeys.all, id, 'projects'] as const,
 };
 
 function useMe() {

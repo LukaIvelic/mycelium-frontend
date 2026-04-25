@@ -1,13 +1,13 @@
-import { useAuth } from "@/hooks/use-auth.hook";
 import {
   CircleHelp,
   LogOut,
+  type LucideIcon,
   Settings,
   SlidersHorizontal,
   UserRound,
-  type LucideIcon,
-} from "lucide-react";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+} from 'lucide-react';
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { useAuth } from '@/hooks/use-auth.hook';
 
 export type MenuEntry = {
   label: string;
@@ -17,19 +17,19 @@ export type MenuEntry = {
 };
 
 export const primaryMenuEntries: MenuEntry[] = [
-  { label: "Account", icon: UserRound },
-  { label: "Workspace", icon: Settings },
-  { label: "Usage", icon: SlidersHorizontal },
+  { label: 'Account', icon: UserRound },
+  { label: 'Workspace', icon: Settings },
+  { label: 'Usage', icon: SlidersHorizontal },
 ];
 
 export const secondaryMenuEntries: MenuEntry[] = [
-  { label: "Documentation", icon: CircleHelp },
-  { label: "Support", icon: CircleHelp },
+  { label: 'Documentation', icon: CircleHelp },
+  { label: 'Support', icon: CircleHelp },
 ];
 
 export const actionMenuEntries: MenuEntry[] = [
   {
-    label: "Log out",
+    label: 'Log out',
     icon: LogOut,
     danger: true,
     onClick: (appRouter?: AppRouterInstance) => {

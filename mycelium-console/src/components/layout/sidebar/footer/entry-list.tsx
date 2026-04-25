@@ -1,13 +1,13 @@
-﻿"use client";
+﻿'use client';
 
+import { useRouter } from 'next/navigation';
+import type { MenuEntry } from '@/components/layout/sidebar/footer/footer.config';
+import { getMenuItemClass } from '@/components/layout/sidebar/footer/footer.utils';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { getMenuItemClass } from "@/components/layout/sidebar/footer/footer.utils";
-import type { MenuEntry } from "@/components/layout/sidebar/footer/footer.config";
-import { useRouter } from "next/navigation";
+} from '@/components/ui/sidebar';
 
 type EntryListProps = {
   entries: MenuEntry[];
@@ -18,7 +18,7 @@ export function EntryList({ entries, onSelect }: EntryListProps) {
   const router = useRouter();
 
   return (
-    <SidebarMenu className="gap-1">
+    <SidebarMenu className='gap-1'>
       {entries.map(({ label, icon: Icon, danger, onClick }) => (
         <SidebarMenuItem key={label}>
           <SidebarMenuButton
@@ -28,7 +28,7 @@ export function EntryList({ entries, onSelect }: EntryListProps) {
               onSelect?.();
             }}
           >
-            <Icon className="size-4" />
+            <Icon className='size-4' />
             <span>{label}</span>
           </SidebarMenuButton>
         </SidebarMenuItem>

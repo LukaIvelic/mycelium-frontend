@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Separator } from "../ui/separator";
-import { cn } from "@/lib/utils";
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
+import { Separator } from '../ui/separator';
 
 interface TabItemProps {
   label: string;
@@ -14,17 +14,18 @@ function TabItem({
   onClick,
 }: TabItemProps & { className?: string }) {
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
       className={cn(
-        "px-8 py-2 cursor-pointer rounded-t-lg border-x border-t z-1 transition-all",
+        'px-8 py-2 cursor-pointer rounded-t-lg border-x border-t z-1 transition-all',
         active
-          ? "border-foreground/10 bg-inherit text-foreground"
-          : "border-transparent hover:bg-white/5 text-foreground/50 hover:text-foreground",
+          ? 'border-foreground/10 bg-inherit text-foreground'
+          : 'border-transparent hover:bg-white/5 text-foreground/50 hover:text-foreground',
       )}
     >
       {label}
-    </div>
+    </button>
   );
 }
 
@@ -34,10 +35,9 @@ interface TabsProps {
   setActiveTab?: (tab: string) => void;
 }
 
-export function Tabs({ items, activeTab, setActiveTab }: TabsProps) {
+function Tabs({ items, activeTab, setActiveTab }: TabsProps) {
   return (
     <div className="flex relative items-end bg-inherit">
-      <Separator className="bg-foreground/10 absolute bottom-0 w-fit" />
       {items.map((item) => (
         <TabItem
           key={item}
@@ -46,6 +46,7 @@ export function Tabs({ items, activeTab, setActiveTab }: TabsProps) {
           onClick={() => setActiveTab?.(item)}
         />
       ))}
+      <Separator className="bg-foreground/10 absolute bottom-0 w-fit" />
     </div>
   );
 }

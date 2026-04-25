@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { Command, CommandDialog } from "@/components/ui/command";
-import { useProjects } from "@/hooks/use-projects.hook";
-import { useUsers } from "@/hooks/use-users.hook";
-import { Project } from "@/lib/types/project";
-import { cn } from "@/lib/utils";
+import { Command, CommandDialog } from '@/components/ui/command';
+import { useProjects } from '@/hooks/use-projects.hook';
+import { useUsers } from '@/hooks/use-users.hook';
+import type { Project } from '@/lib/types/project';
+import { cn } from '@/lib/utils';
 
-import { CreateApiKeyFooter } from "./create-api-key-footer";
-import { CreateApiKeyForm } from "./create-api-key-form";
-import { CreateApiKeyHeader } from "./create-api-key-header";
-import { GeneratedApiKeyDisplay } from "./generated-api-key-display";
+import { CreateApiKeyFooter } from './create-api-key-footer';
+import { CreateApiKeyForm } from './create-api-key-form';
+import { CreateApiKeyHeader } from './create-api-key-header';
+import { GeneratedApiKeyDisplay } from './generated-api-key-display';
 
 interface CreateApiKeyCommandProps {
   open: boolean;
@@ -28,10 +28,10 @@ export function CreateApiKeyCommand({
 
   const { useMe } = useUsers();
   const { data: user } = useMe();
-
   const { useProjectsByUserId, useAddApiKey } = useProjects();
   const { data: projects = [] } = useProjectsByUserId(user?.id, false);
-  const addApiKey = useAddApiKey(selectedProject?.id ?? "");
+
+  const addApiKey = useAddApiKey(selectedProject?.id ?? '');
 
   const canGenerate =
     Boolean(selectedProject?.id) && !addApiKey.isPending && !generatedKey;
@@ -48,7 +48,7 @@ export function CreateApiKeyCommand({
     next: boolean,
     eventDetails?: { reason?: string; cancel?: () => void },
   ) => {
-    if (!next && eventDetails?.reason === "escape-key") {
+    if (!next && eventDetails?.reason === 'escape-key') {
       eventDetails.cancel?.();
       return;
     }
@@ -68,7 +68,7 @@ export function CreateApiKeyCommand({
       disablePointerDismissal
       title="Create API Key"
       description="Pick a project to scope the new API key to."
-      className={cn("sm:max-w-2xl h-fit", "left-[calc(50%+8rem)]")}
+      className={cn('sm:max-w-2xl h-fit', 'left-[calc(50%+8rem)]')}
     >
       <Command>
         <CreateApiKeyHeader />

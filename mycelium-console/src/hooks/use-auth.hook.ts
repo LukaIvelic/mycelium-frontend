@@ -1,12 +1,12 @@
-import { ProxyRoute } from "@/_proxy.utils";
-import { AuthService } from "@/api/services/auth/auth-service";
-import {
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { ProxyRoute } from '@/_proxy.utils';
+import { AuthService } from '@/api/services/auth/auth-service';
+import type {
   LoginPayload,
   SignUpPayload,
-} from "@/api/services/auth/auth-service.types";
-import { tokenStorage } from "@/api/token-storage";
-import { queryClient } from "@/components/features/providers";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+} from '@/api/services/auth/auth-service.types';
+import { tokenStorage } from '@/api/token-storage';
+import { queryClient } from '@/components/features/providers';
 
 export function useAuth() {
   const authService = new AuthService();

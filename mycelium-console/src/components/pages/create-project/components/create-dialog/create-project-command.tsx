@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { Command, CommandDialog } from "@/components/ui/command";
-import { useProjects } from "@/hooks/use-projects.hook";
-import { useUsers } from "@/hooks/use-users.hook";
-import { cn } from "@/lib/utils";
+import { Command, CommandDialog } from '@/components/ui/command';
+import { useProjects } from '@/hooks/use-projects.hook';
+import { useUsers } from '@/hooks/use-users.hook';
+import { cn } from '@/lib/utils';
 
-import { CreateProjectFooter } from "./_components/create-project-footer";
-import { CreateProjectForm } from "./_components/create-project-form";
-import { CreateProjectHeader } from "./_components/create-project-header";
+import { CreateProjectFooter } from './_components/create-project-footer';
+import { CreateProjectForm } from './_components/create-project-form';
+import { CreateProjectHeader } from './_components/create-project-header';
 
 interface CreateProjectCommandProps {
   open: boolean;
@@ -20,8 +20,8 @@ export function CreateProjectCommand({
   open,
   onOpenChange,
 }: CreateProjectCommandProps) {
-  const [projectName, setProjectName] = useState("");
-  const [description, setDescription] = useState("");
+  const [projectName, setProjectName] = useState('');
+  const [description, setDescription] = useState('');
 
   const { useMe } = useUsers();
   const { data: user } = useMe();
@@ -46,8 +46,8 @@ export function CreateProjectCommand({
   };
 
   const reset = () => {
-    setProjectName("");
-    setDescription("");
+    setProjectName('');
+    setDescription('');
   };
 
   const handleOpenChange = (next: boolean) => {
@@ -59,9 +59,9 @@ export function CreateProjectCommand({
     <CommandDialog
       open={open}
       onOpenChange={handleOpenChange}
-      title="Create Project"
-      description="Enter a name for your new project."
-      className={cn("sm:max-w-xl h-fit", "left-[calc(50%+8rem)]")}
+      title='Create Project'
+      description='Enter a name for your new project.'
+      className={cn('sm:max-w-xl h-fit', 'left-[calc(50%+8rem)]')}
     >
       <Command>
         <CreateProjectHeader />
