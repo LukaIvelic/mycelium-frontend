@@ -88,6 +88,7 @@ export default function Page({ params }: Props) {
                   name: service.service_name,
                   description: service.service_description,
                   meta: service.service_version,
+                  repository: service.service_repository,
                 }}
               />
             ),
@@ -120,7 +121,7 @@ export default function Page({ params }: Props) {
         maxZoom={1}
         minZoom={0.75}
         snapToGrid
-        className='relative'
+        className="relative"
         onNodeClick={(_, node) => {
           setSelectedNodeId(node.id);
           openSheet(node.id);
@@ -134,7 +135,7 @@ export default function Page({ params }: Props) {
         }}
       >
         <Background />
-        <Controls className='text-foreground bg-background scale-110' />
+        <Controls className="text-foreground bg-background scale-110" />
         <Sheet />
       </ReactFlow>
     </div>

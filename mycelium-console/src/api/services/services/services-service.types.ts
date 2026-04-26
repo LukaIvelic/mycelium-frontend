@@ -4,4 +4,5 @@ export type Service = {
   service_name: string;
   service_version?: string;
   service_description?: string;
+  service_repository?: string;
 };
