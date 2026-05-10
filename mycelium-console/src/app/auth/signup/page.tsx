@@ -30,8 +30,8 @@ export default function Page() {
       return;
     setIsLoading(true);
     await signUp({
-      first_name: firstNameRef.current.value,
-      last_name: lastNameRef.current.value,
+      firstName: firstNameRef.current.value,
+      lastName: lastNameRef.current.value,
       email: emailRef.current.value,
       password: passwordRef.current.value,
     });

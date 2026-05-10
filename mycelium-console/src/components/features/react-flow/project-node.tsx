@@ -2,6 +2,7 @@ import { Handle, Position } from '@xyflow/react';
 import { GitPullRequest } from 'lucide-react';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { Truncate } from '../truncate';
 
 interface CustomNodeProps {
   data: {
@@ -55,22 +56,25 @@ export function NodeContent({ service }: NodeContentProps) {
   return (
     <div className="rounded-lg p-4">
       <p className="text-base font-medium">{service.name}</p>
+
       <Link
         href={service.repository ?? '/'}
         className="text-blue-400 text-xs flex gap-1 py-1 hover:text-blue-300 hover:underline"
         style={{ fontFamily: 'monospace' }}
       >
         <GitPullRequest size={12} />
-        {service.repository ?? 'repository'}
+        <Truncate text={service.repository ?? 'repository'} max={30} />
       </Link>
-      {service.description ? (
+
+      {service.description && (
         <p className="mt-2 text-sm text-foreground/70">{service.description}</p>
-      ) : null}
-      {service.meta ? (
+      )}
+
+      {service.meta && (
         <p className="mt-3 text-xs uppercase text-foreground/45">
           {service.meta}
         </p>
-      ) : null}
+      )}
     </div>
   );
 }

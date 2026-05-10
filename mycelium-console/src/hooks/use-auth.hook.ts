@@ -13,12 +13,12 @@ export function useAuth() {
 
   const signUp = async (payload: SignUpPayload) => {
     const response = await authService.signUp(payload);
-    tokenStorage.setToken(response.access_token);
+    tokenStorage.setToken(response.accessToken);
   };
 
   const logIn = async (payload: LoginPayload) => {
     const response = await authService.logIn(payload);
-    tokenStorage.setToken(response.access_token);
+    tokenStorage.setToken(response.accessToken);
   };
 
   const validateEmail = (email: string) => authService.validateEmail(email);

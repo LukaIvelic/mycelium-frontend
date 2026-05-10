@@ -8,7 +8,7 @@ export class ApiKeyService {
 
   async create(projectId: string) {
     return this.apiClient.post<CreateApiKeyResponse>(
-      `/api-keys/${projectId}`,
+      `/projects/${projectId}/api-key`,
       null,
     );
   }
@@ -17,11 +17,11 @@ export class ApiKeyService {
     return this.apiClient.delete(`/api-keys/${id}`);
   }
 
-  async findApiKeyByUserId(userId: string) {
-    return this.apiClient.get<ApiKey[]>(`/api-keys/user/${userId}`);
+  async findApiKeyByUserId(_userId: string) {
+    return this.apiClient.get<ApiKey[]>('/api-keys');
   }
 
   async getProjectByApiKeyId(apiKeyId: string) {
-    return this.apiClient.get<Project>(`/api-keys/${apiKeyId}/project`);
+    return this.apiClient.get<Project>('/projects/by-api-key', { apiKeyId });
   }
 }

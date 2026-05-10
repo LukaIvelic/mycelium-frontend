@@ -5,6 +5,6 @@ export class ReactFlowService {
   private apiClient: ApiClient = apiClient;
 
   async findByProjectId(projectId: string) {
-    return this.apiClient.get<ReactFlowLayout>(`/react-flow/${projectId}`);
+    return this.apiClient.get<ReactFlowLayout>(`/flows/${projectId}`);
   }
 }

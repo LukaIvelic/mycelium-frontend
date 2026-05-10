@@ -29,7 +29,7 @@ export function AppSidebarContent({ user }: AppSidebarContentProps) {
     <SidebarContent className='gap-2 px-2 pb-2'>
       <SidebarGroup className='p-0'>
         <ProfileCard
-          fullName={user?.full_name}
+          fullName={user?.fullName}
           email={user?.email}
           initials={user?.initials}
         />

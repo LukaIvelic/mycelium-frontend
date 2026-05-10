@@ -1,8 +1,7 @@
+import type { ApiKey } from '@/lib/types/api-key';
+
 export type CreateApiKeyResponse = {
   key: string;
   message: string;
-  user_id: string;
-  key_prefix: string;
-  key_hash: string;
-  valud_from: string;
+  entity: ApiKey;
 };

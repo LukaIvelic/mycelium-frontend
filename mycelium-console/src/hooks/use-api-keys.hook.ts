@@ -19,7 +19,7 @@ function useApiKeysByUserId(userId: string | undefined) {
     queryKey: apiKeyKeys.byUser(userId ?? ''),
     queryFn: async () => {
       const apiKeys = await apiKeyService.findApiKeyByUserId(userId as string);
-      return apiKeys.filter((apiKey) => !apiKey.revoked_at);
+      return apiKeys.filter((apiKey) => !apiKey.revokedAt);
     },
     enabled: Boolean(userId),
   });

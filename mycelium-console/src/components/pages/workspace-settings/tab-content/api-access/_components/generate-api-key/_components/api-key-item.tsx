@@ -19,7 +19,7 @@ export function ApiKeyItem({ apiKey }: { apiKey: ApiKey }) {
 
   const fields = [
     { label: 'Name', value: apiKey.name },
-    { label: 'Created at', value: dateFormat(apiKey.created_at) },
+    { label: 'Created at', value: dateFormat(apiKey.createdAt) },
     {
       label: 'For project',
       value: project ? <Truncate text={project.name} max={20} /> : '—',

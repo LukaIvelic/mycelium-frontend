@@ -6,11 +6,11 @@ export class LogService {
   private apiClient: ApiClient = apiClient;
 
   async findByProject(projectId: string, query?: FindLogsQuery) {
-    return this.apiClient.get<Log[]>(`/logs/${projectId}`, query);
+    return this.apiClient.get<Log[]>('/logs', { projectId, ...query });
   }
 
-  async findDetail(projectId: string, logId: string) {
-    return this.apiClient.get<LogDetail>(`/logs/${projectId}/${logId}/detail`);
+  async findDetail(_projectId: string, logId: string) {
+    return this.apiClient.get<LogDetail>(`/log-details/${logId}`);
   }
 
   async findByTrace(projectId: string, traceId: string) {

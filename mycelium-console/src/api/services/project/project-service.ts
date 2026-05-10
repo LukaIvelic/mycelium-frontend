@@ -19,9 +19,9 @@ export class ProjectService {
     return this.apiClient.get<Project>(`/projects/${id}`);
   }
 
-  async findByUserId(user_id: string, hasApiKey?: boolean) {
-    const query = hasApiKey !== undefined ? `?hasApiKey=${hasApiKey}` : '';
-    return this.apiClient.get<Project[]>(`/projects/user/${user_id}${query}`);
+  async findByUserId(_user_id: string, hasApiKey?: boolean) {
+    const params = hasApiKey !== undefined ? { hasApiKey } : undefined;
+    return this.apiClient.get<Project[]>('/projects', params);
   }
 
   async create(payload: CreateProjectPayload) {

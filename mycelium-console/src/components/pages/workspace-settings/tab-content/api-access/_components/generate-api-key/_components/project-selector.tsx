@@ -54,9 +54,6 @@ function ProjectComboboxItem({ project }: { project: Project }) {
     <ComboboxItem value={project}>
       <div className={cn('gap-1', 'flex flex-col')}>
         <span className={cn('line-clamp-2 break-all')}>{project.name}</span>
-        <span className={cn('text-foreground/50', 'text-xs')}>
-          {project.user.email}
-        </span>
       </div>
     </ComboboxItem>
   );

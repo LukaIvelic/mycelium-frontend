@@ -12,10 +12,15 @@ function findById(id: string) {
   return servicesService.findById(id);
 }
 
-function useFindById(id: string) {
+function useFindById(id: string | null) {
   return useQuery({
-    queryKey: serviceKeys.one(id),
+    queryKey: serviceKeys.one(id ?? ''),
+    enabled: Boolean(id),
     queryFn: async () => {
+      if (!id) {
+        throw new Error('Service id is required');
+      }
+
       const res = await servicesService.findById(id);
       return res;
     },

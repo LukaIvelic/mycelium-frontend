@@ -10,6 +10,16 @@ import {
   ReactFlow,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import {
+  forceCenter,
+  forceCollide,
+  forceLink,
+  forceManyBody,
+  forceSimulation,
+  forceX,
+  forceY,
+  type SimulationNodeDatum,
+} from 'd3-force';
 import { use, useEffect, useState } from 'react';
 import MagicBeamEdge from '@/components/features/react-flow/magic-ui-beam-edge';
 import {
@@ -28,6 +38,73 @@ interface Props {
 const edgeTypes = {
   magic: MagicBeamEdge,
 };
+
+type GraphNode = {
+  id: string;
+  position?: {
+    x: number;
+    y: number;
+  };
+};
+
+type GraphEdge = {
+  source: string;
+  target: string;
+};
+
+type ForceNode = SimulationNodeDatum & {
+  id: string;
+};
+
+function createForcePositions(
+  nodes: GraphNode[],
+  edges: GraphEdge[],
+): Map<string, { x: number; y: number }> {
+  if (nodes.length === 0) return new Map();
+
+  const radius = Math.max(nodes.length * 80, 240);
+  const forceNodes: ForceNode[] = nodes.map((node, index) => {
+    const angle = (index / nodes.length) * Math.PI * 2;
+    return {
+      id: node.id,
+      x: node.position?.x ?? Math.cos(angle) * radius,
+      y: node.position?.y ?? Math.sin(angle) * radius,
+    };
+  });
+  const forceEdges = edges.map((edge) => ({
+    source: edge.source,
+    target: edge.target,
+  }));
+
+  const simulation = forceSimulation(forceNodes)
+    .force(
+      'link',
+      forceLink<ForceNode, { source: string; target: string }>(forceEdges)
+        .id((node) => node.id)
+        .distance(340)
+        .strength(0.35),
+    )
+    .force('charge', forceManyBody().strength(-900))
+    .force('collide', forceCollide<ForceNode>().radius(220))
+    .force('x', forceX<ForceNode>(0).strength(0.06))
+    .force('y', forceY<ForceNode>(0).strength(0.06))
+    .force('center', forceCenter(0, 0))
+    .stop();
+
+  for (let i = 0; i < 220; i += 1) {
+    simulation.tick();
+  }
+
+  return new Map(
+    forceNodes.map((node) => [
+      node.id,
+      {
+        x: Math.round(node.x ?? 0),
+        y: Math.round(node.y ?? 0),
+      },
+    ]),
+  );
+}
 
 export default function Page({ params }: Props) {
   const [nodes, setNodes] = useState<Node[]>([]);
@@ -52,11 +129,19 @@ export default function Page({ params }: Props) {
     const fetchLayout = async () => {
       const nodes = layout.nodes;
       const edges = layout.edges;
+      const positionsByNodeId = createForcePositions(nodes, edges);
 
       const modifiedNodes = nodes.map(async (n) => {
-        if (!n.id.startsWith('service:')) {
+        const position = positionsByNodeId.get(n.id) ?? { x: 0, y: 0 };
+
+        const serviceId = n.id.startsWith('integration:')
+          ? n.id.replace('integration:', '').trim()
+          : '';
+
+        if (!serviceId) {
           return {
             ...n,
+            position,
             type: 'custom',
             data: {
               ...n.data,
@@ -73,11 +158,11 @@ export default function Page({ params }: Props) {
           };
         }
 
-        const id = n.id.replace('service:', '');
-        const service = await findById(id);
+        const service = await findById(serviceId);
 
         return {
           ...n,
+          position,
           type: 'custom',
           data: {
             ...n.data,
@@ -85,10 +170,10 @@ export default function Page({ params }: Props) {
             content: (
               <NodeContent
                 service={{
-                  name: service.service_name,
-                  description: service.service_description,
-                  meta: service.service_version,
-                  repository: service.service_repository,
+                  name: service.name,
+                  description: service.description,
+                  meta: service.version,
+                  repository: service.repository,
                 }}
               />
             ),

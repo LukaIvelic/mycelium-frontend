@@ -39,7 +39,6 @@ export function CreateProjectCommand({
     await createProject.mutateAsync({
       name: projectName.trim(),
       description: description.trim() || undefined,
-      user_id: user.id,
     });
     reset();
     onOpenChange(false);

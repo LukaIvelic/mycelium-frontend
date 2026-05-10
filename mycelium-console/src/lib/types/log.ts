@@ -1,29 +1,30 @@
 export type Log = {
   id: string;
-  project_id: string;
-  api_key_id: string;
-  trace_id: string;
-  span_id: string;
-  parent_span_id: string | null;
-  source_service_key: string | null;
-  source_service_name: string | null;
-  source_service_version: string | null;
-  source_origin: string | null;
+  projectId: string;
+  apiKeyId: string;
+  traceId: string;
+  spanId: string;
+  parentSpanId: string | null;
+  serviceKey: string | null;
+  serviceName: string | null;
+  serviceVersion: string | null;
+  serviceDescription: string | null;
+  serviceOrigin: string | null;
   method: string;
   path: string;
   origin: string;
   protocol: string;
-  status_code: number;
-  duration_ms: number;
+  statusCode: number;
+  durationMs: number;
   timestamp: string;
-  created_at: string;
+  createdAt: string;
 };
 
 export type LogDetail = {
-  log_id: string;
-  body_size_kb: number;
-  content_length: number;
-  content_type: string;
+  logId: string;
+  bodySizeKb: number;
+  contentLength: number;
+  contentType: string;
   body: string | null;
   headers: Record<string, string>;
   completed: boolean;

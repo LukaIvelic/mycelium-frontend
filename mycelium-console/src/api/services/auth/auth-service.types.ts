@@ -1,6 +1,6 @@
 export type SignUpPayload = {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
 };
@@ -15,5 +15,5 @@ export type ValidateEmailResponse = {
 };
 
 export type TokenResponse = {
-  access_token: string;
+  accessToken: string;
 };

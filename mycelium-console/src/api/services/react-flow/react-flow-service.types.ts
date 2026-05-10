@@ -8,7 +8,7 @@ type ReactFlowNode = {
   data: {
     label: string;
   };
-  position: {
+  position?: {
     x: number;
     y: number;
   };

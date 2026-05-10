@@ -5,6 +5,6 @@ export class ServicesService {
   private apiClient: ApiClient = apiClient;
 
   async findById(id: string) {
-    return this.apiClient.get<Service>(`/services/${id}`);
+    return this.apiClient.get<Service>(`/integrations/${id}`);
   }
 }

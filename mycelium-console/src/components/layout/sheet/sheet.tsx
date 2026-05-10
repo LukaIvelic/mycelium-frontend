@@ -24,13 +24,21 @@ export function Sheet() {
     items: tabs_content.keys().toArray(),
   });
   const { useFindById } = useServices();
-  const { data } = useFindById(String(id ?? '').replace('service:', '') ?? '');
+  const selectedId = String(id ?? '');
+  const serviceId = selectedId.startsWith('integration:')
+    ? selectedId.replace('integration:', '').trim()
+    : null;
+  const { data } = useFindById(serviceId || null);
 
   useEffect(() => {
-    if (!data) return;
+    if (!data) {
+      setServiceName('');
+      setServiceDescription('');
+      return;
+    }
 
-    setServiceName(data.service_name);
-    setServiceDescription(data.service_description ?? '');
+    setServiceName(data.name);
+    setServiceDescription(data.description ?? '');
   }, [data]);
 
   return (

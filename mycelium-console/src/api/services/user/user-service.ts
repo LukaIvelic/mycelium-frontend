@@ -29,7 +29,7 @@ export class UsersService {
     return this.apiClient.delete<void>(`/users/${id}`);
   }
 
-  async findProjectsById(id: string) {
-    return this.apiClient.get<Project[]>(`/users/${id}/projects`);
+  async findProjectsById(_id: string) {
+    return this.apiClient.get<Project[]>('/projects');
   }
 }

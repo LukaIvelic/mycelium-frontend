@@ -23,7 +23,7 @@ export function AppSidebarFooter({ user }: AppSidebarFooterProps) {
       <div ref={rootRef} className='relative'>
         {open ? (
           <ProfilePopup
-            fullName={user?.full_name}
+            fullName={user?.fullName}
             email={user?.email}
             initials={user?.initials}
             onClose={closePopup}
@@ -31,7 +31,7 @@ export function AppSidebarFooter({ user }: AppSidebarFooterProps) {
         ) : null}
 
         <ProfileTrigger
-          fullName={user?.full_name}
+          fullName={user?.fullName}
           initials={user?.initials}
           onClick={() => setOpen((prev) => !prev)}
         />

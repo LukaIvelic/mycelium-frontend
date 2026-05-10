@@ -3,7 +3,6 @@ import type { ApiKey } from '@/lib/types/api-key';
 export type CreateProjectPayload = {
   name: string;
   description?: string;
-  user_id: string;
 };
 
 export type UpdateProjectPayload = Partial<CreateProjectPayload>;
