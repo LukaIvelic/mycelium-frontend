@@ -107,6 +107,7 @@ function createForcePositions(
 }
 
 export default function Page({ params }: Props) {
+  const [hasMounted, setHasMounted] = useState(false);
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -122,6 +123,10 @@ export default function Page({ params }: Props) {
   const { findById } = useServices();
   const { openSheet, closeSheet } = useSheet();
   const { data: layout } = useFindByProjectId(projectId);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!projectId || !layout) return;
@@ -220,7 +225,9 @@ export default function Page({ params }: Props) {
         }}
       >
         <Background />
-        <Controls className="text-foreground bg-background scale-110" />
+        {hasMounted ? (
+          <Controls className="text-foreground bg-background scale-110" />
+        ) : null}
         <Sheet />
       </ReactFlow>
     </div>

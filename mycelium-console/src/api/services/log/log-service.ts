@@ -1,4 +1,4 @@
-import type { Log, LogDetail, TraceGraph } from '@/lib/types/log';
+import type { Log, LogDetail } from '@/lib/types/log';
 import { type ApiClient, apiClient } from '../../api-client';
 import type { FindLogsQuery } from './log-service.types';
 
@@ -9,17 +9,14 @@ export class LogService {
     return this.apiClient.get<Log[]>('/logs', { projectId, ...query });
   }
 
+  async findByIntegration(integrationId: string, query?: FindLogsQuery) {
+    return this.apiClient.get<Log[]>(
+      `/logs/integration/${integrationId}`,
+      query,
+    );
+  }
+
   async findDetail(_projectId: string, logId: string) {
     return this.apiClient.get<LogDetail>(`/log-details/${logId}`);
-  }
-
-  async findByTrace(projectId: string, traceId: string) {
-    return this.apiClient.get<Log[]>(`/logs/${projectId}/trace/${traceId}`);
-  }
-
-  async findTraceGraph(projectId: string, traceId: string) {
-    return this.apiClient.get<TraceGraph>(
-      `/logs/${projectId}/trace/${traceId}/graph`,
-    );
   }
 }

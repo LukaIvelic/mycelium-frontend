@@ -2,6 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { ServicesService } from '@/api/services/services/services-service';
 
 const servicesService = new ServicesService();
+type QueryBehaviorOptions = {
+  staleTime?: number;
+  refetchOnWindowFocus?: boolean;
+  refetchOnReconnect?: boolean;
+  refetchOnMount?: boolean;
+};
 
 const serviceKeys = {
   all: ['services'] as const,
@@ -12,7 +18,7 @@ function findById(id: string) {
   return servicesService.findById(id);
 }
 
-function useFindById(id: string | null) {
+function useFindById(id: string | null, options?: QueryBehaviorOptions) {
   return useQuery({
     queryKey: serviceKeys.one(id ?? ''),
     enabled: Boolean(id),
@@ -24,6 +30,7 @@ function useFindById(id: string | null) {
       const res = await servicesService.findById(id);
       return res;
     },
+    ...options,
   });
 }
 

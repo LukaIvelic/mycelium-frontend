@@ -5,9 +5,12 @@ import { Providers } from '@/components/features/providers';
 import { satoshi } from '@/lib/config/satoshi';
 import { cn } from '@/lib/utils';
 
+const APP_TITLE = 'Mycelium';
+const APP_DESCRIPTION = 'Passive Trace & Microservice Dependency Mapping';
+
 export const metadata: Metadata = {
-  title: 'Mycelium',
-  description: 'Passive Trace & Microservice Dependency Mapping',
+  title: APP_TITLE,
+  description: APP_DESCRIPTION,
 };
 
 interface RootLayoutProps {
@@ -16,7 +19,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
-    <html lang='en' className='h-full antialiased'>
+    <html lang="en" className="h-full antialiased">
       <body
         className={cn('min-h-full flex flex-col font-sans', satoshi.variable)}
       >

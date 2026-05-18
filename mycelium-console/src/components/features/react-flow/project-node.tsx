@@ -19,7 +19,7 @@ const SIDES: { id: string; position: Position }[] = [
 
 function CustomNode({ data }: CustomNodeProps) {
   return (
-    <div className="w-80 rounded-xl border border-foreground/10 bg-[#252525] p-1 text-white shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
+    <div className="w-80 rounded-xl border border-foreground/10 bg-[#252525] p-1 text-white shadow-[0_18px_60px_rgba(0,0,0,0.35)] hover:cursor-pointer">
       {SIDES.map(({ id, position }) => (
         <Handle
           key={`s-${id}`}
@@ -59,7 +59,7 @@ export function NodeContent({ service }: NodeContentProps) {
 
       <Link
         href={service.repository ?? '/'}
-        className="text-blue-400 text-xs flex gap-1 py-1 hover:text-blue-300 hover:underline"
+        className="text-blue-400 text-xs flex gap-1 py-1 hover:text-blue-300 hover:underline w-fit"
         style={{ fontFamily: 'monospace' }}
       >
         <GitPullRequest size={12} />

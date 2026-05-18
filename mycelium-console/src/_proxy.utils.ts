@@ -7,7 +7,7 @@ export enum ProxyRoute {
   DEFAULT = '/',
 }
 
-export const TokenKey = 'access_token';
+export const TokenKey = 'mycelium_access_token';
 
 export const PublicRoutes: ProxyRoute[] = [
   ProxyRoute.AUTH,

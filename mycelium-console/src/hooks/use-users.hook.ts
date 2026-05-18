@@ -33,7 +33,7 @@ function useUser(id: string) {
 function useUserProjects(id: string) {
   return useQuery({
     queryKey: userKeys.projects(id),
-    queryFn: () => usersService.findProjectsById(id),
+    queryFn: () => usersService.findProjects(),
     enabled: Boolean(id),
   });
 }
@@ -41,7 +41,7 @@ function useUserProjects(id: string) {
 function useUserProjectsCount(id: string) {
   return useQuery({
     queryKey: userKeys.projects(id),
-    queryFn: () => usersService.findProjectsById(id),
+    queryFn: () => usersService.findProjects(),
     enabled: Boolean(id),
     select: (projects) => projects.length,
   });

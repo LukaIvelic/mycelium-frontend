@@ -18,7 +18,7 @@ function useApiKeysByUserId(userId: string | undefined) {
   return useQuery({
     queryKey: apiKeyKeys.byUser(userId ?? ''),
     queryFn: async () => {
-      const apiKeys = await apiKeyService.findApiKeyByUserId(userId as string);
+      const apiKeys = await apiKeyService.findMine();
       return apiKeys.filter((apiKey) => !apiKey.revokedAt);
     },
     enabled: Boolean(userId),
@@ -30,17 +30,6 @@ function useProjectByApiKeyId(apiKeyId: string) {
     queryKey: apiKeyKeys.project(apiKeyId),
     queryFn: () => apiKeyService.getProjectByApiKeyId(apiKeyId),
     enabled: Boolean(apiKeyId),
-  });
-}
-
-function useCreateApiKey() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (projectId: string) => apiKeyService.create(projectId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: apiKeyKeys.all });
-      queryClient.invalidateQueries({ queryKey: projectKeys });
-    },
   });
 }
 
@@ -66,7 +55,6 @@ export function useApiKeys() {
   return {
     useApiKeysByUserId,
     useProjectByApiKeyId,
-    useCreateApiKey,
     useRevokeApiKey,
   };
 }

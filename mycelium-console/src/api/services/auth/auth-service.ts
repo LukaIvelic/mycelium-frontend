@@ -21,9 +21,9 @@ export class AuthService {
   }
 
   async validateEmail(email: string) {
-    const encodedEmail = encodeURIComponent(email);
     return this.apiClient.get<ValidateEmailResponse>(
-      `/authentication/validate?email=${encodedEmail}`,
+      '/authentication/validate',
+      { email },
     );
   }
 }
