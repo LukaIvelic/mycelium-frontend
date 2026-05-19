@@ -1,0 +1,11 @@
+export const EMPTY_GRAPH_POSITION = { x: 0, y: 0 };
+export const FORCE_COLLIDE_RADIUS = 220;
+export const FORCE_EDGE_DISTANCE = 340;
+export const FORCE_EDGE_STRENGTH = 0.35;
+export const FORCE_LAYOUT_RADIUS_BASE = 240;
+export const FORCE_LAYOUT_RADIUS_PER_NODE = 80;
+export const FORCE_MANY_BODY_STRENGTH = -900;
+export const FORCE_POSITION_STRENGTH = 0.06;
+export const FORCE_SIMULATION_TICKS = 220;
+export const FULL_CIRCLE_RADIANS = Math.PI * 2;
+export const NODE_CENTER_DIVISOR = 2;

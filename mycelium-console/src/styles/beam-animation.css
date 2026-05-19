@@ -1,0 +1,13 @@
+@theme {
+  --animate-beam: beam 2s linear infinite;
+
+  @keyframes beam {
+    from {
+      stroke-dashoffset: 0;
+    }
+
+    to {
+      stroke-dashoffset: -100;
+    }
+  }
+}

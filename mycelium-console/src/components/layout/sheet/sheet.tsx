@@ -1,52 +1,37 @@
 'use client';
 
 import { X } from 'lucide-react';
-import { type ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTabs } from '@/components/features/tabs';
 import { Button } from '@/components/ui/button';
 import { useServices } from '@/hooks/use-services.hook';
 import { useSheet } from '@/hooks/use-sheet.hook';
 import { cn } from '@/lib/utils';
-import { Logs } from './_components/logs';
+import {
+  createSheetTabContent,
+  getSheetServiceId,
+  SHEET_EMPTY_VALUE,
+  SHEET_TABS,
+} from './sheet.config';
+import { syncSheetServiceDetails } from './sheet.handlers';
 
 export function Sheet() {
-  const [serviceName, setServiceName] = useState<string>('');
-  const [serviceDescription, setServiceDescription] = useState<string>('');
+  const [serviceName, setServiceName] = useState<string>(SHEET_EMPTY_VALUE);
+  const [serviceDescription, setServiceDescription] =
+    useState<string>(SHEET_EMPTY_VALUE);
 
   const { open, closeSheet, data: id } = useSheet();
-  const tabs_content: Map<string, ReactNode> = new Map([
-    [
-      'Logs',
-      <Logs
-        key={1}
-        integrationId={((id as string) ?? '')
-          .replace('integration:', '')
-          .trim()}
-      />,
-    ],
-    ['General Settings', <div key="1">Details content</div>],
-    ['Performance Metrics', <div key="2">Logs content</div>],
-    ['Communication', <div key="3">Metrics content</div>],
-  ]);
+  const integrationId = getSheetServiceId(id) ?? SHEET_EMPTY_VALUE;
+  const tabsContent = createSheetTabContent(integrationId);
   const { tabs, activeTab } = useTabs({
-    items: tabs_content.keys().toArray(),
+    items: SHEET_TABS,
   });
   const { useFindById } = useServices();
-  const selectedId = String(id ?? '');
-  const serviceId = selectedId.startsWith('integration:')
-    ? selectedId.replace('integration:', '').trim()
-    : null;
+  const serviceId = getSheetServiceId(id);
   const { data } = useFindById(serviceId || null);
 
   useEffect(() => {
-    if (!data) {
-      setServiceName('');
-      setServiceDescription('');
-      return;
-    }
-
-    setServiceName(data.name);
-    setServiceDescription(data.description ?? '');
+    syncSheetServiceDetails(data, setServiceName, setServiceDescription);
   }, [data]);
 
   return (
@@ -60,26 +45,26 @@ export function Sheet() {
         open ? 'translate-x-0' : 'translate-x-[110%]',
       )}
     >
-      <div className="grid grid-cols-[1fr_auto] gap-4 w-full">
+      <div className='grid grid-cols-[1fr_auto] gap-4 w-full'>
         <div>
-          <div className="text-[20px] font-medium">{serviceName}</div>
-          <div className="text-sm text-foreground/65 mt-2">
+          <div className='text-[20px] font-medium'>{serviceName}</div>
+          <div className='text-sm text-foreground/65 mt-2'>
             {serviceDescription}
           </div>
         </div>
         <Button
-          className="w-fit p-1 aspect-square hover:cursor-pointer"
-          variant="ghost"
+          className='w-fit p-1 aspect-square hover:cursor-pointer'
+          variant='ghost'
           onClick={closeSheet}
         >
           <X />
         </Button>
       </div>
 
-      <div className="bg-inherit">{tabs}</div>
+      <div className='bg-inherit'>{tabs}</div>
 
-      <div className="grid gap-6 max-h-full overflow-y-auto no-scrollbar">
-        {tabs_content.get(activeTab)}
+      <div className='grid gap-6 max-h-full overflow-y-auto no-scrollbar'>
+        {tabsContent.get(activeTab)}
       </div>
     </div>
   );

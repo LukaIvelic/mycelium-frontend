@@ -9,14 +9,18 @@ import { cn } from '@/lib/utils';
 
 import { ApiKeyItem } from './_components/api-key-item';
 import { CreateApiKeyCommand } from './_components/create-api-key-command';
+import { API_KEY_EMPTY_LIST_LENGTH } from './generate-api-key.config';
+import { createOpenApiKeyDialogHandler } from './generate-api-key.handlers';
 
 export function GenerateApiKey() {
-  const [createOpen, setCreateOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState<boolean>(false);
 
   const { useMe } = useUsers();
   const { data: user } = useMe();
   const { useApiKeysByUserId } = useApiKeys();
   const { data: apiKeys = [] } = useApiKeysByUserId(user?.id);
+  const hasApiKeys = apiKeys.length > API_KEY_EMPTY_LIST_LENGTH;
+  const handleOpenApiKeyDialog = createOpenApiKeyDialogHandler(setCreateOpen);
 
   return (
     <div className={cn('gap-10', 'grid grid-rows-[1fr_auto]')}>
@@ -28,9 +32,9 @@ export function GenerateApiKey() {
           </p>
         </div>
         <Button
-          size="sm"
+          size='sm'
           className={cn('hover:cursor-pointer')}
-          onClick={() => setCreateOpen(true)}
+          onClick={handleOpenApiKeyDialog}
         >
           Create New Key
         </Button>
@@ -38,7 +42,7 @@ export function GenerateApiKey() {
       </div>
 
       <div className={cn('h-[50vh]', 'row-2')}>
-        {apiKeys.length === 0 ? (
+        {!hasApiKeys ? (
           <div
             className={cn(
               'w-full h-full pt-4',
@@ -50,7 +54,7 @@ export function GenerateApiKey() {
             No projects with active API keys found.
           </div>
         ) : (
-          <div className="flex flex-col gap-2">
+          <div className='flex flex-col gap-2'>
             {apiKeys.map((apiKey) => (
               <ApiKeyItem key={apiKey.id} apiKey={apiKey} />
             ))}

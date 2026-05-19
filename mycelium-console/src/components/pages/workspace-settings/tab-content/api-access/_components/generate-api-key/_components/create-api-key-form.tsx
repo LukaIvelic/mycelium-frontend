@@ -1,18 +1,8 @@
 import { Button } from '@/components/ui/button';
-import type { Project } from '@/lib/types/project';
 import { cn } from '@/lib/utils';
-
+import type { CreateApiKeyFormProps } from '../generate-api-key.types';
 import { ApiKeyNameInput } from './api-key-name-input';
 import { ProjectSelector } from './project-selector';
-
-interface CreateApiKeyFormProps {
-  projects: Project[];
-  selectedProject: Project | null;
-  onSelectProject: (project: Project | null) => void;
-  onApiKeyNameChange: (value: string) => void;
-  handleGenerateApiKey: () => void;
-  canGenerate: boolean;
-}
 
 export function CreateApiKeyForm({
   projects,

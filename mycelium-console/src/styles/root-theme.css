@@ -1,0 +1,35 @@
+:root {
+  --alabaster: #f5f5f5;
+  --background: #252525;
+  --foreground: var(--alabaster);
+  --card: #252525;
+  --card-foreground: var(--alabaster);
+  --popover: #252525;
+  --popover-foreground: var(--alabaster);
+  --primary: var(--alabaster);
+  --primary-foreground: #252525;
+  --secondary: #252525;
+  --secondary-foreground: var(--alabaster);
+  --muted: #252525;
+  --muted-foreground: var(--alabaster);
+  --accent: #252525;
+  --accent-foreground: var(--alabaster);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: var(--alabaster);
+  --input: var(--alabaster);
+  --ring: var(--alabaster);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: #252525;
+  --sidebar-foreground: var(--alabaster);
+  --sidebar-primary: var(--alabaster);
+  --sidebar-primary-foreground: #252525;
+  --sidebar-accent: #252525;
+  --sidebar-accent-foreground: var(--alabaster);
+  --sidebar-border: var(--alabaster);
+  --sidebar-ring: var(--alabaster);
+}

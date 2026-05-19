@@ -1,0 +1,4 @@
+export const DROPDOWN_MENU_DEFAULT_ALIGN = 'end';
+export const DROPDOWN_MENU_DEFAULT_ALIGN_OFFSET = 0;
+export const DROPDOWN_MENU_DEFAULT_SIDE = 'bottom';
+export const DROPDOWN_MENU_DEFAULT_SIDE_OFFSET = 6;

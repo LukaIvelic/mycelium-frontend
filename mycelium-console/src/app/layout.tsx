@@ -1,25 +1,23 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import type { ReactNode } from 'react';
 import { Providers } from '@/components/features/providers';
 import { satoshi } from '@/lib/config/satoshi';
 import { cn } from '@/lib/utils';
-
-const APP_TITLE = 'Mycelium';
-const APP_DESCRIPTION = 'Passive Trace & Microservice Dependency Mapping';
+import {
+  ROOT_APP_DESCRIPTION,
+  ROOT_APP_TITLE,
+  ROOT_HTML_LANG,
+} from './layout.config';
+import type { RootLayoutProps } from './layout.types';
 
 export const metadata: Metadata = {
-  title: APP_TITLE,
-  description: APP_DESCRIPTION,
+  title: ROOT_APP_TITLE,
+  description: ROOT_APP_DESCRIPTION,
 };
 
-interface RootLayoutProps {
-  children: ReactNode;
-}
-
-export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang={ROOT_HTML_LANG} className='h-full antialiased'>
       <body
         className={cn('min-h-full flex flex-col font-sans', satoshi.variable)}
       >

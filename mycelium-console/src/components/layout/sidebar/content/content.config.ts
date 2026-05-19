@@ -3,24 +3,23 @@ import {
   Code,
   CreditCard,
   LayoutGrid,
-  type LucideIcon,
   SlidersHorizontal,
   UserRound,
 } from 'lucide-react';
-import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { SidebarRoute } from './content.constants';
+import { createSidebarRouteHandler } from './content.handlers';
+import type { SidebarEntry } from './content.types';
 
-export type SidebarEntry = {
-  label: string;
-  icon: LucideIcon;
-  danger?: boolean;
-  onClick?: (appRouter?: AppRouterInstance) => void;
-};
+const handleProjectsClick = createSidebarRouteHandler(SidebarRoute.Projects);
+const handleWorkspaceSettingsClick = createSidebarRouteHandler(
+  SidebarRoute.WorkspaceSettings,
+);
 
 export const standaloneEntries: SidebarEntry[] = [
   {
     label: 'Projects',
     icon: LayoutGrid,
-    onClick: (appRouter) => appRouter?.push('/projects'),
+    onClick: handleProjectsClick,
   },
   { label: 'Billing', icon: CreditCard },
   { label: 'Usage', icon: SlidersHorizontal },
@@ -31,7 +30,7 @@ export const settingsEntries: SidebarEntry[] = [
   {
     label: 'Workspace',
     icon: Code,
-    onClick: (appRouter) => appRouter?.push('/workspace/settings'),
+    onClick: handleWorkspaceSettingsClick,
   },
 ];
 

@@ -1,38 +1,43 @@
 ﻿'use client';
 
 import { useRouter } from 'next/navigation';
-import type { MenuEntry } from '@/components/layout/sidebar/footer/footer.config';
+import { createFooterEntryClickHandler } from '@/components/layout/sidebar/footer/footer.handlers';
+import type { EntryListProps } from '@/components/layout/sidebar/footer/footer.types';
 import { getMenuItemClass } from '@/components/layout/sidebar/footer/footer.utils';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-
-type EntryListProps = {
-  entries: MenuEntry[];
-  onSelect?: () => void;
-};
+import { useAuth } from '@/hooks/use-auth.hook';
 
 export function EntryList({ entries, onSelect }: EntryListProps) {
   const router = useRouter();
+  const { signOut } = useAuth();
 
   return (
     <SidebarMenu className='gap-1'>
-      {entries.map(({ label, icon: Icon, danger, onClick }) => (
-        <SidebarMenuItem key={label}>
-          <SidebarMenuButton
-            className={getMenuItemClass(danger)}
-            onClick={() => {
-              onClick?.(router);
-              onSelect?.();
-            }}
-          >
-            <Icon className='size-4' />
-            <span>{label}</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      ))}
+      {entries.map(({ label, icon: Icon, danger, action, onClick }) => {
+        const handleEntryClick = createFooterEntryClickHandler({
+          action,
+          onClick,
+          onSelect,
+          router,
+          signOut,
+        });
+
+        return (
+          <SidebarMenuItem key={label}>
+            <SidebarMenuButton
+              className={getMenuItemClass(danger)}
+              onClick={handleEntryClick}
+            >
+              <Icon className='size-4' />
+              <span>{label}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        );
+      })}
     </SidebarMenu>
   );
 }

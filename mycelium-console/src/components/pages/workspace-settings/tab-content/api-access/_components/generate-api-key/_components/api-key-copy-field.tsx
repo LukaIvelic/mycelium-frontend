@@ -5,15 +5,25 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import {
+  API_KEY_ACTION_ICON_SIZE,
+  API_KEY_COPIED_LABEL,
+  API_KEY_COPY_LABEL,
+  API_KEY_KEY_ICON_SIZE,
+} from '../generate-api-key.config';
+import { createApiKeyCopyHandler } from '../generate-api-key.handlers';
+import type { ApiKeyCopyFieldProps } from '../generate-api-key.types';
 
-export function ApiKeyCopyField({ apiKey }: { apiKey: string }) {
-  const [copied, setCopied] = useState(false);
+export function ApiKeyCopyField({ apiKey }: ApiKeyCopyFieldProps) {
+  const [copied, setCopied] = useState<boolean>(false);
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(apiKey);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  };
+  const handleCopy = createApiKeyCopyHandler(apiKey, setCopied);
+  const copyIcon = copied ? (
+    <Check size={API_KEY_ACTION_ICON_SIZE} />
+  ) : (
+    <Copy size={API_KEY_ACTION_ICON_SIZE} />
+  );
+  const copyLabel = copied ? API_KEY_COPIED_LABEL : API_KEY_COPY_LABEL;
 
   return (
     <div
@@ -24,7 +34,10 @@ export function ApiKeyCopyField({ apiKey }: { apiKey: string }) {
       )}
     >
       <div className={cn('gap-3', 'flex items-center')}>
-        <KeyRound className={cn('text-foreground')} size={18} />
+        <KeyRound
+          className={cn('text-foreground')}
+          size={API_KEY_KEY_ICON_SIZE}
+        />
         <div className='scroll-auto w-100 overflow-scroll no-scrollbar'>
           {apiKey}
         </div>
@@ -39,8 +52,8 @@ export function ApiKeyCopyField({ apiKey }: { apiKey: string }) {
           'hover:cursor-pointer',
         )}
       >
-        {copied ? <Check size={20} /> : <Copy size={20} />} &nbsp;
-        {copied ? 'Copied' : 'Copy'}
+        {copyIcon} &nbsp;
+        {copyLabel}
       </Button>
     </div>
   );

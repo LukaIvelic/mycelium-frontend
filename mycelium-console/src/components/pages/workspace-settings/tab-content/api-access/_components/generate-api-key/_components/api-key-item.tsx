@@ -1,15 +1,21 @@
 'use client';
 
 import dateFormat from 'dateformat';
-import { Eye, Trash } from 'lucide-react';
 
 import { Truncate } from '@/components/features/truncate';
 import { useApiKeys } from '@/hooks/use-api-keys.hook';
 import { useUsers } from '@/hooks/use-users.hook';
-import type { ApiKey } from '@/lib/types/api-key';
 import { cn } from '@/lib/utils';
+import {
+  API_KEY_PROJECT_NAME_MAX_LENGTH,
+  API_KEY_UNAVAILABLE_LABEL,
+} from '../generate-api-key.config';
+import { createApiKeyRevokeHandler } from '../generate-api-key.handlers';
+import type { ApiKeyField, ApiKeyItemProps } from '../generate-api-key.types';
+import { ApiKeyActions } from './api-key-actions';
+import { ApiKeyFields } from './api-key-fields';
 
-export function ApiKeyItem({ apiKey }: { apiKey: ApiKey }) {
+export function ApiKeyItem({ apiKey }: ApiKeyItemProps) {
   const { useMe } = useUsers();
   const { data: user } = useMe();
 
@@ -17,19 +23,20 @@ export function ApiKeyItem({ apiKey }: { apiKey: ApiKey }) {
   const { data: project } = useProjectByApiKeyId(apiKey.id);
   const revokeApiKey = useRevokeApiKey();
 
-  const fields = [
+  const createdAt = dateFormat(apiKey.createdAt);
+  const projectName = project ? (
+    <Truncate text={project.name} max={API_KEY_PROJECT_NAME_MAX_LENGTH} />
+  ) : (
+    API_KEY_UNAVAILABLE_LABEL
+  );
+  const boundEmail = user?.email ?? API_KEY_UNAVAILABLE_LABEL;
+  const fields: ApiKeyField[] = [
     { label: 'Name', value: apiKey.name },
-    { label: 'Created at', value: dateFormat(apiKey.createdAt) },
-    {
-      label: 'For project',
-      value: project ? <Truncate text={project.name} max={20} /> : '—',
-    },
-    { label: 'Bound to', value: user?.email ?? '—' },
+    { label: 'Created at', value: createdAt },
+    { label: 'For project', value: projectName },
+    { label: 'Bound to', value: boundEmail },
   ];
-
-  const handleApiKeyRevoke = () => {
-    revokeApiKey.mutate(apiKey.id);
-  };
+  const handleApiKeyRevoke = createApiKeyRevokeHandler(apiKey.id, revokeApiKey);
 
   return (
     <div
@@ -39,60 +46,8 @@ export function ApiKeyItem({ apiKey }: { apiKey: ApiKey }) {
         'border border-foreground/10 rounded-md bg-background',
       )}
     >
-      <div
-        className={cn(
-          'h-full gap-2',
-          'flex items-center justify-center col-start-5 row-span-2',
-          'transition-all',
-        )}
-      >
-        <div
-          className={cn(
-            'p-2',
-            'border border-foreground/10 rounded-md group hover:cursor-pointer',
-          )}
-        >
-          <Eye
-            className={cn('text-foreground/50', 'group-hover:text-foreground')}
-            size={20}
-            strokeWidth={1.5}
-          />
-        </div>
-        <button
-          type='button'
-          className={cn(
-            'p-2',
-            'border border-foreground/10 rounded-md group hover:cursor-pointer',
-          )}
-          onClick={handleApiKeyRevoke}
-        >
-          <Trash
-            className={cn('text-foreground/50', 'group-hover:text-red-400')}
-            size={20}
-            strokeWidth={1.5}
-          />
-        </button>
-      </div>
-
-      {fields.map((field, i) => (
-        <p
-          key={`label-${field.label}`}
-          style={{ gridColumn: i + 1, gridRow: 1 }}
-          className={cn('text-foreground/50', 'text-sm font-medium')}
-        >
-          {field.label}
-        </p>
-      ))}
-
-      {fields.map((field, i) => (
-        <p
-          key={`value-${field.label}`}
-          style={{ gridColumn: i + 1, gridRow: 2 }}
-          className={cn('text-sm font-medium')}
-        >
-          {field.value}
-        </p>
-      ))}
+      <ApiKeyActions onRevoke={handleApiKeyRevoke} />
+      <ApiKeyFields fields={fields} />
     </div>
   );
 }

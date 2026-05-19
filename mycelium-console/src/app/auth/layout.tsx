@@ -1,19 +1,16 @@
 import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
+import type { AuthLayoutProps } from '@/components/pages/auth/auth-layout';
+import {
+  AUTH_APP_DESCRIPTION,
+  AUTH_APP_TITLE,
+  AuthLayout,
+} from '@/components/pages/auth/auth-layout';
 
 export const metadata: Metadata = {
-  title: 'Mycelium - Passive Trace & Microservice Dependency Mapping ',
-  description: 'Untangle your project using Mycelium.',
+  title: AUTH_APP_TITLE,
+  description: AUTH_APP_DESCRIPTION,
 };
 
-interface AuthLayoutProps {
-  children: ReactNode;
-}
-
-export default function AuthLayout({ children }: AuthLayoutProps) {
-  return (
-    <div className='min-h-screen bg-[#252525]'>
-      <main className='mx-auto w-fit h-full'>{children}</main>
-    </div>
-  );
+export default function AuthRouteLayout({ children }: AuthLayoutProps) {
+  return <AuthLayout>{children}</AuthLayout>;
 }

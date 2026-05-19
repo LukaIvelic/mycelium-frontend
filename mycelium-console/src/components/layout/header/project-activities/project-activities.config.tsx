@@ -1,37 +1,28 @@
+import { Bell, Brain, GitPullRequestCreateArrow } from 'lucide-react';
+import { ProjectActivityPanel } from './project-activities.constants';
 import {
-  Bell,
-  Brain,
-  GitPullRequestCreateArrow,
-  LucideIcon,
-} from 'lucide-react';
-import { RequestsContent } from '../../right-sidebar/content/requests';
-
-export type Panel = 'requests' | 'notifications' | 'ai_assistant';
-
-type HeaderAction = {
-  panel: Panel;
-  label: string;
-  icon: LucideIcon;
-  content: (projectId: string) => React.ReactNode;
-};
+  renderEmptyPanelContent,
+  renderRequestsContent,
+} from './project-activities.content';
+import type { HeaderAction } from './project-activities.types';
 
 export const headerActions: HeaderAction[] = [
   {
-    panel: 'requests',
+    panel: ProjectActivityPanel.Requests,
     label: 'Requests',
     icon: GitPullRequestCreateArrow,
-    content: (projectId) => <RequestsContent projectId={projectId} />,
+    content: renderRequestsContent,
   },
   {
-    panel: 'notifications',
+    panel: ProjectActivityPanel.Notifications,
     label: 'Notifications',
     icon: Bell,
-    content: (_projectId) => null,
+    content: renderEmptyPanelContent,
   },
   {
-    panel: 'ai_assistant',
+    panel: ProjectActivityPanel.AiAssistant,
     label: 'AI Assistant',
     icon: Brain,
-    content: (_projectId) => null,
+    content: renderEmptyPanelContent,
   },
 ];

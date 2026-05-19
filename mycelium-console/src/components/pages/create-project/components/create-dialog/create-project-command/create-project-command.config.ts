@@ -1,0 +1,2 @@
+export const CREATE_PROJECT_EMPTY_FIELD = '';
+export const CREATE_PROJECT_DESCRIPTION_ROWS = 3;

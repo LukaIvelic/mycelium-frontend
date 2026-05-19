@@ -1,12 +1,7 @@
 'use client';
 
 import { EllipsisVertical } from 'lucide-react';
-
-type ProfileTriggerProps = {
-  fullName?: string;
-  initials?: string;
-  onClick: () => void;
-};
+import type { ProfileTriggerProps } from './footer.types';
 
 export function ProfileTrigger({
   fullName,

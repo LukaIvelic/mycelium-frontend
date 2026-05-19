@@ -10,7 +10,7 @@ export function AppHeader() {
 
   return (
     <header className={cn('h-12 px-4', 'grid grid-cols-4 items-center')}>
-      <div className="col-start-4 justify-self-end flex items-center gap-2">
+      <div className='col-start-4 justify-self-end flex items-center gap-2'>
         {isProjectRoute && <ProjectActivities />}
       </div>
     </header>

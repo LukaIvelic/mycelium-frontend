@@ -1,24 +1,22 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { type ReactNode, useEffect } from 'react';
+import { useEffect } from 'react';
 import { AppHeader } from '@/components/layout/header/app-header';
 import { RightSidebar } from '@/components/layout/right-sidebar/right-sidebar';
 import { AppSidebar } from '@/components/layout/sidebar/app-sidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useRightSidebar } from '@/hooks/use-right-sidebar';
 import { cn } from '@/lib/utils';
-
-interface AppLayoutProps {
-  children: ReactNode;
-}
+import { shouldCloseRightSidebar } from './layout.config';
+import type { AppLayoutProps } from './layout.types';
 
 export default function AppLayout({ children }: AppLayoutProps) {
   const { state, closeRightSidebar } = useRightSidebar();
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!/^\/projects\/[^/]+$/.test(pathname)) {
+    if (shouldCloseRightSidebar(pathname)) {
       closeRightSidebar();
     }
   }, [pathname, closeRightSidebar]);

@@ -7,13 +7,7 @@ import {
   secondaryMenuEntries,
 } from '@/components/layout/sidebar/footer/footer.config';
 import { ProfileCard } from '@/components/layout/sidebar/footer/profile-card';
-
-type ProfilePopupProps = {
-  fullName?: string;
-  email?: string;
-  initials?: string;
-  onClose: () => void;
-};
+import type { ProfilePopupProps } from './footer.types';
 
 export function ProfilePopup({
   fullName,

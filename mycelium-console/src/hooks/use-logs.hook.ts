@@ -56,8 +56,7 @@ function useLogsByIntegration(
 ) {
   return useQuery({
     queryKey: logKeys.byIntegration(integrationId ?? '', query),
-    queryFn: () =>
-      logService.findByIntegration(integrationId as string, query),
+    queryFn: () => logService.findByIntegration(integrationId as string, query),
     enabled: Boolean(integrationId),
     ...options,
   });

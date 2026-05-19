@@ -1,13 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-
-type ProfileCardProps = {
-  fullName?: string;
-  email?: string;
-  initials?: string;
-  className?: string;
-};
+import type { ProfileCardProps } from './footer.types';
 
 export function ProfileCard({
   fullName,

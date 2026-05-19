@@ -8,12 +8,10 @@ import {
 } from '@/components/ui/combobox';
 import type { Project } from '@/lib/types/project';
 import { cn } from '@/lib/utils';
-
-interface ProjectSelectorProps {
-  projects: Project[];
-  value: Project | null;
-  onValueChange: (project: Project | null) => void;
-}
+import type {
+  ProjectComboboxItemProps,
+  ProjectSelectorProps,
+} from '../generate-api-key.types';
 
 export function ProjectSelector({
   projects,
@@ -25,9 +23,9 @@ export function ProjectSelector({
       items={projects}
       value={value}
       onValueChange={onValueChange}
-      itemToStringLabel={(p) => p.name}
-      itemToStringValue={(p) => p.id}
-      isItemEqualToValue={(a, b) => a.id === b.id}
+      itemToStringLabel={getProjectLabel}
+      itemToStringValue={getProjectValue}
+      isItemEqualToValue={isProjectEqualToValue}
     >
       <ComboboxInput
         placeholder='Select a project'
@@ -39,17 +37,29 @@ export function ProjectSelector({
       />
       <ComboboxContent>
         <ComboboxEmpty>No projects</ComboboxEmpty>
-        <ComboboxList>
-          {(project: Project) => (
-            <ProjectComboboxItem key={project.id} project={project} />
-          )}
-        </ComboboxList>
+        <ComboboxList>{renderProjectComboboxItem}</ComboboxList>
       </ComboboxContent>
     </Combobox>
   );
 }
 
-function ProjectComboboxItem({ project }: { project: Project }) {
+function getProjectLabel(project: Project): string {
+  return project.name;
+}
+
+function getProjectValue(project: Project): string {
+  return project.id;
+}
+
+function isProjectEqualToValue(project: Project, value: Project): boolean {
+  return project.id === value.id;
+}
+
+function renderProjectComboboxItem(project: Project) {
+  return <ProjectComboboxItem key={project.id} project={project} />;
+}
+
+function ProjectComboboxItem({ project }: ProjectComboboxItemProps) {
   return (
     <ComboboxItem value={project}>
       <div className={cn('gap-1', 'flex flex-col')}>
