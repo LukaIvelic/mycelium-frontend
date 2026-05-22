@@ -29,4 +29,5 @@ export const PROJECT_GRAPH_NODE_TYPES: NodeTypes = {
 export const PROJECT_GRAPH_MAX_ZOOM = 1;
 export const PROJECT_GRAPH_MIN_ZOOM = 0.75;
 export const FALLBACK_NODE_MICROSERVICE_COUNT = 0;
+export const PROJECT_GRAPH_EDGE_VISIBILITY_LABEL = 'All edges';
 export const SERVICE_NODE_MICROSERVICE_COUNT = 10;

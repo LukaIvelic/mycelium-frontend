@@ -21,27 +21,38 @@ import {
   PROJECT_GRAPH_NODE_TYPES,
 } from './project-graph.config';
 import {
+  createProjectGraphEdgeVisibilityChangeHandler,
   createProjectGraphExitHandler,
   createProjectNodeClickHandler,
   createProjectNodesChangeHandler,
   createProjectPaneClickHandler,
   handleProjectEdgesChange,
-  syncProjectGraphLayout,
 } from './project-graph.handlers';
+import { getVisibleProjectGraphEdges } from './project-graph.helpers';
 import type { ProjectGraphProps } from './project-graph.types';
+import { ProjectGraphEdgeVisibility } from './project-graph-edge-visibility';
+import { useProjectGraphLayoutSync } from './use-project-graph-layout-sync';
+import { useProjectGraphMounted } from './use-project-graph-mounted';
 
 export function ProjectGraph({ params }: ProjectGraphProps) {
-  const [hasMounted, setHasMounted] = useState<boolean>(false);
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [showAllEdges, setShowAllEdges] = useState<boolean>(false);
 
+  const hasMounted = useProjectGraphMounted();
   const { id: projectId } = use(params);
   const { useFindByProjectId } = useReactFlowLayout();
   const { findById } = useServices();
   const { openSheet, closeSheet } = useSheet();
   const { data: layout } = useFindByProjectId(projectId);
-  const visibleEdges = getVisibleEdges(edges, selectedNodeId);
+  const visibleEdges = getVisibleProjectGraphEdges(
+    edges,
+    selectedNodeId,
+    showAllEdges,
+  );
+  const handleEdgeVisibilityChange =
+    createProjectGraphEdgeVisibilityChangeHandler(setShowAllEdges);
   const handleNodeClick = createProjectNodeClickHandler(
     setSelectedNodeId,
     openSheet,
@@ -53,23 +64,17 @@ export function ProjectGraph({ params }: ProjectGraphProps) {
   const handleNodesChange = createProjectNodesChangeHandler(setNodes);
 
   useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  useEffect(() => {
     return createProjectGraphExitHandler(setSelectedNodeId, closeSheet);
   }, [closeSheet]);
 
-  useEffect(() => {
-    if (!projectId || !layout) {
-      return;
-    }
-
-    void syncProjectGraphLayout({ layout, findById, setNodes, setEdges });
-  }, [findById, projectId, layout]);
+  useProjectGraphLayoutSync({ layout, findById, setNodes, setEdges });
 
   return (
-    <div style={PROJECT_GRAPH_CONTAINER_STYLE}>
+    <div style={PROJECT_GRAPH_CONTAINER_STYLE} className='relative'>
+      <ProjectGraphEdgeVisibility
+        onCheckedChange={handleEdgeVisibilityChange}
+        showAllEdges={showAllEdges}
+      />
       <ReactFlow
         fitView
         nodeTypes={PROJECT_GRAPH_NODE_TYPES}
@@ -94,14 +99,4 @@ export function ProjectGraph({ params }: ProjectGraphProps) {
       </ReactFlow>
     </div>
   );
-}
-
-function getVisibleEdges(edges: Edge[], selectedNodeId: string | null): Edge[] {
-  if (!selectedNodeId) {
-    return [];
-  }
-
-  return edges.filter((edge) => {
-    return edge.source === selectedNodeId || edge.target === selectedNodeId;
-  });
 }

@@ -37,6 +37,13 @@ export interface SyncProjectGraphLayoutParams {
   setNodes: Dispatch<SetStateAction<Node[]>>;
 }
 
+export interface UseProjectGraphLayoutSyncParams {
+  findById: (id: string) => Promise<Service>;
+  layout: ReactFlowLayout | undefined;
+  setEdges: Dispatch<SetStateAction<Edge[]>>;
+  setNodes: Dispatch<SetStateAction<Node[]>>;
+}
+
 export interface CreateProjectNodesChangeHandlerParams {
   setNodes: Dispatch<SetStateAction<Node[]>>;
 }

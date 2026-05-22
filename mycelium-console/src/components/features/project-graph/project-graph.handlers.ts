@@ -38,6 +38,16 @@ export function createProjectGraphExitHandler(
   };
 }
 
+export function createProjectGraphEdgeVisibilityChangeHandler(
+  setShowAllEdges: Dispatch<SetStateAction<boolean>>,
+) {
+  return function handleProjectGraphEdgeVisibilityChange(
+    checked: boolean,
+  ): void {
+    setShowAllEdges(checked);
+  };
+}
+
 export function createProjectNodesChangeHandler(
   setNodes: Dispatch<SetStateAction<Node[]>>,
 ) {
