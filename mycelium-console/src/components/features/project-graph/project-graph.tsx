@@ -21,6 +21,7 @@ import {
   PROJECT_GRAPH_NODE_TYPES,
 } from './project-graph.config';
 import {
+  createProjectGraphExitHandler,
   createProjectNodeClickHandler,
   createProjectNodesChangeHandler,
   createProjectPaneClickHandler,
@@ -54,6 +55,10 @@ export function ProjectGraph({ params }: ProjectGraphProps) {
   useEffect(() => {
     setHasMounted(true);
   }, []);
+
+  useEffect(() => {
+    return createProjectGraphExitHandler(setSelectedNodeId, closeSheet);
+  }, [closeSheet]);
 
   useEffect(() => {
     if (!projectId || !layout) {

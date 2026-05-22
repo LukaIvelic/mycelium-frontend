@@ -1,13 +1,28 @@
+'use client';
+
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
+import { useApiKeyStats } from '@/hooks/use-api-key-stats.hook';
+import { useApiKeys } from '@/hooks/use-api-keys.hook';
+import { useUsers } from '@/hooks/use-users.hook';
 import { cn } from '@/lib/utils';
-import {
-  API_USAGE_ITEMS,
-  API_USAGE_LEARN_MORE_ROUTE,
-} from './api-usage.config';
+import { API_USAGE_LEARN_MORE_ROUTE } from './api-usage.config';
+import { createApiUsageItems } from './api-usage.helpers';
 import type { ApiUsageItemProps } from './api-usage.types';
 
 export function ApiUsage() {
+  const { useMe } = useUsers();
+  const { data: user } = useMe();
+  const { useApiKeysByUserId } = useApiKeys();
+  const { data: apiKeys = [] } = useApiKeysByUserId(user?.id);
+  const { useApiKeyStatsByApiKeyIds } = useApiKeyStats();
+  const apiKeyIds = apiKeys.map((apiKey) => apiKey.id);
+  const apiKeyStatsResults = useApiKeyStatsByApiKeyIds(apiKeyIds);
+  const apiKeyStats = apiKeyStatsResults.flatMap((result) =>
+    result.data ? [result.data] : [],
+  );
+  const apiUsageItems = createApiUsageItems(apiKeyStats);
+
   return (
     <div
       className={cn(
@@ -16,7 +31,7 @@ export function ApiUsage() {
         'grid grid-cols-4 grid-rows-[1fr_auto] gap-6',
       )}
     >
-      {API_USAGE_ITEMS.map((item) => (
+      {apiUsageItems.map((item) => (
         <ApiUsageItem
           key={item.title}
           title={item.title}

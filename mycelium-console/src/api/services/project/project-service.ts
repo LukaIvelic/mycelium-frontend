@@ -5,6 +5,7 @@ import type {
   AddApiKeyResponse,
   CreateProjectPayload,
   HasApiKeyResponse,
+  ProjectSortParams,
   UpdateProjectPayload,
 } from './project-service.types';
 
@@ -19,8 +20,16 @@ export class ProjectService {
     return this.apiClient.get<Project>(`/projects/${id}`);
   }
 
-  async findByUserId(_user_id: string, hasApiKey?: boolean) {
-    const params = hasApiKey !== undefined ? { hasApiKey } : undefined;
+  async findByUserId(
+    _user_id: string,
+    hasApiKey?: boolean,
+    sortParams?: ProjectSortParams,
+  ) {
+    const params = {
+      ...(hasApiKey !== undefined && { hasApiKey }),
+      ...sortParams,
+    };
+
     return this.apiClient.get<Project[]>('/projects', params);
   }
 

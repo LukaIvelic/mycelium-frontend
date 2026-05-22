@@ -1,5 +1,21 @@
 import type { ApiKey } from '@/lib/types/api-key';
 
+export enum ProjectSortDirection {
+  Asc = 'ASC',
+  Desc = 'DESC',
+}
+
+export enum ProjectSortField {
+  Name = 'Name',
+  RecentActivity = 'RecentActivity',
+  RegistrationDate = 'RegistrationDate',
+}
+
+export interface ProjectSortParams {
+  field: ProjectSortField;
+  sort: ProjectSortDirection;
+}
+
 export type CreateProjectPayload = {
   name: string;
   description?: string;

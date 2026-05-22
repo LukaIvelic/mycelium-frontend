@@ -3,12 +3,13 @@
 import { useProjects } from '@/hooks/use-projects.hook';
 import { useUsers } from '@/hooks/use-users.hook';
 import { ProjectCard } from './project-card';
+import type { ProjectsViewProps } from './projects-view.types';
 
-export function ProjectsView() {
+export function ProjectsView({ sortParams }: ProjectsViewProps) {
   const { useAllProjectsByUserId } = useProjects();
   const { useMe } = useUsers();
   const { data: me } = useMe();
-  const { data: projects = [] } = useAllProjectsByUserId(me?.id);
+  const { data: projects = [] } = useAllProjectsByUserId(me?.id, sortParams);
 
   return (
     <div className='grid grid-cols-3 grid-rows-4 gap-4 h-full w-full'>

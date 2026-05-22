@@ -1,5 +1,10 @@
 import type { Dispatch, SetStateAction } from 'react';
+import type { ProjectSortParams } from '@/api/services/project/project-service.types';
 import type { Project } from '@/lib/types/project';
+
+export interface ProjectsViewProps {
+  sortParams: ProjectSortParams;
+}
 
 export interface ProjectCardProps {
   project: Project;

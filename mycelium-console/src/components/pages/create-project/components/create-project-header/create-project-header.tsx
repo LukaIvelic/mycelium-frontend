@@ -6,16 +6,22 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useUsers } from '@/hooks/use-users.hook';
 import { cn } from '@/lib/utils';
-
 import { CreateProjectCommand } from '../create-dialog/create-project-command';
+import { ProjectSortDropdown } from './components/project-sort-dropdown';
 import {
   CREATE_PROJECT_DEFAULT_COUNT,
   CREATE_PROJECT_FALLBACK_USER_ID,
   CREATE_PROJECT_GRID_ICON_SIZE,
 } from './create-project-header.config';
 import { createOpenCreateProjectDialogHandler } from './create-project-header.handlers';
+import type { CreateProjectHeaderProps } from './create-project-header.types';
 
-export function CreateProjectHeader() {
+export function CreateProjectHeader({
+  selectedSortDirectionOption,
+  selectedSortOption,
+  setSelectedSortDirectionOption,
+  setSelectedSortOption,
+}: CreateProjectHeaderProps) {
   const [createOpen, setCreateOpen] = useState<boolean>(false);
 
   const { useMe, useUserProjectsCount } = useUsers();
@@ -43,15 +49,26 @@ export function CreateProjectHeader() {
       </Button>
       <CreateProjectCommand open={createOpen} onOpenChange={setCreateOpen} />
 
-      <div className={cn('col-1 row-2', 'flex gap-2')}>
-        <div className='flex items-center gap-2 text-foreground/50'>
-          <LayoutGrid size={CREATE_PROJECT_GRID_ICON_SIZE} />
+      <div className={cn('col-span-2 row-2', 'flex items-center gap-3')}>
+        <div className='flex items-center gap-2'>
+          <LayoutGrid
+            size={CREATE_PROJECT_GRID_ICON_SIZE}
+            className='text-foreground/50'
+          />
           <span className='text-sm'>{projectCount} Projects</span>
         </div>
-        <Separator orientation='vertical' className={'bg-foreground/20'} />
-        <div className='flex items-center gap-2 text-foreground/50'>
-          <span>To Do</span>
+        <div className='flex h-4 items-center self-center'>
+          <Separator
+            orientation='vertical'
+            className='h-full bg-foreground/20'
+          />
         </div>
+        <ProjectSortDropdown
+          selectedSortDirectionOption={selectedSortDirectionOption}
+          selectedSortOption={selectedSortOption}
+          setSelectedSortDirectionOption={setSelectedSortDirectionOption}
+          setSelectedSortOption={setSelectedSortOption}
+        />
       </div>
     </div>
   );

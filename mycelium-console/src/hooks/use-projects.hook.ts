@@ -4,6 +4,7 @@ import { ProjectService } from '@/api/services/project/project-service';
 import type {
   AddApiKeyPayload,
   CreateProjectPayload,
+  ProjectSortParams,
   UpdateProjectPayload,
 } from '@/api/services/project/project-service.types';
 
@@ -12,8 +13,19 @@ const projectService = new ProjectService();
 const projectKeys = {
   all: ['projects'] as const,
   one: (id: string) => [...projectKeys.all, id] as const,
-  byUser: (userId: string, hasApiKey?: boolean) =>
-    [...projectKeys.all, 'user', userId, hasApiKey ?? 'all'] as const,
+  byUser: (
+    userId: string,
+    hasApiKey?: boolean,
+    sortParams?: ProjectSortParams,
+  ) =>
+    [
+      ...projectKeys.all,
+      'user',
+      userId,
+      hasApiKey ?? 'all',
+      sortParams?.field ?? 'default-field',
+      sortParams?.sort ?? 'default-sort',
+    ] as const,
   hasApiKey: (id: string) => [...projectKeys.one(id), 'has-api-key'] as const,
 };
 
@@ -32,16 +44,24 @@ function useProject(id: string) {
   });
 }
 
-function useProjectsByUserId(userId: string | undefined, hasApiKey?: boolean) {
+function useProjectsByUserId(
+  userId: string | undefined,
+  hasApiKey?: boolean,
+  sortParams?: ProjectSortParams,
+) {
   return useQuery({
-    queryKey: projectKeys.byUser(userId ?? '', hasApiKey),
-    queryFn: () => projectService.findByUserId(userId as string, hasApiKey),
+    queryKey: projectKeys.byUser(userId ?? '', hasApiKey, sortParams),
+    queryFn: () =>
+      projectService.findByUserId(userId as string, hasApiKey, sortParams),
     enabled: Boolean(userId),
   });
 }
 
-function useAllProjectsByUserId(userId: string | undefined) {
-  return useProjectsByUserId(userId);
+function useAllProjectsByUserId(
+  userId: string | undefined,
+  sortParams?: ProjectSortParams,
+) {
+  return useProjectsByUserId(userId, undefined, sortParams);
 }
 
 function useActiveProjectsByUserId(userId: string | undefined) {

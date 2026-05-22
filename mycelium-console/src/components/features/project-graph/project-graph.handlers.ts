@@ -28,6 +28,16 @@ export function createProjectPaneClickHandler(
   };
 }
 
+export function createProjectGraphExitHandler(
+  setSelectedNodeId: Dispatch<SetStateAction<string | null>>,
+  closeSheet: () => void,
+) {
+  return function handleProjectGraphExit(): void {
+    setSelectedNodeId(null);
+    closeSheet();
+  };
+}
+
 export function createProjectNodesChangeHandler(
   setNodes: Dispatch<SetStateAction<Node[]>>,
 ) {
