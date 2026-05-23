@@ -1,4 +1,4 @@
-# Mycelium Backend
+# Mycelium Frontend
 
 This repository contains code for the Mycelium Frontend.
 
