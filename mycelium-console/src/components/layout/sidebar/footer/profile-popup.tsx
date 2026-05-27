@@ -13,6 +13,7 @@ export function ProfilePopup({
   fullName,
   email,
   initials,
+  randomProfileHex,
   onClose,
 }: ProfilePopupProps) {
   return (
@@ -22,6 +23,7 @@ export function ProfilePopup({
         fullName={fullName}
         email={email}
         initials={initials}
+        randomProfileHex={randomProfileHex}
       />
 
       <div className='mt-2'>

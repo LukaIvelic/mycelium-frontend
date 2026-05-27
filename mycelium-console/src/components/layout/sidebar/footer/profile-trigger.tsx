@@ -1,6 +1,7 @@
 'use client';
 
 import { EllipsisVertical } from 'lucide-react';
+import { useUserProfile } from '@/hooks/use-user-profile.hook';
 import type { ProfileTriggerProps } from './footer.types';
 
 export function ProfileTrigger({
@@ -8,6 +9,9 @@ export function ProfileTrigger({
   initials,
   onClick,
 }: ProfileTriggerProps) {
+  const { useMe } = useUserProfile();
+  const { data: userProfile } = useMe();
+
   return (
     <button
       type='button'
@@ -15,7 +19,10 @@ export function ProfileTrigger({
       onClick={onClick}
     >
       <div className='flex items-center gap-3'>
-        <div className='flex h-6 w-6 items-center justify-center rounded-full bg-[#d9d9d9] text-xs text-[#252525]'>
+        <div
+          className='flex h-6 w-6 items-center justify-center rounded-full mix-blend-difference text-xs font-medium'
+          style={{ backgroundColor: userProfile?.randomProfileHex }}
+        >
           {initials}
         </div>
         <span className='text-[14px] font-medium'>{fullName}</span>

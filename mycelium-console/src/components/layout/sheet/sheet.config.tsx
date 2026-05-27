@@ -8,8 +8,8 @@ export enum SheetTab {
   PerformanceMetrics = 'Performance Metrics',
 }
 
+const SHEET_INTEGRATION_PREFIX = 'integration:';
 export const SHEET_EMPTY_VALUE = '';
-export const SHEET_INTEGRATION_PREFIX = 'integration:';
 export const SHEET_TABS = [
   SheetTab.Logs,
   SheetTab.GeneralSettings,

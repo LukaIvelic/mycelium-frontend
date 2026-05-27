@@ -20,7 +20,12 @@ import { cn } from '@/lib/utils';
 import { createToggleSettingsHandler } from './app-sidebar-content.handlers';
 import type { AppSidebarContentProps } from './app-sidebar-content.types';
 
-export function AppSidebarContent({ user }: AppSidebarContentProps) {
+export function AppSidebarContent({
+  email,
+  fullName,
+  initials,
+  randomProfileHex,
+}: AppSidebarContentProps) {
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 
   const handleToggleSettings = createToggleSettingsHandler(setSettingsOpen);
@@ -29,9 +34,10 @@ export function AppSidebarContent({ user }: AppSidebarContentProps) {
     <SidebarContent className='gap-2 px-2 pb-2'>
       <SidebarGroup className='p-0'>
         <ProfileCard
-          fullName={user?.fullName}
-          email={user?.email}
-          initials={user?.initials}
+          fullName={fullName}
+          email={email}
+          initials={initials}
+          randomProfileHex={randomProfileHex}
         />
       </SidebarGroup>
 

@@ -11,7 +11,12 @@ import { ProfilePopup } from '@/components/layout/sidebar/footer/profile-popup';
 import { ProfileTrigger } from '@/components/layout/sidebar/footer/profile-trigger';
 import { SidebarFooter } from '@/components/ui/sidebar';
 
-export function AppSidebarFooter({ user }: AppSidebarFooterProps) {
+export function AppSidebarFooter({
+  email,
+  fullName,
+  initials,
+  randomProfileHex,
+}: AppSidebarFooterProps) {
   const [open, setOpen] = useState<boolean>(false);
 
   const rootRef = useRef<HTMLDivElement>(null);
@@ -25,16 +30,17 @@ export function AppSidebarFooter({ user }: AppSidebarFooterProps) {
       <div ref={rootRef} className='relative'>
         {open && (
           <ProfilePopup
-            fullName={user?.fullName}
-            email={user?.email}
-            initials={user?.initials}
+            fullName={fullName}
+            email={email}
+            initials={initials}
+            randomProfileHex={randomProfileHex}
             onClose={closePopup}
           />
         )}
 
         <ProfileTrigger
-          fullName={user?.fullName}
-          initials={user?.initials}
+          fullName={fullName}
+          initials={initials}
           onClick={togglePopup}
         />
       </div>

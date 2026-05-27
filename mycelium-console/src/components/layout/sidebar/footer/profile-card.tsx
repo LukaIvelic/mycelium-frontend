@@ -7,6 +7,7 @@ export function ProfileCard({
   fullName,
   email,
   initials,
+  randomProfileHex,
   className,
 }: ProfileCardProps) {
   return (
@@ -17,7 +18,10 @@ export function ProfileCard({
       )}
     >
       <div className='flex flex-col items-center gap-3'>
-        <div className='flex h-12 w-12 items-center justify-center rounded-full bg-[#d9d9d9] text-sm font-medium text-[#252525]'>
+        <div
+          className='flex h-12 w-12 items-center justify-center rounded-full mix-blend-difference text-sm font-medium'
+          style={{ backgroundColor: randomProfileHex }}
+        >
           {initials}
         </div>
         <div className='text-center'>

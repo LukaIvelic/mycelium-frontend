@@ -4,39 +4,37 @@ import dateFormat from 'dateformat';
 
 import { Truncate } from '@/components/features/truncate';
 import { useApiKeys } from '@/hooks/use-api-keys.hook';
-import { useUsers } from '@/hooks/use-users.hook';
+import { useUserProfile } from '@/hooks/use-user-profile.hook';
 import { cn } from '@/lib/utils';
-import {
-  API_KEY_PROJECT_NAME_MAX_LENGTH,
-  API_KEY_UNAVAILABLE_LABEL,
-} from '../generate-api-key.config';
+import { API_KEY_PROJECT_NAME_MAX_LENGTH } from '../generate-api-key.config';
 import { createApiKeyRevokeHandler } from '../generate-api-key.handlers';
 import type { ApiKeyField, ApiKeyItemProps } from '../generate-api-key.types';
 import { ApiKeyActions } from './api-key-actions';
 import { ApiKeyFields } from './api-key-fields';
 
 export function ApiKeyItem({ apiKey }: ApiKeyItemProps) {
-  const { useMe } = useUsers();
+  const { useMe } = useUserProfile();
   const { data: user } = useMe();
-
   const { useProjectByApiKeyId, useRevokeApiKey } = useApiKeys();
   const { data: project } = useProjectByApiKeyId(apiKey.id);
-  const revokeApiKey = useRevokeApiKey();
 
+  const revokeApiKey = useRevokeApiKey();
+  const handleApiKeyRevoke = createApiKeyRevokeHandler(apiKey.id, revokeApiKey);
+
+  if (!user || !project) return null;
+
+  const boundUsername = user.username;
   const createdAt = dateFormat(apiKey.createdAt);
-  const projectName = project ? (
+  const truncatedProjectName = (
     <Truncate text={project.name} max={API_KEY_PROJECT_NAME_MAX_LENGTH} />
-  ) : (
-    API_KEY_UNAVAILABLE_LABEL
   );
-  const boundEmail = user?.email ?? API_KEY_UNAVAILABLE_LABEL;
+
   const fields: ApiKeyField[] = [
     { label: 'Name', value: apiKey.name },
     { label: 'Created at', value: createdAt },
-    { label: 'For project', value: projectName },
-    { label: 'Bound to', value: boundEmail },
+    { label: 'For project', value: truncatedProjectName },
+    { label: 'Bound to', value: `@${boundUsername}` },
   ];
-  const handleApiKeyRevoke = createApiKeyRevokeHandler(apiKey.id, revokeApiKey);
 
   return (
     <div

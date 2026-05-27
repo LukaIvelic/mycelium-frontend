@@ -14,6 +14,7 @@ const handleProjectsClick = createSidebarRouteHandler(SidebarRoute.Projects);
 const handleWorkspaceSettingsClick = createSidebarRouteHandler(
   SidebarRoute.WorkspaceSettings,
 );
+const handleAccountClick = createSidebarRouteHandler(SidebarRoute.Account);
 
 export const standaloneEntries: SidebarEntry[] = [
   {
@@ -26,7 +27,7 @@ export const standaloneEntries: SidebarEntry[] = [
 ];
 
 export const settingsEntries: SidebarEntry[] = [
-  { label: 'Account', icon: UserRound },
+  { label: 'Account', icon: UserRound, onClick: handleAccountClick },
   {
     label: 'Workspace',
     icon: Code,
