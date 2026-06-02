@@ -1,6 +1,6 @@
 import { Dialog as SheetPrimitive } from '@base-ui/react/dialog';
 import { XIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import { cn } from '@/lib/utils';
 import type { SheetContentProps, SheetOverlayProps } from './sheet.types';
 import { SheetPortal } from './sheet-root';

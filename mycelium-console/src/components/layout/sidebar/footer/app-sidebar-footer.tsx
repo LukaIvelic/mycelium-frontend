@@ -9,14 +9,9 @@ import type { AppSidebarFooterProps } from '@/components/layout/sidebar/footer/f
 import { usePopupDismiss } from '@/components/layout/sidebar/footer/footer.utils';
 import { ProfilePopup } from '@/components/layout/sidebar/footer/profile-popup';
 import { ProfileTrigger } from '@/components/layout/sidebar/footer/profile-trigger';
-import { SidebarFooter } from '@/components/ui/sidebar';
+import { SidebarFooter } from '@/components/ui/sidebar/sidebar';
 
-export function AppSidebarFooter({
-  email,
-  fullName,
-  initials,
-  randomProfileHex,
-}: AppSidebarFooterProps) {
+export function AppSidebarFooter({ userProfile }: AppSidebarFooterProps) {
   const [open, setOpen] = useState<boolean>(false);
 
   const rootRef = useRef<HTMLDivElement>(null);
@@ -29,20 +24,10 @@ export function AppSidebarFooter({
     <SidebarFooter className='mt-auto p-2'>
       <div ref={rootRef} className='relative'>
         {open && (
-          <ProfilePopup
-            fullName={fullName}
-            email={email}
-            initials={initials}
-            randomProfileHex={randomProfileHex}
-            onClose={closePopup}
-          />
+          <ProfilePopup userProfile={userProfile} onClose={closePopup} />
         )}
 
-        <ProfileTrigger
-          fullName={fullName}
-          initials={initials}
-          onClick={togglePopup}
-        />
+        <ProfileTrigger userProfile={userProfile} onClick={togglePopup} />
       </div>
     </SidebarFooter>
   );

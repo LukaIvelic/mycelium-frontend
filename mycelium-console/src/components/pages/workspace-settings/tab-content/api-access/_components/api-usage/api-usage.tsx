@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
+import { Separator } from '@/components/ui/separator/separator';
+import { Skeleton } from '@/components/ui/skeleton/skeleton';
 import { useApiKeyStats } from '@/hooks/use-api-key-stats.hook';
 import { useApiKeys } from '@/hooks/use-api-keys.hook';
 import { useUsers } from '@/hooks/use-users.hook';
@@ -12,12 +13,20 @@ import type { ApiUsageItemProps } from './api-usage.types';
 
 export function ApiUsage() {
   const { useMe } = useUsers();
-  const { data: user } = useMe();
+  const { data: user, isLoading: isUserLoading } = useMe();
   const { useApiKeysByUserId } = useApiKeys();
-  const { data: apiKeys = [] } = useApiKeysByUserId(user?.id);
+  const { data: apiKeys = [], isLoading: areApiKeysLoading } =
+    useApiKeysByUserId(user?.id);
   const { useApiKeyStatsByApiKeyIds } = useApiKeyStats();
   const apiKeyIds = apiKeys.map((apiKey) => apiKey.id);
   const apiKeyStatsResults = useApiKeyStatsByApiKeyIds(apiKeyIds);
+  const areStatsLoading = apiKeyStatsResults.some(
+    (result) => result.isLoading || result.isFetching || !result.data,
+  );
+  const isLoading =
+    isUserLoading ||
+    areApiKeysLoading ||
+    (Boolean(apiKeyIds.length) && areStatsLoading);
   const apiKeyStats = apiKeyStatsResults.flatMap((result) =>
     result.data ? [result.data] : [],
   );
@@ -36,6 +45,7 @@ export function ApiUsage() {
           key={item.title}
           title={item.title}
           value={item.value}
+          isLoading={isLoading}
           includeSeparator={item.includeSeparator}
         />
       ))}
@@ -56,12 +66,26 @@ export function ApiUsage() {
   );
 }
 
-function ApiUsageItem({ title, value, includeSeparator }: ApiUsageItemProps) {
+function ApiUsageItem({
+  title,
+  value,
+  isLoading,
+  includeSeparator,
+}: ApiUsageItemProps) {
+  const showSkeleton =
+    isLoading || value === null || value === undefined || value === '';
+
   return (
     <div className='h-full w-full flex flex-wrap justify-between'>
       <div className='flex flex-col items-start justify-center gap-1'>
         <p className='text-sm text-foreground/70 font-medium'>{title}</p>
-        <p className='text-lg font-medium'>{value}</p>
+        <div className='text-lg font-medium w-full h-8'>
+          {showSkeleton ? (
+            <Skeleton className='h-7 w-20 bg-foreground/15' />
+          ) : (
+            value
+          )}
+        </div>
       </div>
       {includeSeparator && (
         <Separator orientation='vertical' className='bg-foreground/10' />

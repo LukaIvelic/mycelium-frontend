@@ -1,6 +1,6 @@
 import { Command as CommandPrimitive } from 'cmdk';
 import type * as React from 'react';
-import type { Dialog } from '@/components/ui/dialog';
+import type { Dialog } from '@/components/ui/dialog/dialog';
 
 export type CommandProps = React.ComponentProps<typeof CommandPrimitive>;
 export type CommandInputProps = React.ComponentProps<

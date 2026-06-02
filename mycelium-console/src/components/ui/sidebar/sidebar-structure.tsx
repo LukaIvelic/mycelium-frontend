@@ -1,5 +1,5 @@
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input/input';
+import { Separator } from '@/components/ui/separator/separator';
 import { cn } from '@/lib/utils';
 import type {
   SidebarContentProps,

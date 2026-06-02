@@ -1,3 +1,4 @@
+import { Skeleton } from '@/components/ui/skeleton/skeleton';
 import { LogDetailBodyContent } from './log-detail-body-content';
 import { LogDetailKeyValueRow } from './log-detail-key-value-row';
 import { LogDetailSection } from './log-detail-section';
@@ -13,7 +14,7 @@ export function LogDetailContent({
   const hasBody = Boolean(detail?.body);
 
   if (isLoading) {
-    return <LogDetailMessage message='Loading details...' />;
+    return <Skeleton className='h-16 w-full' />;
   }
 
   if (!hasHeaders && !hasBody) {

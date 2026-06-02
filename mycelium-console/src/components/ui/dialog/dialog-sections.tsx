@@ -1,5 +1,5 @@
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import { cn } from '@/lib/utils';
 import type {
   DialogDescriptionProps,

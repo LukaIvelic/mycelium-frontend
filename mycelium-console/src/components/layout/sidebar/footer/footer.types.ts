@@ -1,13 +1,11 @@
 import type { LucideIcon } from 'lucide-react';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import type { Dispatch, RefObject, SetStateAction } from 'react';
+import type { UserProfile } from '@/lib/types/user-profile';
 import type { FooterMenuAction } from './footer.constants';
 
 export interface AppSidebarFooterProps {
-  email: string;
-  fullName: string;
-  initials: string;
-  randomProfileHex: string;
+  userProfile?: UserProfile;
 }
 
 export interface MenuEntry {
@@ -25,10 +23,11 @@ export interface EntryListProps {
 
 export interface ProfileCardProps {
   className?: string;
-  email: string;
-  fullName: string;
-  initials: string;
-  randomProfileHex: string;
+  userProfile?: UserProfile;
+}
+
+export interface ProfileCardSkeletonProps {
+  className?: string;
 }
 
 export interface ProfilePopupProps extends ProfileCardProps {
@@ -36,9 +35,8 @@ export interface ProfilePopupProps extends ProfileCardProps {
 }
 
 export interface ProfileTriggerProps {
-  fullName?: string;
-  initials?: string;
   onClick: () => void;
+  userProfile?: UserProfile;
 }
 
 export interface CreateFooterEntryClickHandlerParams {

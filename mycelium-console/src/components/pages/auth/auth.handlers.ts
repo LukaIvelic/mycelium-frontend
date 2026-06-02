@@ -11,33 +11,30 @@ import type {
 export function createContinueClickHandler({
   email,
   router,
-  setIsLoading,
+  startLoadingTransition,
   validateEmail,
 }: CreateContinueClickHandlerParams) {
-  return async function handleContinueClick(): Promise<void> {
+  return function continueWithEmail(): void {
     if (!email) {
       return;
     }
 
-    setIsLoading(true);
-    const validationResult = await validateEmail(email);
-    setIsLoading(false);
+    startLoadingTransition(async () => {
+      const validationResult = await validateEmail(email);
+      let nextRoute = ProxyRoute.SIGNUP;
+      if (validationResult.exists) {
+        nextRoute = ProxyRoute.LOGIN;
+      }
 
-    let nextRoute = ProxyRoute.SIGNUP;
-    if (validationResult.exists) {
-      nextRoute = ProxyRoute.LOGIN;
-    }
-
-    router.push(createAuthEmailRoute(nextRoute, email));
+      router.push(createAuthEmailRoute(nextRoute, email));
+    });
   };
 }
 
-export function createContinueSubmitHandler(
-  handleContinueClick: () => Promise<void>,
-) {
-  return function handleContinueSubmit(event: AuthFormSubmitEvent): void {
+export function createContinueSubmitHandler(continueWithEmail: () => void) {
+  return function submitEmailContinuation(event: AuthFormSubmitEvent): void {
     event.preventDefault();
-    void handleContinueClick();
+    continueWithEmail();
   };
 }
 
@@ -46,18 +43,18 @@ export function createLoginHandler({
   logIn,
   password,
   router,
-  setIsLoading,
+  startLoadingTransition,
 }: CreateLoginHandlerParams) {
-  return async function handleLogin(): Promise<void> {
-    const loginPayload = {
-      email,
-      password,
-    };
+  return function logInWithEmail(): void {
+    startLoadingTransition(async () => {
+      const loginPayload = {
+        email,
+        password,
+      };
 
-    setIsLoading(true);
-    await logIn(loginPayload);
-    setIsLoading(false);
-    router.push(ProxyRoute.DEFAULT);
+      await logIn(loginPayload);
+      router.push(ProxyRoute.DEFAULT);
+    });
   };
 }
 
@@ -67,28 +64,28 @@ export function createSignUpHandler({
   lastName,
   password,
   router,
-  setIsLoading,
+  startLoadingTransition,
   signUp,
 }: CreateSignUpHandlerParams) {
-  return async function handleSignUp(): Promise<void> {
-    const signUpPayload = {
-      email,
-      firstName,
-      lastName,
-      password,
-    };
+  return function submitSignUp(): void {
+    startLoadingTransition(async () => {
+      const signUpPayload = {
+        email,
+        firstName,
+        lastName,
+        password,
+      };
 
-    setIsLoading(true);
-    await signUp(signUpPayload);
-    setIsLoading(false);
-    router.push(ProxyRoute.DEFAULT);
+      await signUp(signUpPayload);
+      router.push(ProxyRoute.DEFAULT);
+    });
   };
 }
 
 export function createAuthFieldChangeHandler(
   setValue: (value: string) => void,
 ) {
-  return function handleAuthFieldChange(event: AuthFieldChangeEvent): void {
+  return function updateAuthField(event: AuthFieldChangeEvent): void {
     setValue(event.target.value);
   };
 }

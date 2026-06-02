@@ -1,6 +1,6 @@
 'use client';
 
-import { Switch } from '@/components/ui/switch';
+import { Switch } from '@/components/ui/switch/switch';
 import { cn } from '@/lib/utils';
 import { PROJECT_GRAPH_EDGE_VISIBILITY_LABEL } from './project-graph.config';
 import type { ProjectGraphEdgeVisibilityProps } from './project-graph-edge-visibility.types';

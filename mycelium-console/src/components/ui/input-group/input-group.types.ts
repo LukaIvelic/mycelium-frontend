@@ -1,6 +1,6 @@
 import type { VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
-import type { Button } from '@/components/ui/button';
+import type { Button } from '@/components/ui/button/button';
 import type {
   inputGroupAddonVariants,
   inputGroupButtonVariants,
@@ -12,7 +12,7 @@ export type InputGroupInputProps = React.ComponentProps<'input'>;
 export type InputGroupTextareaProps = React.ComponentProps<'textarea'>;
 
 export interface InputGroupAddonProps
-  extends React.ComponentProps<'fieldset'>,
+  extends React.ComponentProps<'div'>,
     VariantProps<typeof inputGroupAddonVariants> {}
 
 export interface InputGroupButtonProps

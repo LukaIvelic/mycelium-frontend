@@ -1,10 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/features/button';
-import { Input } from '@/components/features/input';
-import { Separator } from '@/components/ui/separator';
+import { useEffect, useRef, useState, useTransition } from 'react';
+import { Button } from '@/components/features/button/button';
+import { Input } from '@/components/features/input/input';
+import { Separator } from '@/components/ui/separator/separator';
 import { useAuth } from '@/hooks/use-auth.hook';
 import { cn } from '@/lib/utils';
 import {
@@ -12,24 +12,25 @@ import {
   createContinueClickHandler,
   createContinueSubmitHandler,
 } from '../auth.handlers';
-import { AuthAlternativeButton } from '../auth-alternative-button';
+import { AuthAlternativeButton } from '../auth-alternative-button/auth-alternative-button';
 import { alternatives } from './auth-entry.config';
 
 export function AuthEntry() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
+  const [isLoading, startLoadingTransition] = useTransition();
 
   const router = useRouter();
   const emailRef = useRef<HTMLInputElement>(null);
   const { validateEmail } = useAuth();
   const handleEmailChange = createAuthFieldChangeHandler(setEmail);
-  const handleContinueClick = createContinueClickHandler({
+  const continueWithEmail = createContinueClickHandler({
     email,
     router,
-    setIsLoading,
+    startLoadingTransition,
     validateEmail,
   });
-  const handleContinueSubmit = createContinueSubmitHandler(handleContinueClick);
+  const submitEmailContinuation =
+    createContinueSubmitHandler(continueWithEmail);
 
   useEffect(() => {
     emailRef.current?.focus();
@@ -52,7 +53,7 @@ export function AuthEntry() {
 
       <form
         className={cn('w-full', 'flex flex-col gap-2')}
-        onSubmit={handleContinueSubmit}
+        onSubmit={submitEmailContinuation}
       >
         <Input
           placeholder='Email address'
@@ -62,7 +63,7 @@ export function AuthEntry() {
           onChange={handleEmailChange}
         />
         <Button className={cn(`inverted`)} isLoading={isLoading} type='submit'>
-          Continue
+          Continue with email
         </Button>
       </form>
 

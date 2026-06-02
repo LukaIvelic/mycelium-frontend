@@ -6,7 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@/components/ui/dropdown-menu/dropdown-menu';
 import {
   PROJECT_SORT_DIRECTION_OPTIONS,
   PROJECT_SORT_OPTIONS,

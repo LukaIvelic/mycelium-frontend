@@ -2,12 +2,13 @@
 
 import { LayoutGrid, Plus } from 'lucide-react';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button/button';
+import { Separator } from '@/components/ui/separator/separator';
+import { Skeleton } from '@/components/ui/skeleton/skeleton';
 import { useUsers } from '@/hooks/use-users.hook';
 import { cn } from '@/lib/utils';
-import { CreateProjectCommand } from '../create-dialog/create-project-command';
-import { ProjectSortDropdown } from './components/project-sort-dropdown';
+import { CreateProjectCommand } from '../create-dialog/create-project-command/create-project-command';
+import { ProjectSortDropdown } from './components/project-sort-dropdown/project-sort-dropdown';
 import {
   CREATE_PROJECT_DEFAULT_COUNT,
   CREATE_PROJECT_FALLBACK_USER_ID,
@@ -27,7 +28,7 @@ export function CreateProjectHeader({
   const { useMe, useUserProjectsCount } = useUsers();
   const { data: user } = useMe();
   const userId = user?.id ?? CREATE_PROJECT_FALLBACK_USER_ID;
-  const { data: projectCount = CREATE_PROJECT_DEFAULT_COUNT } =
+  const { data: projectCount = CREATE_PROJECT_DEFAULT_COUNT, isLoading } =
     useUserProjectsCount(userId);
   const handleOpenCreateProjectDialog =
     createOpenCreateProjectDialogHandler(setCreateOpen);
@@ -55,7 +56,11 @@ export function CreateProjectHeader({
             size={CREATE_PROJECT_GRID_ICON_SIZE}
             className='text-foreground/50'
           />
-          <span className='text-sm'>{projectCount} Projects</span>
+          {isLoading ? (
+            <Skeleton className='h-4 w-20' />
+          ) : (
+            <span className='text-sm'>{projectCount} Projects</span>
+          )}
         </div>
         <div className='flex h-4 items-center self-center'>
           <Separator

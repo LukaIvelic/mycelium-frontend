@@ -4,10 +4,11 @@ import {
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from '@/components/ui/input-group';
+} from '@/components/ui/input-group/input-group';
 import { cn } from '@/lib/utils';
 import type { ComboboxInputProps } from './combobox.types';
-import { ComboboxClear, ComboboxTrigger } from './combobox-root';
+import { ComboboxClear } from './combobox-clear';
+import { ComboboxTrigger } from './combobox-trigger';
 
 function ComboboxInput({
   className,

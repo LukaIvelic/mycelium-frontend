@@ -1,11 +1,4 @@
-import {
-  CircleHelp,
-  Code,
-  CreditCard,
-  LayoutGrid,
-  SlidersHorizontal,
-  UserRound,
-} from 'lucide-react';
+import { CircleHelp, Code, LayoutGrid, UserRound } from 'lucide-react';
 import { SidebarRoute } from './content.constants';
 import { createSidebarRouteHandler } from './content.handlers';
 import type { SidebarEntry } from './content.types';
@@ -22,8 +15,8 @@ export const standaloneEntries: SidebarEntry[] = [
     icon: LayoutGrid,
     onClick: handleProjectsClick,
   },
-  { label: 'Billing', icon: CreditCard },
-  { label: 'Usage', icon: SlidersHorizontal },
+  // { label: 'Billing', icon: CreditCard },
+  // { label: 'Usage', icon: SlidersHorizontal },
 ];
 
 export const settingsEntries: SidebarEntry[] = [

@@ -12,6 +12,8 @@ export const ANIMATED_BEAM_DEFAULT_PATH_WIDTH = 2;
 export const ANIMATED_BEAM_DEFAULT_REPEAT = Infinity;
 export const ANIMATED_BEAM_DEFAULT_REPEAT_DELAY = 0;
 export const ANIMATED_BEAM_DEFAULT_REVERSE = false;
+export const ANIMATED_BEAM_REDUCED_MOTION_DURATION = 0;
+export const ANIMATED_BEAM_REDUCED_MOTION_REPEAT = 0;
 export const ANIMATED_BEAM_EMPTY_DIMENSIONS: AnimatedBeamDimensions = {
   width: 0,
   height: 0,

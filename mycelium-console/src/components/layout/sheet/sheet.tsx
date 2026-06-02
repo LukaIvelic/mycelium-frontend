@@ -2,8 +2,9 @@
 
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useTabs } from '@/components/features/tabs';
-import { Button } from '@/components/ui/button';
+import { useTabs } from '@/components/features/tabs/use-tabs';
+import { Button } from '@/components/ui/button/button';
+import { Skeleton } from '@/components/ui/skeleton/skeleton';
 import { useServices } from '@/hooks/use-services.hook';
 import { useSheet } from '@/hooks/use-sheet.hook';
 import { cn } from '@/lib/utils';
@@ -28,7 +29,7 @@ export function Sheet() {
   });
   const { useFindById } = useServices();
   const serviceId = getSheetServiceId(id);
-  const { data } = useFindById(serviceId || null);
+  const { data, isLoading } = useFindById(serviceId || null);
 
   useEffect(() => {
     syncSheetServiceDetails(data, setServiceName, setServiceDescription);
@@ -47,10 +48,18 @@ export function Sheet() {
     >
       <div className='grid grid-cols-[1fr_auto] gap-4 w-full'>
         <div>
-          <div className='text-[20px] font-medium'>{serviceName}</div>
-          <div className='text-sm text-foreground/65 mt-2'>
-            {serviceDescription}
-          </div>
+          {isLoading ? (
+            <Skeleton className='h-6 w-40' />
+          ) : (
+            <div className='text-[20px] font-medium'>{serviceName}</div>
+          )}
+          {isLoading ? (
+            <Skeleton className='mt-2 h-4 w-64' />
+          ) : (
+            <div className='text-sm text-foreground/65 mt-2'>
+              {serviceDescription}
+            </div>
+          )}
         </div>
         <Button
           className='w-fit p-1 aspect-square hover:cursor-pointer'

@@ -1,7 +1,7 @@
 'use client';
 
 import { PanelLeftIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import { cn } from '@/lib/utils';
 import { createSidebarTriggerClickHandler } from './sidebar.handlers';
 import type { SidebarRailProps, SidebarTriggerProps } from './sidebar.types';
@@ -13,7 +13,10 @@ export function SidebarTrigger({
   ...props
 }: SidebarTriggerProps) {
   const { toggleSidebar } = useSidebar();
-  const handleClick = createSidebarTriggerClickHandler(onClick, toggleSidebar);
+  const toggleAppSidebar = createSidebarTriggerClickHandler(
+    onClick,
+    toggleSidebar,
+  );
 
   return (
     <Button
@@ -22,7 +25,7 @@ export function SidebarTrigger({
       variant='ghost'
       size='icon-sm'
       className={cn(className)}
-      onClick={handleClick}
+      onClick={toggleAppSidebar}
       {...props}
     >
       <PanelLeftIcon />
@@ -36,6 +39,7 @@ export function SidebarRail({ className, ...props }: SidebarRailProps) {
 
   return (
     <button
+      type='button'
       data-sidebar='rail'
       data-slot='sidebar-rail'
       aria-label='Toggle Sidebar'

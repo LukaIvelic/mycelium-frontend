@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { Skeleton } from '@/components/ui/skeleton/skeleton';
 import { useLogs } from '@/hooks/use-logs.hook';
 import { cn } from '@/lib/utils';
 import { LogRow } from './log-row';
@@ -14,7 +15,9 @@ import type { LogsProps } from './logs.types';
 import { LogsControls } from './logs-controls';
 
 export function Logs({ integrationId }: LogsProps) {
-  const [openLogIds, setOpenLogIds] = useState<Set<string>>(new Set());
+  const [requestedOpenLogIds, setRequestedOpenLogIds] = useState<Set<string>>(
+    new Set(),
+  );
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   const queryClient = useQueryClient();
@@ -25,6 +28,10 @@ export function Logs({ integrationId }: LogsProps) {
     MANUAL_REFRESH_QUERY_OPTIONS,
   );
   const logs = logsData ?? EMPTY_LOGS;
+  const openLogIds = useMemo(
+    () => reconcileOpenLogIds(requestedOpenLogIds, logs),
+    [requestedOpenLogIds, logs],
+  );
   const hasLogs = Boolean(logs.length);
   const areAllExpanded = hasLogs
     ? logs.every((log) => openLogIds.has(log.id))
@@ -32,18 +39,14 @@ export function Logs({ integrationId }: LogsProps) {
   const handleToggleAll = createToggleAllLogsHandler(
     logs,
     areAllExpanded,
-    setOpenLogIds,
+    setRequestedOpenLogIds,
   );
-  const handleToggleLog = createToggleLogHandler(setOpenLogIds);
+  const handleToggleLog = createToggleLogHandler(setRequestedOpenLogIds);
   const handleRefresh = createRefreshLogsHandler(
     queryClient,
     isRefreshing,
     setIsRefreshing,
   );
-
-  useEffect(() => {
-    setOpenLogIds((currentIds) => reconcileOpenLogIds(currentIds, logs));
-  }, [logs]);
 
   return (
     <div className={cn('flex flex-col gap-3 no-scrollbar')}>
@@ -55,6 +58,7 @@ export function Logs({ integrationId }: LogsProps) {
         onToggleAll={handleToggleAll}
       />
 
+      {isFetching && !hasLogs && <Skeleton className='h-20 w-full' />}
       {logs.map((log) => (
         <LogRow
           key={log.id}

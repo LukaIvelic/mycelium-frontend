@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
+import { Skeleton } from '@/components/ui/skeleton/skeleton';
 import { useApiKeys } from '@/hooks/use-api-keys.hook';
 import { useUsers } from '@/hooks/use-users.hook';
 import { cn } from '@/lib/utils';
@@ -16,9 +17,11 @@ export function GenerateApiKey() {
   const [createOpen, setCreateOpen] = useState<boolean>(false);
 
   const { useMe } = useUsers();
-  const { data: user } = useMe();
+  const { data: user, isLoading: isUserLoading } = useMe();
   const { useApiKeysByUserId } = useApiKeys();
-  const { data: apiKeys = [] } = useApiKeysByUserId(user?.id);
+  const { data: apiKeys = [], isLoading: areApiKeysLoading } =
+    useApiKeysByUserId(user?.id);
+  const isLoading = isUserLoading || areApiKeysLoading;
   const hasApiKeys = apiKeys.length > API_KEY_EMPTY_LIST_LENGTH;
   const handleOpenApiKeyDialog = createOpenApiKeyDialogHandler(setCreateOpen);
 
@@ -42,7 +45,8 @@ export function GenerateApiKey() {
       </div>
 
       <div className={cn('h-[50vh]', 'row-2')}>
-        {!hasApiKeys ? (
+        {isLoading && <Skeleton className='h-14 w-full' />}
+        {!isLoading && !hasApiKeys ? (
           <div
             className={cn(
               'w-full h-full pt-4',
@@ -53,7 +57,8 @@ export function GenerateApiKey() {
           >
             No projects with active API keys found.
           </div>
-        ) : (
+        ) : null}
+        {!isLoading && hasApiKeys && (
           <div className='flex flex-col gap-2'>
             {apiKeys.map((apiKey) => (
               <ApiKeyItem key={apiKey.id} apiKey={apiKey} />

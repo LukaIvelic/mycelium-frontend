@@ -1,12 +1,14 @@
 'use client';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import type { ProvidersProps } from './providers.types';
-
-export const queryClient = new QueryClient();
+import { queryClient } from './query-client';
+import { TransitionProvider } from './transition-provider/transition-provider';
 
 export function Providers({ children }: ProvidersProps) {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <TransitionProvider>{children}</TransitionProvider>
+    </QueryClientProvider>
   );
 }

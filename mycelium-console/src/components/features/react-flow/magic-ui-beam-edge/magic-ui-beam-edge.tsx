@@ -1,6 +1,6 @@
 import { BaseEdge, useInternalNode } from '@xyflow/react';
 import { useId, useMemo } from 'react';
-import { MagicBeamGradient } from './magic-beam-gradient';
+import { MagicBeamGradient } from './magic-beam-gradient/magic-beam-gradient';
 import {
   DEFAULT_MAGIC_BEAM_BORDER_RADIUS,
   DEFAULT_MAGIC_BEAM_DELAY_SECONDS,

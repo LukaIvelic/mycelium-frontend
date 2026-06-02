@@ -5,7 +5,7 @@ export enum SheetTab {
   Communication = 'Communication',
   GeneralSettings = 'General Settings',
   Logs = 'Logs',
-  PerformanceMetrics = 'Performance Metrics',
+  PerformanceMetrics = 'Performance',
 }
 
 const SHEET_INTEGRATION_PREFIX = 'integration:';

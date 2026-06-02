@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 export enum ApiUsageValueKey {
   AverageLatency = 'averageLatency',
   LastIpCountry = 'lastIpCountry',
@@ -13,6 +15,7 @@ export interface ApiUsageItemConfig {
 
 export interface ApiUsageItemProps {
   includeSeparator?: boolean;
+  isLoading?: boolean;
   title: string;
-  value: string;
+  value: ReactNode;
 }

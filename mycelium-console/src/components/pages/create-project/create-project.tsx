@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import type { ProjectSortParams } from '@/api/services/project/project-service.types';
-import { Centered } from '@/components/features/centered';
-import { CreateProjectHeader } from './components/create-project-header';
-import { ProjectsView } from './components/projects-view';
+import { Centered } from '@/components/features/centered/centered';
+import { CreateProjectHeader } from './components/create-project-header/create-project-header';
+import { ProjectsView } from './components/projects-view/projects-view';
 import {
   DEFAULT_PROJECT_SORT_DIRECTION_OPTION,
   DEFAULT_PROJECT_SORT_OPTION,

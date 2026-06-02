@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import { cn } from '@/lib/utils';
 import type { CreateProjectFooterProps } from '../create-project-command.types';
 

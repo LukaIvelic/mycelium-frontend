@@ -1,11 +1,11 @@
 import { MoreVertical } from 'lucide-react';
-import { buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button/button.variants';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@/components/ui/dropdown-menu/dropdown-menu';
 import { cn } from '@/lib/utils';
 import type { ProjectCardActionsProps } from '../projects-view.types';
 

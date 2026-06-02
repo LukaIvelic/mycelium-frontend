@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import { cn } from '@/lib/utils';
 import type { CreateApiKeyFormProps } from '../generate-api-key.types';
 import { ApiKeyNameInput } from './api-key-name-input';

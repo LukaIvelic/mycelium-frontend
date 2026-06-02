@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Providers } from '@/components/features/providers';
+import { Providers } from '@/components/features/providers/providers';
 import { satoshi } from '@/lib/config/satoshi';
 import { cn } from '@/lib/utils';
 import {
@@ -19,7 +19,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang={ROOT_HTML_LANG} className='h-full antialiased'>
       <body
-        className={cn('min-h-full flex flex-col font-sans', satoshi.variable)}
+        className={cn(
+          'min-h-full flex flex-col font-sans overflow-hidden',
+          satoshi.variable,
+        )}
       >
         <Providers>{children}</Providers>
       </body>

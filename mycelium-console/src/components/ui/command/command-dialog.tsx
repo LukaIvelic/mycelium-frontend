@@ -4,7 +4,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from '@/components/ui/dialog/dialog';
 import { cn } from '@/lib/utils';
 import type { CommandDialogProps } from './command.types';
 

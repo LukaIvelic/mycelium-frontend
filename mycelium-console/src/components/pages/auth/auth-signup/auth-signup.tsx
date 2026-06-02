@@ -1,42 +1,59 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/features/button';
-import { Input } from '@/components/features/input';
-import { MushroomCarousel } from '@/components/features/mushroom-carousel';
+import { useEffect, useReducer, useRef, useTransition } from 'react';
+import { Button } from '@/components/features/button/button';
+import { Input } from '@/components/features/input/input';
+import { MushroomCarousel } from '@/components/features/mushroom-carousel/mushroom-carousel';
 import { useAuth } from '@/hooks/use-auth.hook';
 import { cn } from '@/lib/utils';
+import { createSignUpHandler } from '../auth.handlers';
 import {
-  createAuthFieldChangeHandler,
-  createSignUpHandler,
-} from '../auth.handlers';
-import type { AuthSignupProps } from './auth-signup.types';
+  createAuthSignupFieldChangeHandler,
+  createAuthSignupInitialState,
+  reduceAuthSignupFormState,
+} from './auth-signup.reducer';
+import { AuthSignupField, type AuthSignupProps } from './auth-signup.types';
 
 export function AuthSignup({ initialEmail }: AuthSignupProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [email, setEmail] = useState<string>(initialEmail);
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [isLoading, startLoadingTransition] = useTransition();
+  const [signupForm, dispatchSignupForm] = useReducer(
+    reduceAuthSignupFormState,
+    initialEmail,
+    createAuthSignupInitialState,
+  );
 
   const router = useRouter();
   const emailRef = useRef<HTMLInputElement>(null);
   const { signUp } = useAuth();
-  const handleFirstNameChange = createAuthFieldChangeHandler(setFirstName);
-  const handleLastNameChange = createAuthFieldChangeHandler(setLastName);
-  const handleEmailChange = createAuthFieldChangeHandler(setEmail);
-  const handlePasswordChange = createAuthFieldChangeHandler(setPassword);
-  const handleConfirmPasswordChange =
-    createAuthFieldChangeHandler(setConfirmPassword);
-  const handleSignUp = createSignUpHandler({
+  const { confirmPassword, email, firstName, lastName, password } = signupForm;
+  const handleFirstNameChange = createAuthSignupFieldChangeHandler(
+    dispatchSignupForm,
+    AuthSignupField.FirstName,
+  );
+  const handleLastNameChange = createAuthSignupFieldChangeHandler(
+    dispatchSignupForm,
+    AuthSignupField.LastName,
+  );
+  const handleEmailChange = createAuthSignupFieldChangeHandler(
+    dispatchSignupForm,
+    AuthSignupField.Email,
+  );
+  const handlePasswordChange = createAuthSignupFieldChangeHandler(
+    dispatchSignupForm,
+    AuthSignupField.Password,
+  );
+  const handleConfirmPasswordChange = createAuthSignupFieldChangeHandler(
+    dispatchSignupForm,
+    AuthSignupField.ConfirmPassword,
+  );
+  const submitSignUp = createSignUpHandler({
     email,
     firstName,
     lastName,
     password,
     router,
-    setIsLoading,
+    startLoadingTransition,
     signUp,
   });
 
@@ -93,7 +110,7 @@ export function AuthSignup({ initialEmail }: AuthSignupProps) {
         />
         <Button
           className={cn(`inverted`)}
-          onClick={handleSignUp}
+          onClick={submitSignUp}
           isLoading={isLoading}
           type='button'
         >

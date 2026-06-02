@@ -1,10 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/features/button';
-import { Input } from '@/components/features/input';
-import { MushroomCarousel } from '@/components/features/mushroom-carousel';
+import { useEffect, useRef, useState, useTransition } from 'react';
+import { Button } from '@/components/features/button/button';
+import { Input } from '@/components/features/input/input';
+import { MushroomCarousel } from '@/components/features/mushroom-carousel/mushroom-carousel';
 import { useAuth } from '@/hooks/use-auth.hook';
 import { cn } from '@/lib/utils';
 import {
@@ -14,21 +14,21 @@ import {
 import type { AuthLoginProps } from './auth-login.types';
 
 export function AuthLogin({ initialEmail }: AuthLoginProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>(initialEmail);
   const [password, setPassword] = useState<string>('');
+  const [isLoading, startLoadingTransition] = useTransition();
 
   const router = useRouter();
   const emailRef = useRef<HTMLInputElement>(null);
   const { logIn } = useAuth();
   const handleEmailChange = createAuthFieldChangeHandler(setEmail);
   const handlePasswordChange = createAuthFieldChangeHandler(setPassword);
-  const handleLogin = createLoginHandler({
+  const logInWithEmail = createLoginHandler({
     email,
     logIn,
     password,
     router,
-    setIsLoading,
+    startLoadingTransition,
   });
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export function AuthLogin({ initialEmail }: AuthLoginProps) {
         />
         <Button
           className={cn(`inverted`)}
-          onClick={handleLogin}
+          onClick={logInWithEmail}
           isLoading={isLoading}
         >
           Log in

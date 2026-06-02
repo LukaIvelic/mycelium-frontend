@@ -1,7 +1,7 @@
 import { Handle } from '@xyflow/react';
 import { GitPullRequest } from 'lucide-react';
 import Link from 'next/link';
-import { Truncate } from '@/components/features/truncate';
+import { Truncate } from '@/components/features/truncate/truncate';
 import {
   PROJECT_NODE_HANDLE_SIDES,
   PROJECT_NODE_ICON_SIZE,

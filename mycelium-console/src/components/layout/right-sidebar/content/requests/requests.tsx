@@ -1,14 +1,13 @@
 'use client';
 
 import dateFormat from 'dateformat';
-import { Truncate } from '@/components/features/truncate';
-import { Button } from '@/components/ui/button';
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card';
-import { Kbd, KbdGroup } from '@/components/ui/kbd';
+import { Truncate } from '@/components/features/truncate/truncate';
+import { Button } from '@/components/ui/button/button';
+import { HoverCard } from '@/components/ui/hover-card/hover-card';
+import { HoverCardContent } from '@/components/ui/hover-card/hover-card-content';
+import { HoverCardTrigger } from '@/components/ui/hover-card/hover-card-trigger';
+import { Kbd, KbdGroup } from '@/components/ui/kbd/kbd';
+import { Skeleton } from '@/components/ui/skeleton/skeleton';
 import { useLogs } from '@/hooks/use-logs.hook';
 import { statusCodeColor } from '@/lib/status-code';
 import { cn } from '@/lib/utils';
@@ -21,13 +20,14 @@ import type { RequestsContentProps } from './requests.types';
 
 export function RequestsContent({ projectId }: RequestsContentProps) {
   const { useLogsByProject } = useLogs();
-  const { data: projectLogs } = useLogsByProject(projectId, {
+  const { data: projectLogs, isLoading } = useLogsByProject(projectId, {
     limit: REQUESTS_LOG_LIMIT,
   });
   const logs = projectLogs ?? [];
 
   return (
     <div className='w-full h-full flex flex-col justify-start gap-2 overflow-auto no-scrollbar'>
+      {isLoading && <Skeleton className='h-20 w-full' />}
       {logs.map((log) => (
         <div
           key={log.id}

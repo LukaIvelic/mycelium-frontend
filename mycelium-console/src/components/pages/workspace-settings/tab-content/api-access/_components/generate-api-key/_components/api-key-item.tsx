@@ -2,7 +2,8 @@
 
 import dateFormat from 'dateformat';
 
-import { Truncate } from '@/components/features/truncate';
+import { Truncate } from '@/components/features/truncate/truncate';
+import { Skeleton } from '@/components/ui/skeleton/skeleton';
 import { useApiKeys } from '@/hooks/use-api-keys.hook';
 import { useUserProfile } from '@/hooks/use-user-profile.hook';
 import { cn } from '@/lib/utils';
@@ -21,7 +22,7 @@ export function ApiKeyItem({ apiKey }: ApiKeyItemProps) {
   const revokeApiKey = useRevokeApiKey();
   const handleApiKeyRevoke = createApiKeyRevokeHandler(apiKey.id, revokeApiKey);
 
-  if (!user || !project) return null;
+  if (!user || !project) return <Skeleton className='h-14 w-full' />;
 
   const boundUsername = user.username;
   const createdAt = dateFormat(apiKey.createdAt);

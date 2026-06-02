@@ -21,8 +21,8 @@ export function Input({
 
   const hasValue = Boolean(rest.value || rest.defaultValue || inputValue);
   const isFloating = isFocused || hasValue;
-  const handleFocus = createInputFocusHandler(setIsFocused, rest.onFocus);
-  const handleBlur = createInputBlurHandler(
+  const focusInputField = createInputFocusHandler(setIsFocused, rest.onFocus);
+  const syncInputValueOnBlur = createInputBlurHandler(
     setInputValue,
     setIsFocused,
     rest.onBlur,
@@ -45,8 +45,8 @@ export function Input({
         type={type}
         {...rest}
         className={cn(`mycelium-input-field`, className)}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        onFocus={focusInputField}
+        onBlur={syncInputValueOnBlur}
       />
     </div>
   );

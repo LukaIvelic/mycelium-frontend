@@ -4,28 +4,16 @@ import type { UserProfile } from '@/lib/types/user-profile';
 export function generateUserProfileFields(userProfile: UserProfile) {
   return [
     {
-      label: 'Username',
-      value: `@${userProfile.username}`,
-    },
-    {
-      label: 'Email',
-      value: userProfile.email,
-    },
-    {
-      label: 'Registered',
+      label: 'Joined',
       value: dateFormat(userProfile.createdAt, 'mmmm d, yyyy'),
     },
     {
-      label: 'Location',
-      value: userProfile.location,
+      label: '2FA',
+      value: 'Not Enabled',
     },
     {
-      label: 'Company',
-      value: userProfile.company,
-    },
-    {
-      label: 'Job Title',
-      value: userProfile.jobTitle,
+      label: 'Workspace plan:',
+      value: 'Hobby',
     },
   ];
 }

@@ -5,7 +5,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from '@/components/ui/tooltip/tooltip';
 import { cn } from '@/lib/utils';
 import { TRUNCATE_SUFFIX } from './truncate.config';
 import type { TruncateProps } from './truncate.types';

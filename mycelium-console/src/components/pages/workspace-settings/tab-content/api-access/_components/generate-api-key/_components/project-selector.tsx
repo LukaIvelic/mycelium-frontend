@@ -5,7 +5,7 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
-} from '@/components/ui/combobox';
+} from '@/components/ui/combobox/combobox';
 import type { Project } from '@/lib/types/project';
 import { cn } from '@/lib/utils';
 import type {

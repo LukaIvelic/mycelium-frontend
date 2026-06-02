@@ -9,22 +9,10 @@ import {
 import { ProfileCard } from '@/components/layout/sidebar/footer/profile-card';
 import type { ProfilePopupProps } from './footer.types';
 
-export function ProfilePopup({
-  fullName,
-  email,
-  initials,
-  randomProfileHex,
-  onClose,
-}: ProfilePopupProps) {
+export function ProfilePopup({ userProfile, onClose }: ProfilePopupProps) {
   return (
     <div className='absolute right-0 bottom-14 z-30 w-[calc(var(--sidebar-width)-1rem)] rounded-xl border border-[#3a3a3a] bg-[#1c1c1c] p-2 shadow-xl'>
-      <ProfileCard
-        className='rounded-md'
-        fullName={fullName}
-        email={email}
-        initials={initials}
-        randomProfileHex={randomProfileHex}
-      />
+      <ProfileCard className='rounded-md' userProfile={userProfile} />
 
       <div className='mt-2'>
         <EntryList entries={primaryMenuEntries} onSelect={onClose} />

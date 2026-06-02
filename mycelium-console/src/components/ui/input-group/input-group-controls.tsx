@@ -1,5 +1,5 @@
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input/input';
+import { Textarea } from '@/components/ui/textarea/textarea';
 import { cn } from '@/lib/utils';
 import type {
   InputGroupInputProps,

@@ -3,7 +3,7 @@
 import { Check, Copy, KeyRound } from 'lucide-react';
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import { cn } from '@/lib/utils';
 import {
   API_KEY_ACTION_ICON_SIZE,

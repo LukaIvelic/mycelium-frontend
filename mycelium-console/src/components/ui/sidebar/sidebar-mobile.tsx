@@ -7,7 +7,7 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from '@/components/ui/sheet';
+} from '@/components/ui/sheet/sheet';
 import { SIDEBAR_WIDTH_MOBILE } from './sidebar.constants';
 import type { SidebarProps } from './sidebar.types';
 import { useSidebar } from './sidebar-context';

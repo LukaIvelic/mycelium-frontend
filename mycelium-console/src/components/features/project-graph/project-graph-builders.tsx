@@ -1,11 +1,9 @@
 import type { Edge, Node } from '@xyflow/react';
 import type { ReactFlowLayout } from '@/api/services/react-flow/react-flow-service.types';
 import type { Service } from '@/api/services/services/services-service.types';
-import {
-  NodeContent,
-  ProjectNodeTypeName,
-} from '@/components/features/react-flow/project-node';
-import { createForcePositions } from './force-layout';
+import { NodeContent } from '@/components/features/react-flow/project-node/project-node';
+import { ProjectNodeTypeName } from '@/components/features/react-flow/project-node/project-node.types';
+import { createForcePositions } from './force-layout/force-layout';
 import { EMPTY_GRAPH_POSITION } from './force-layout/force-layout.config';
 import {
   FALLBACK_NODE_MICROSERVICE_COUNT,

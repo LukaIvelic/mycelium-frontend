@@ -1,6 +1,9 @@
 import { Command as CommandPrimitive } from 'cmdk';
 import { SearchIcon } from 'lucide-react';
-import { InputGroup, InputGroupAddon } from '@/components/ui/input-group';
+import {
+  InputGroup,
+  InputGroupAddon,
+} from '@/components/ui/input-group/input-group';
 import { cn } from '@/lib/utils';
 import type { CommandInputProps } from './command.types';
 

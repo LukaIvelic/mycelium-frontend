@@ -6,7 +6,18 @@ import type {
   SignUpPayload,
 } from '@/api/services/auth/auth-service.types';
 import { tokenStorage } from '@/api/token-storage';
-import { queryClient } from '@/components/features/providers';
+import { queryClient } from '@/components/features/providers/query-client';
+
+function signOutAndRedirect(router?: AppRouterInstance): void {
+  tokenStorage.removeToken();
+  queryClient.clear();
+
+  if (!router) {
+    return;
+  }
+
+  router.push(ProxyRoute.DEFAULT);
+}
 
 export function useAuth() {
   const authService = new AuthService();
@@ -23,18 +34,10 @@ export function useAuth() {
 
   const validateEmail = (email: string) => authService.validateEmail(email);
 
-  const signOut = (router?: AppRouterInstance) => {
-    tokenStorage.removeToken();
-    queryClient.clear();
-
-    if (!router) return;
-    router.push(ProxyRoute.DEFAULT);
-  };
-
   return {
     signUp,
     logIn,
     validateEmail,
-    signOut,
+    signOut: signOutAndRedirect,
   };
 }

@@ -1,12 +1,12 @@
 import type { useRender } from '@base-ui/react/use-render';
 import type { VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
-import type { Button } from '@/components/ui/button';
-import type { Input } from '@/components/ui/input';
-import type { Separator } from '@/components/ui/separator';
-import type { TooltipContent } from '@/components/ui/tooltip';
+import type { Button } from '@/components/ui/button/button';
+import type { Input } from '@/components/ui/input/input';
+import type { Separator } from '@/components/ui/separator/separator';
+import type { TooltipContent } from '@/components/ui/tooltip/tooltip';
 import type { SidebarState } from './sidebar.constants';
-import type { sidebarMenuButtonVariants } from './sidebar-menu-button';
+import type { sidebarMenuButtonVariants } from './sidebar-menu-button/sidebar-menu-button.variants';
 
 export interface SidebarContextProps {
   isMobile: boolean;

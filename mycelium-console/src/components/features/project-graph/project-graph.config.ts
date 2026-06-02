@@ -1,9 +1,7 @@
 import type { EdgeTypes, NodeTypes } from '@xyflow/react';
-import MagicBeamEdge from '@/components/features/react-flow/magic-ui-beam-edge';
-import {
-  CustomNode,
-  ProjectNodeTypeName,
-} from '@/components/features/react-flow/project-node';
+import MagicBeamEdge from '@/components/features/react-flow/magic-ui-beam-edge/magic-ui-beam-edge';
+import { CustomNode } from '@/components/features/react-flow/project-node/project-node';
+import { ProjectNodeTypeName } from '@/components/features/react-flow/project-node/project-node.types';
 
 export enum ProjectGraphEdgeTypeName {
   Magic = 'magic',

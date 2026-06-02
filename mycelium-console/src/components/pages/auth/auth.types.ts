@@ -1,6 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
+import type { ChangeEvent, FormEvent, TransitionStartFunction } from 'react';
 import type { ProxyRoute } from '@/_proxy.utils';
 
 export interface AuthAlternative {
@@ -27,7 +27,7 @@ export interface AuthRoutePageProps {
 export interface CreateContinueClickHandlerParams {
   email: string;
   router: AppRouterInstance;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  startLoadingTransition: TransitionStartFunction;
   validateEmail: (email: string) => Promise<{ exists: boolean }>;
 }
 
@@ -36,7 +36,7 @@ export interface CreateLoginHandlerParams {
   logIn: (payload: { email: string; password: string }) => Promise<void>;
   password: string;
   router: AppRouterInstance;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  startLoadingTransition: TransitionStartFunction;
 }
 
 export interface CreateSignUpHandlerParams {
@@ -45,7 +45,7 @@ export interface CreateSignUpHandlerParams {
   lastName: string;
   password: string;
   router: AppRouterInstance;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  startLoadingTransition: TransitionStartFunction;
   signUp: (payload: {
     email: string;
     firstName: string;

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { Command, CommandDialog } from '@/components/ui/command';
+import { Command, CommandDialog } from '@/components/ui/command/command';
 import { useProjects } from '@/hooks/use-projects.hook';
 import { useUsers } from '@/hooks/use-users.hook';
 import { cn } from '@/lib/utils';

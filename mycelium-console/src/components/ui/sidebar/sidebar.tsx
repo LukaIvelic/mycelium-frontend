@@ -6,12 +6,10 @@ export {
   SidebarGroupLabel,
 } from './sidebar-group';
 export { SidebarMenuAction } from './sidebar-menu-action';
-export {
-  SidebarMenu,
-  SidebarMenuBadge,
-  SidebarMenuItem,
-} from './sidebar-menu-base';
-export { SidebarMenuButton } from './sidebar-menu-button';
+export { SidebarMenuBadge } from './sidebar-menu-badge';
+export { SidebarMenu } from './sidebar-menu-base';
+export { SidebarMenuButton } from './sidebar-menu-button/sidebar-menu-button';
+export { SidebarMenuItem } from './sidebar-menu-item';
 export { SidebarMenuSkeleton } from './sidebar-menu-skeleton';
 export {
   SidebarMenuSub,

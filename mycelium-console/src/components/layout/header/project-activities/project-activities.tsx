@@ -1,7 +1,7 @@
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
-import { Separator } from '@/components/ui/separator';
-import { Toggle } from '@/components/ui/toggle';
+import { Separator } from '@/components/ui/separator/separator';
+import { Toggle } from '@/components/ui/toggle/toggle';
 import { useRightSidebar } from '@/hooks/use-right-sidebar';
 import { cn } from '@/lib/utils';
 import { headerActions } from './project-activities.config';

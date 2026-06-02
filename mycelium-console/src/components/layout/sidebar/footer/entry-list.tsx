@@ -8,7 +8,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar';
+} from '@/components/ui/sidebar/sidebar';
 import { useAuth } from '@/hooks/use-auth.hook';
 
 export function EntryList({ entries, onSelect }: EntryListProps) {

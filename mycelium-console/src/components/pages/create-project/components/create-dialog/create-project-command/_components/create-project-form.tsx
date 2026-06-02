@@ -1,5 +1,5 @@
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input/input';
+import { Textarea } from '@/components/ui/textarea/textarea';
 import { cn } from '@/lib/utils';
 import { CREATE_PROJECT_DESCRIPTION_ROWS } from '../create-project-command.config';
 import { createProjectFieldChangeHandler } from '../create-project-command.handlers';

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Spinner } from '@/components/ui/spinner';
+import { Spinner } from '@/components/ui/spinner/spinner';
 import { cn } from '@/lib/utils';
 import {
   BUTTON_CENTER_CONTENT_DEFAULT,
@@ -18,6 +18,7 @@ export function Button({
   icon: Icon,
   centerContent = BUTTON_CENTER_CONTENT_DEFAULT,
   className,
+  type = 'button',
   ...rest
 }: ButtonProps) {
   const hasLeadingVisual = Boolean(imageSrc || Icon);
@@ -27,6 +28,7 @@ export function Button({
 
   return (
     <button
+      type={type}
       className={cn('mycelium-btn', className)}
       {...rest}
       disabled={isLoading}

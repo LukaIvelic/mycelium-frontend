@@ -9,23 +9,18 @@ import {
 } from '@/components/layout/sidebar/content/content.config';
 import { EntryList } from '@/components/layout/sidebar/content/entry-list';
 import { ProfileCard } from '@/components/layout/sidebar/footer/profile-card';
-import { Separator } from '@/components/ui/separator';
+import { Separator } from '@/components/ui/separator/separator';
 import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-} from '@/components/ui/sidebar';
+} from '@/components/ui/sidebar/sidebar';
 import { cn } from '@/lib/utils';
 import { createToggleSettingsHandler } from './app-sidebar-content.handlers';
 import type { AppSidebarContentProps } from './app-sidebar-content.types';
 
-export function AppSidebarContent({
-  email,
-  fullName,
-  initials,
-  randomProfileHex,
-}: AppSidebarContentProps) {
+export function AppSidebarContent({ userProfile }: AppSidebarContentProps) {
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 
   const handleToggleSettings = createToggleSettingsHandler(setSettingsOpen);
@@ -33,12 +28,7 @@ export function AppSidebarContent({
   return (
     <SidebarContent className='gap-2 px-2 pb-2'>
       <SidebarGroup className='p-0'>
-        <ProfileCard
-          fullName={fullName}
-          email={email}
-          initials={initials}
-          randomProfileHex={randomProfileHex}
-        />
+        <ProfileCard userProfile={userProfile} />
       </SidebarGroup>
 
       <SidebarGroup className='p-0'>

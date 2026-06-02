@@ -1,13 +1,13 @@
 'use client';
 
-import { Centered } from '@/components/features/centered';
-import { useTabs } from '@/components/features/tabs';
+import { Centered } from '@/components/features/centered/centered';
+import { useTabs } from '@/components/features/tabs/use-tabs';
 import { ApiAccess } from '@/components/pages/workspace-settings/tab-content/api-access/api-access';
 import { cn } from '@/lib/utils';
 
 export default function Page() {
   const tab_content = new Map<string, React.ReactNode>([
-    ['API Access Management', <ApiAccess key='api-access-management' />],
+    ['API Management', <ApiAccess key='api-management' />],
     [
       'Region & Localization',
       <div key='region-localization'>Region & Localization Content</div>,
@@ -17,10 +17,8 @@ export default function Page() {
       <div key='alert-configuration'>Alert Configuration Content</div>,
     ],
     [
-      'Data Tracing Customization',
-      <div key='data-tracing-customization'>
-        Data Tracing Customization Content
-      </div>,
+      'Tracing Customization',
+      <div key='tracing-customization'>Tracing Customization Content</div>,
     ],
     ['Integrations', <div key='integrations'>Integrations Content</div>],
   ]);

@@ -7,7 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar';
+} from '@/components/ui/sidebar/sidebar';
 import { cn } from '@/lib/utils';
 
 export function EntryList({ entries, indent }: EntryListProps) {

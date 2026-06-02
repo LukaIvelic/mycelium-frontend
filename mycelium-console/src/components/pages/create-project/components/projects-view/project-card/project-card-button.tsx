@@ -1,4 +1,4 @@
-import { Truncate } from '@/components/features/truncate';
+import { Truncate } from '@/components/features/truncate/truncate';
 import { cn } from '@/lib/utils';
 import type { ProjectCardButtonProps } from '../projects-view.types';
 import {

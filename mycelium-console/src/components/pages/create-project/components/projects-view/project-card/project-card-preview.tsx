@@ -1,4 +1,5 @@
 import { Circle, KeyRound } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton/skeleton';
 import type { ProjectCardPreviewProps } from '../projects-view.types';
 import {
   PROJECT_CARD_API_KEY_GENERATED_COLOR,
@@ -33,7 +34,11 @@ export function ProjectCardPreview({
             stroke=''
             size={PROJECT_CARD_API_KEY_ICON_SIZE}
           />
-          {apiKeyStatusLabel}
+          {hasActiveApiKey === undefined ? (
+            <Skeleton className='h-3 w-24' />
+          ) : (
+            apiKeyStatusLabel
+          )}
         </div>
         <div className='flex gap-2 items-center'>
           <Circle

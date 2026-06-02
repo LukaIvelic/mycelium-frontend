@@ -1,6 +1,5 @@
+import type { UserProfile } from '@/lib/types/user-profile';
+
 export interface AppSidebarContentProps {
-  email: string;
-  fullName: string;
-  initials: string;
-  randomProfileHex: string;
+  userProfile?: UserProfile;
 }
