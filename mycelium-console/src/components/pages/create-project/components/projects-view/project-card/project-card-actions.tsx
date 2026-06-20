@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import type { ProjectCardActionsProps } from '../projects-view.types';
 
 export function ProjectCardActions({
+  canDelete,
   onDeleteClick,
   onOpenClick,
   projectName,
@@ -27,12 +28,14 @@ export function ProjectCardActions({
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem onClick={onOpenClick}>Open</DropdownMenuItem>
-        <DropdownMenuItem
-          className='bg-destructive text-white data-highlighted:bg-destructive/90 data-highlighted:text-white'
-          onClick={onDeleteClick}
-        >
-          Delete
-        </DropdownMenuItem>
+        {canDelete && (
+          <DropdownMenuItem
+            className='bg-destructive text-white data-highlighted:bg-destructive/90 data-highlighted:text-white'
+            onClick={onDeleteClick}
+          >
+            Delete
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

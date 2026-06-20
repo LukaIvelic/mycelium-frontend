@@ -5,6 +5,7 @@ import { useTabs } from '@/components/features/tabs/use-tabs';
 import { AlertConfiguration } from '@/components/pages/workspace-settings/tab-content/alert-configuration/alert-configuration';
 import { ApiAccess } from '@/components/pages/workspace-settings/tab-content/api-access/api-access';
 import { Integrations } from '@/components/pages/workspace-settings/tab-content/integrations/integrations';
+import { ProjectMembers } from '@/components/pages/workspace-settings/tab-content/project-members/project-members';
 import { RegionLocalization } from '@/components/pages/workspace-settings/tab-content/region-localization/region-localization';
 import { TracingCustomization } from '@/components/pages/workspace-settings/tab-content/tracing-customization/tracing-customization';
 import { cn } from '@/lib/utils';
@@ -12,6 +13,7 @@ import { cn } from '@/lib/utils';
 export default function Page() {
   const tab_content = new Map<string, React.ReactNode>([
     ['API Management', <ApiAccess key='api-management' />],
+    ['Members', <ProjectMembers key='project-members' />],
     ['Region & Localization', <RegionLocalization key='region-localization' />],
     ['Alert Configuration', <AlertConfiguration key='alert-configuration' />],
     [

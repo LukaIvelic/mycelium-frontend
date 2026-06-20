@@ -1,4 +1,8 @@
 import type { ApiKey } from '@/lib/types/api-key';
+import type {
+  AssignableProjectMemberRole,
+  ProjectMember,
+} from '@/lib/types/project';
 
 export enum ProjectSortDirection {
   Asc = 'ASC',
@@ -26,6 +30,17 @@ export type UpdateProjectPayload = Partial<CreateProjectPayload>;
 export type AddApiKeyPayload = {
   name?: string;
 };
+
+export type AddProjectMemberPayload = {
+  email: string;
+  role: AssignableProjectMemberRole;
+};
+
+export type UpdateProjectMemberPayload = {
+  role: AssignableProjectMemberRole;
+};
+
+export type ProjectMemberResponse = ProjectMember;
 
 export type AddApiKeyResponse = {
   key: string;
