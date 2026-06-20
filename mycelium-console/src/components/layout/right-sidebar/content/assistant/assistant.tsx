@@ -1,6 +1,6 @@
 'use client';
 
-import { Bot, Send, Sparkles, Trash2, User } from 'lucide-react';
+import { Send, Trash2 } from 'lucide-react';
 import { type KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button/button';
 import { Spinner } from '@/components/ui/spinner/spinner';
@@ -84,17 +84,12 @@ export function AssistantContent({ projectId }: AssistantContentProps) {
   return (
     <div className='flex h-full min-h-0 w-full flex-col'>
       <div className='mb-2 flex shrink-0 items-center justify-between gap-2'>
-        <div className='flex min-w-0 items-center gap-2'>
-          <span className='grid size-7 shrink-0 place-items-center rounded-md border border-sky-400/25 bg-sky-500/10 text-sky-300'>
-            <Sparkles className='size-4' />
-          </span>
-          <div className='min-w-0'>
-            <div className='truncate text-sm font-medium text-foreground/85'>
-              AI Assistant
-            </div>
-            <div className='truncate text-xs text-foreground/45'>
-              Project context
-            </div>
+        <div className='min-w-0'>
+          <div className='truncate text-sm font-medium text-foreground/85'>
+            Assistant
+          </div>
+          <div className='truncate text-xs text-foreground/45'>
+            Project context
           </div>
         </div>
         <Button
@@ -114,7 +109,7 @@ export function AssistantContent({ projectId }: AssistantContentProps) {
           <div className='flex flex-col gap-2'>
             {ASSISTANT_EMPTY_PROMPTS.map((prompt) => (
               <Button
-                className='h-auto justify-start whitespace-normal border-[#434343] bg-[#1d1d1d] px-2 py-2 text-left text-xs text-foreground/70 hover:bg-[#292929]'
+                className='h-auto justify-start whitespace-normal rounded-sm border-[#434343] bg-[#1d1d1d] px-2 py-2 text-left text-xs text-foreground/70 hover:bg-[#292929]'
                 disabled={isSending}
                 key={prompt}
                 onClick={() => handlePromptClick(prompt)}
@@ -132,7 +127,7 @@ export function AssistantContent({ projectId }: AssistantContentProps) {
         ))}
 
         {sendAssistantMessage.isPending && (
-          <div className='flex items-center gap-2 rounded-sm border border-[#434343] bg-[#1d1d1d] px-2 py-2 text-xs text-foreground/50'>
+          <div className='flex items-center gap-2 rounded-sm border border-[#434343] bg-[#1d1d1d] px-2.5 py-2 text-xs text-foreground/50'>
             <Spinner className='size-3.5' />
             Thinking...
           </div>
@@ -144,7 +139,7 @@ export function AssistantContent({ projectId }: AssistantContentProps) {
       <div className='mt-2 flex shrink-0 items-end gap-2'>
         <Textarea
           aria-label='Assistant message'
-          className='max-h-28 min-h-10 resize-none rounded-md border-[#434343] bg-[#1d1d1d] px-2 py-2 text-sm'
+          className='max-h-28 min-h-10 resize-none rounded-sm border-[#434343] bg-[#1d1d1d] px-2 py-2 text-sm'
           disabled={isSending}
           onChange={(event) => setDraft(event.target.value)}
           onKeyDown={handleDraftKeyDown}
@@ -175,29 +170,21 @@ function AssistantMessageBubble({
   message: AssistantPanelMessage;
 }) {
   const isUser = message.role === 'user';
-  const Icon = isUser ? User : Bot;
 
   return (
     <div
       className={cn(
-        'flex gap-2 text-xs',
-        isUser ? 'justify-end' : 'justify-start',
+        'w-full break-words rounded-sm border px-2.5 py-2 text-xs leading-relaxed',
+        isUser
+          ? 'border-[#4d4d4d] bg-[#242424] text-foreground/85'
+          : 'border-[#434343] bg-[#1d1d1d] text-foreground/75',
+        message.failed && 'border-red-400/30 bg-red-500/10 text-red-300',
       )}
     >
-      {!isUser && (
-        <span className='mt-1 grid size-6 shrink-0 place-items-center rounded-md border border-sky-400/25 bg-sky-500/10 text-sky-300'>
-          <Icon className='size-3.5' />
-        </span>
-      )}
-      <div
-        className={cn(
-          'max-w-[85%] break-words rounded-md border px-2.5 py-2 leading-relaxed',
-          isUser
-            ? 'whitespace-pre-wrap border-primary/25 bg-primary/15 text-foreground'
-            : 'border-[#434343] bg-[#1d1d1d] text-foreground/75',
-          message.failed && 'border-red-400/30 bg-red-500/10 text-red-300',
-        )}
-      >
+      <div className='mb-1 text-[0.68rem] font-medium uppercase tracking-normal text-foreground/40'>
+        {isUser ? 'You' : 'Assistant'}
+      </div>
+      <div className={cn(isUser && 'whitespace-pre-wrap')}>
         {isUser ? (
           message.content
         ) : (

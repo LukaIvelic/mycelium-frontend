@@ -1,4 +1,8 @@
-import { Bell, Brain, GitPullRequestCreateArrow } from 'lucide-react';
+import {
+  Bell,
+  GitPullRequestCreateArrow,
+  MessageSquareText,
+} from 'lucide-react';
 import { ProjectActivityPanel } from './project-activities.constants';
 import {
   renderAssistantContent,
@@ -22,8 +26,8 @@ export const headerActions: HeaderAction[] = [
   },
   {
     panel: ProjectActivityPanel.AiAssistant,
-    label: 'AI Assistant',
-    icon: Brain,
+    label: 'Assistant',
+    icon: MessageSquareText,
     content: renderAssistantContent,
   },
 ];
