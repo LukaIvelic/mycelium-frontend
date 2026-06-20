@@ -30,9 +30,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
         <div className={cn('flex flex-1 min-h-0', state && 'gap-x-2  pr-4')}>
           <div
             className={cn(
-              'flex flex-1 flex-col',
+              'flex min-h-0 flex-1 flex-col',
               'bg-[#1D1D1D] border border-[#434343] border-b-0!',
-              'rounded-t-lg overflow-hidden',
+              'rounded-t-lg overflow-y-auto overflow-x-hidden no-scrollbar',
               state && 'border rounded-tr-lg',
             )}
           >

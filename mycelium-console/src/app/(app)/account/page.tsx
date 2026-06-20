@@ -3,18 +3,21 @@
 import { Centered } from '@/components/features/centered/centered';
 import { useTabs } from '@/components/features/tabs/use-tabs';
 import { ProfileSettings } from '@/components/pages/account-settings/profile/profile';
+import { Accessibility } from '@/components/pages/account-settings/tab-content/accessibility/accessibility';
+import { ExperimentalFeatures } from '@/components/pages/account-settings/tab-content/experimental-features/experimental-features';
+import { Notifications } from '@/components/pages/account-settings/tab-content/notifications/notifications';
 import UserProfile from '@/components/pages/account-settings/user-profile/user-profile';
 import { cn } from '@/lib/utils';
 
 export default function Page() {
   const tab_content = new Map<string, React.ReactNode>([
     ['Profile', <ProfileSettings key='profile' />],
-    ['Notifications', <div key='notifications'>Notifications Content</div>],
+    ['Notifications', <Notifications key='notifications' />],
     [
       'Experimental features',
-      <div key='alert-configuration'>Experimental features Content</div>,
+      <ExperimentalFeatures key='experimental-features' />,
     ],
-    ['Accessibility', <div key='accessibility'>Accessibility Content</div>],
+    ['Accessibility', <Accessibility key='accessibility' />],
   ]);
 
   const { activeTab, tabs } = useTabs({
@@ -22,10 +25,11 @@ export default function Page() {
   });
 
   return (
-    <Centered>
+    <Centered className='h-auto min-h-full pb-24'>
       <div
         className={cn(
           'grid grid-cols-4 grid-rows-[auto_auto_auto_auto] items-center gap-4',
+          'min-h-max',
         )}
       >
         <div className='col-span-2 pb-4'>

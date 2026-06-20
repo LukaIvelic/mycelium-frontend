@@ -8,6 +8,9 @@ const handleWorkspaceSettingsClick = createSidebarRouteHandler(
   SidebarRoute.WorkspaceSettings,
 );
 const handleAccountClick = createSidebarRouteHandler(SidebarRoute.Account);
+const handleDocumentationClick = createSidebarRouteHandler(
+  SidebarRoute.Documentation,
+);
 
 export const standaloneEntries: SidebarEntry[] = [
   {
@@ -29,6 +32,10 @@ export const settingsEntries: SidebarEntry[] = [
 ];
 
 export const helpEntries: SidebarEntry[] = [
-  { label: 'Documentation', icon: CircleHelp },
+  {
+    label: 'Documentation',
+    icon: CircleHelp,
+    onClick: handleDocumentationClick,
+  },
   { label: 'Support', icon: CircleHelp },
 ];

@@ -25,7 +25,7 @@ export function CreateProjectPage() {
   };
 
   return (
-    <Centered>
+    <Centered className='h-auto min-h-full'>
       <div className='flex flex-col gap-8'>
         <CreateProjectHeader
           selectedSortDirectionOption={selectedSortDirectionOption}

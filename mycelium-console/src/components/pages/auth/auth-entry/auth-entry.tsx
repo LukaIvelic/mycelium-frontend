@@ -17,6 +17,7 @@ import { alternatives } from './auth-entry.config';
 
 export function AuthEntry() {
   const [email, setEmail] = useState<string>('');
+  const [error, setError] = useState<string>('');
   const [isLoading, startLoadingTransition] = useTransition();
 
   const router = useRouter();
@@ -25,6 +26,7 @@ export function AuthEntry() {
   const handleEmailChange = createAuthFieldChangeHandler(setEmail);
   const continueWithEmail = createContinueClickHandler({
     email,
+    onError: setError,
     router,
     startLoadingTransition,
     validateEmail,
@@ -65,6 +67,11 @@ export function AuthEntry() {
         <Button className={cn(`inverted`)} isLoading={isLoading} type='submit'>
           Continue with email
         </Button>
+        {error && (
+          <p className='text-sm text-destructive' role='alert'>
+            {error}
+          </p>
+        )}
       </form>
 
       <div className='w-full relative opacity-20'>

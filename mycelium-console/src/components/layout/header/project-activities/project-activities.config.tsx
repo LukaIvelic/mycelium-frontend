@@ -2,6 +2,7 @@ import { Bell, Brain, GitPullRequestCreateArrow } from 'lucide-react';
 import { ProjectActivityPanel } from './project-activities.constants';
 import {
   renderEmptyPanelContent,
+  renderNotificationsContent,
   renderRequestsContent,
 } from './project-activities.content';
 import type { HeaderAction } from './project-activities.types';
@@ -17,7 +18,7 @@ export const headerActions: HeaderAction[] = [
     panel: ProjectActivityPanel.Notifications,
     label: 'Notifications',
     icon: Bell,
-    content: renderEmptyPanelContent,
+    content: renderNotificationsContent,
   },
   {
     panel: ProjectActivityPanel.AiAssistant,

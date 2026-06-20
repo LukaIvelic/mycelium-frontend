@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useReducer, useRef, useTransition } from 'react';
+import { useEffect, useReducer, useRef, useState, useTransition } from 'react';
 import { Button } from '@/components/features/button/button';
 import { Input } from '@/components/features/input/input';
 import { MushroomCarousel } from '@/components/features/mushroom-carousel/mushroom-carousel';
@@ -16,6 +16,7 @@ import {
 import { AuthSignupField, type AuthSignupProps } from './auth-signup.types';
 
 export function AuthSignup({ initialEmail }: AuthSignupProps) {
+  const [error, setError] = useState<string>('');
   const [isLoading, startLoadingTransition] = useTransition();
   const [signupForm, dispatchSignupForm] = useReducer(
     reduceAuthSignupFormState,
@@ -51,6 +52,7 @@ export function AuthSignup({ initialEmail }: AuthSignupProps) {
     email,
     firstName,
     lastName,
+    onError: setError,
     password,
     router,
     startLoadingTransition,
@@ -116,6 +118,11 @@ export function AuthSignup({ initialEmail }: AuthSignupProps) {
         >
           Sign up
         </Button>
+        {error && (
+          <p className='text-sm text-destructive' role='alert'>
+            {error}
+          </p>
+        )}
       </form>
 
       <MushroomCarousel className='mt-20' />

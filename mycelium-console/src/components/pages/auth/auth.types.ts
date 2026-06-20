@@ -26,6 +26,7 @@ export interface AuthRoutePageProps {
 
 export interface CreateContinueClickHandlerParams {
   email: string;
+  onError: (message: string) => void;
   router: AppRouterInstance;
   startLoadingTransition: TransitionStartFunction;
   validateEmail: (email: string) => Promise<{ exists: boolean }>;
@@ -34,6 +35,7 @@ export interface CreateContinueClickHandlerParams {
 export interface CreateLoginHandlerParams {
   email: string;
   logIn: (payload: { email: string; password: string }) => Promise<void>;
+  onError: (message: string) => void;
   password: string;
   router: AppRouterInstance;
   startLoadingTransition: TransitionStartFunction;
@@ -43,6 +45,7 @@ export interface CreateSignUpHandlerParams {
   email: string;
   firstName: string;
   lastName: string;
+  onError: (message: string) => void;
   password: string;
   router: AppRouterInstance;
   startLoadingTransition: TransitionStartFunction;

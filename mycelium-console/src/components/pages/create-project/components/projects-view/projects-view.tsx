@@ -15,7 +15,7 @@ export function ProjectsView({ sortParams }: ProjectsViewProps) {
   const isLoading = isUserLoading || areProjectsLoading;
 
   return (
-    <div className='grid grid-cols-3 grid-rows-4 gap-4 h-full w-full'>
+    <div className='grid w-full grid-cols-3 gap-4'>
       {isLoading && <Skeleton className='min-h-70 w-full' />}
       {!isLoading &&
         projects.map((project) => (

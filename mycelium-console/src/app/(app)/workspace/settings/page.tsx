@@ -2,25 +2,23 @@
 
 import { Centered } from '@/components/features/centered/centered';
 import { useTabs } from '@/components/features/tabs/use-tabs';
+import { AlertConfiguration } from '@/components/pages/workspace-settings/tab-content/alert-configuration/alert-configuration';
 import { ApiAccess } from '@/components/pages/workspace-settings/tab-content/api-access/api-access';
+import { Integrations } from '@/components/pages/workspace-settings/tab-content/integrations/integrations';
+import { RegionLocalization } from '@/components/pages/workspace-settings/tab-content/region-localization/region-localization';
+import { TracingCustomization } from '@/components/pages/workspace-settings/tab-content/tracing-customization/tracing-customization';
 import { cn } from '@/lib/utils';
 
 export default function Page() {
   const tab_content = new Map<string, React.ReactNode>([
     ['API Management', <ApiAccess key='api-management' />],
-    [
-      'Region & Localization',
-      <div key='region-localization'>Region & Localization Content</div>,
-    ],
-    [
-      'Alert Configuration',
-      <div key='alert-configuration'>Alert Configuration Content</div>,
-    ],
+    ['Region & Localization', <RegionLocalization key='region-localization' />],
+    ['Alert Configuration', <AlertConfiguration key='alert-configuration' />],
     [
       'Tracing Customization',
-      <div key='tracing-customization'>Tracing Customization Content</div>,
+      <TracingCustomization key='tracing-customization' />,
     ],
-    ['Integrations', <div key='integrations'>Integrations Content</div>],
+    ['Integrations', <Integrations key='integrations' />],
   ]);
 
   const { activeTab, tabs } = useTabs({

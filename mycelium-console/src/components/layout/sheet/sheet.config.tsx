@@ -1,5 +1,11 @@
 import type { ReactNode } from 'react';
+import type { Service } from '@/api/services/services/services-service.types';
 import { Logs } from './logs/logs';
+import {
+  Communication,
+  GeneralSettings,
+  PerformanceMetrics,
+} from './service-details';
 
 export enum SheetTab {
   Communication = 'Communication',
@@ -29,18 +35,31 @@ export function getSheetServiceId(id: unknown): string | null {
 
 export function createSheetTabContent(
   integrationId: string,
+  service: Service | undefined,
+  isServiceLoading: boolean,
 ): Map<string, ReactNode> {
   const logsContent = (
     <Logs key={SheetTab.Logs} integrationId={integrationId} />
   );
   const settingsContent = (
-    <div key={SheetTab.GeneralSettings}>Details content</div>
+    <GeneralSettings
+      key={SheetTab.GeneralSettings}
+      service={service}
+      isLoading={isServiceLoading}
+    />
   );
   const performanceContent = (
-    <div key={SheetTab.PerformanceMetrics}>Logs content</div>
+    <PerformanceMetrics
+      key={SheetTab.PerformanceMetrics}
+      integrationId={integrationId}
+    />
   );
   const communicationContent = (
-    <div key={SheetTab.Communication}>Metrics content</div>
+    <Communication
+      key={SheetTab.Communication}
+      integrationId={integrationId}
+      service={service}
+    />
   );
 
   return new Map([

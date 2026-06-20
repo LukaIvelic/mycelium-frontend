@@ -2,7 +2,7 @@ import { CreateProjectPage } from '@/components/pages/create-project/create-proj
 
 export default function Page() {
   return (
-    <main className='w-full h-full'>
+    <main className='w-full'>
       <CreateProjectPage />
     </main>
   );

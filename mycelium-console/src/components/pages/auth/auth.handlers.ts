@@ -10,6 +10,7 @@ import type {
 
 export function createContinueClickHandler({
   email,
+  onError,
   router,
   startLoadingTransition,
   validateEmail,
@@ -20,13 +21,17 @@ export function createContinueClickHandler({
     }
 
     startLoadingTransition(async () => {
-      const validationResult = await validateEmail(email);
-      let nextRoute = ProxyRoute.SIGNUP;
-      if (validationResult.exists) {
-        nextRoute = ProxyRoute.LOGIN;
-      }
+      try {
+        const validationResult = await validateEmail(email);
+        let nextRoute = ProxyRoute.SIGNUP;
+        if (validationResult.exists) {
+          nextRoute = ProxyRoute.LOGIN;
+        }
 
-      router.push(createAuthEmailRoute(nextRoute, email));
+        router.push(createAuthEmailRoute(nextRoute, email));
+      } catch {
+        onError('Unable to reach the authentication service. Try again later.');
+      }
     });
   };
 }
@@ -41,19 +46,24 @@ export function createContinueSubmitHandler(continueWithEmail: () => void) {
 export function createLoginHandler({
   email,
   logIn,
+  onError,
   password,
   router,
   startLoadingTransition,
 }: CreateLoginHandlerParams) {
   return function logInWithEmail(): void {
     startLoadingTransition(async () => {
-      const loginPayload = {
-        email,
-        password,
-      };
+      try {
+        const loginPayload = {
+          email,
+          password,
+        };
 
-      await logIn(loginPayload);
-      router.push(ProxyRoute.DEFAULT);
+        await logIn(loginPayload);
+        router.push(ProxyRoute.DEFAULT);
+      } catch {
+        onError('Unable to log in with those credentials.');
+      }
     });
   };
 }
@@ -62,6 +72,7 @@ export function createSignUpHandler({
   email,
   firstName,
   lastName,
+  onError,
   password,
   router,
   startLoadingTransition,
@@ -69,15 +80,19 @@ export function createSignUpHandler({
 }: CreateSignUpHandlerParams) {
   return function submitSignUp(): void {
     startLoadingTransition(async () => {
-      const signUpPayload = {
-        email,
-        firstName,
-        lastName,
-        password,
-      };
+      try {
+        const signUpPayload = {
+          email,
+          firstName,
+          lastName,
+          password,
+        };
 
-      await signUp(signUpPayload);
-      router.push(ProxyRoute.DEFAULT);
+        await signUp(signUpPayload);
+        router.push(ProxyRoute.DEFAULT);
+      } catch {
+        onError('Unable to create the account. Try again later.');
+      }
     });
   };
 }

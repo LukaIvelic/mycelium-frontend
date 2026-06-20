@@ -1,9 +1,14 @@
-import { Input } from '@/components/features/input/input';
 import { Button } from '@/components/ui/button/button';
 import { Skeleton } from '@/components/ui/skeleton/skeleton';
 import { useUserProfile } from '@/hooks/use-user-profile.hook';
-import { cn } from '@/lib/utils';
-import { generateProfileConfig } from './profile.config';
+import { SettingsRow } from '../tab-content/_components/settings-tab-panel/settings-row';
+import { SettingsSection } from '../tab-content/_components/settings-tab-panel/settings-section';
+import {
+  generateProfileConfig,
+  PROFILE_PASSWORD_LABEL,
+  PROFILE_SAVE_LABEL,
+} from './profile.config';
+import { ProfileField } from './profile-field';
 
 export function ProfileSettings() {
   const { useMe } = useUserProfile();
@@ -14,43 +19,39 @@ export function ProfileSettings() {
   const config = generateProfileConfig(userProfile);
 
   return (
-    <div className='flex flex-col gap-4'>
-      <div
-        className={cn('flex flex-col gap-4', 'xl:grid xl:grid-cols-2 xl:gap-6')}
+    <div className='flex w-full flex-col gap-8'>
+      <SettingsSection
+        title='General'
+        description='Personal details shown across your account and workspace activity.'
       >
-        <div className='col-1 flex flex-col gap-6'>
-          <h2 className='text-[20px]'>General</h2>
-          <div className='flex flex-col gap-3 w-full'>
-            {config.map((item) => (
-              <Input
-                key={item.placeholder}
-                className='rounded-[8px] h-min'
-                placeholder={item.placeholder}
-                defaultValue={item.defaultValue ?? ''}
-              />
-            ))}
-            <Button className='data-[state=active]:rounded-[8px]!'>Save</Button>
-          </div>
-        </div>
-        <div className='col-2 flex flex-col gap-6'>
-          <h2 className='text-[20px]'>Security</h2>
-          <div className='flex flex-col gap-3 w-full'>
-            <Input
-              className='rounded-[8px] h-min'
-              placeholder='Password'
-              type='password'
-            />
-            <Input
-              className='rounded-[8px] h-min'
-              placeholder='New Password'
-              type='password'
-            />
-            <Button className='data-[state=active]:rounded-[8px]!'>
-              Change password
-            </Button>
-          </div>
-        </div>
-      </div>
+        {config.generalFields.map((field) => (
+          <ProfileField key={field.label} field={field} />
+        ))}
+        <SettingsRow
+          label='Profile changes'
+          description='Save updates to your personal account information.'
+        >
+          <Button size='sm' type='button'>
+            {PROFILE_SAVE_LABEL}
+          </Button>
+        </SettingsRow>
+      </SettingsSection>
+      <SettingsSection
+        title='Security'
+        description='Password settings for signing in to this account.'
+      >
+        {config.securityFields.map((field) => (
+          <ProfileField key={field.label} field={field} />
+        ))}
+        <SettingsRow
+          label='Password update'
+          description='Apply the password change after both fields are filled.'
+        >
+          <Button size='sm' type='button'>
+            {PROFILE_PASSWORD_LABEL}
+          </Button>
+        </SettingsRow>
+      </SettingsSection>
     </div>
   );
 }

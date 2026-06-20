@@ -23,13 +23,13 @@ export function Sheet() {
 
   const { open, closeSheet, data: id } = useSheet();
   const integrationId = getSheetServiceId(id) ?? SHEET_EMPTY_VALUE;
-  const tabsContent = createSheetTabContent(integrationId);
   const { tabs, activeTab } = useTabs({
     items: SHEET_TABS,
   });
   const { useFindById } = useServices();
   const serviceId = getSheetServiceId(id);
   const { data, isLoading } = useFindById(serviceId || null);
+  const tabsContent = createSheetTabContent(integrationId, data, isLoading);
 
   useEffect(() => {
     syncSheetServiceDetails(data, setServiceName, setServiceDescription);

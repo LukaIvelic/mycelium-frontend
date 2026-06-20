@@ -15,6 +15,7 @@ import type { AuthLoginProps } from './auth-login.types';
 
 export function AuthLogin({ initialEmail }: AuthLoginProps) {
   const [email, setEmail] = useState<string>(initialEmail);
+  const [error, setError] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, startLoadingTransition] = useTransition();
 
@@ -26,6 +27,7 @@ export function AuthLogin({ initialEmail }: AuthLoginProps) {
   const logInWithEmail = createLoginHandler({
     email,
     logIn,
+    onError: setError,
     password,
     router,
     startLoadingTransition,
@@ -71,6 +73,11 @@ export function AuthLogin({ initialEmail }: AuthLoginProps) {
         >
           Log in
         </Button>
+        {error && (
+          <p className='text-sm text-destructive' role='alert'>
+            {error}
+          </p>
+        )}
       </div>
 
       <MushroomCarousel className='mt-20' />
