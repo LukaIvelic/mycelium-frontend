@@ -19,6 +19,7 @@ import {
   getAssistantErrorMessage,
   toAssistantPayloadMessages,
 } from './assistant.utils';
+import { AssistantMarkdown } from './assistant-markdown';
 
 export function AssistantContent({ projectId }: AssistantContentProps) {
   const [draft, setDraft] = useState('');
@@ -190,14 +191,20 @@ function AssistantMessageBubble({
       )}
       <div
         className={cn(
-          'max-w-[85%] whitespace-pre-wrap break-words rounded-md border px-2.5 py-2 leading-relaxed',
+          'max-w-[85%] break-words rounded-md border px-2.5 py-2 leading-relaxed',
           isUser
-            ? 'border-primary/25 bg-primary/15 text-foreground'
+            ? 'whitespace-pre-wrap border-primary/25 bg-primary/15 text-foreground'
             : 'border-[#434343] bg-[#1d1d1d] text-foreground/75',
           message.failed && 'border-red-400/30 bg-red-500/10 text-red-300',
         )}
       >
-        {message.content}
+        {isUser ? (
+          message.content
+        ) : (
+          <AssistantMarkdown failed={message.failed}>
+            {message.content}
+          </AssistantMarkdown>
+        )}
       </div>
     </div>
   );
