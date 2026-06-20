@@ -3,9 +3,12 @@ import { type ApiClient, apiClient } from '../../api-client';
 import type {
   AddApiKeyPayload,
   AddApiKeyResponse,
+  AddProjectMemberPayload,
   CreateProjectPayload,
   HasApiKeyResponse,
+  ProjectMemberResponse,
   ProjectSortParams,
+  UpdateProjectMemberPayload,
   UpdateProjectPayload,
 } from './project-service.types';
 
@@ -54,5 +57,33 @@ export class ProjectService {
 
   async hasApiKey(id: string) {
     return this.apiClient.get<HasApiKeyResponse>(`/projects/${id}/has-api-key`);
+  }
+
+  async findMembers(id: string) {
+    return this.apiClient.get<ProjectMemberResponse[]>(
+      `/projects/${id}/members`,
+    );
+  }
+
+  async addMember(id: string, payload: AddProjectMemberPayload) {
+    return this.apiClient.post<ProjectMemberResponse>(
+      `/projects/${id}/members`,
+      payload,
+    );
+  }
+
+  async updateMember(
+    id: string,
+    userId: string,
+    payload: UpdateProjectMemberPayload,
+  ) {
+    return this.apiClient.patch<ProjectMemberResponse>(
+      `/projects/${id}/members/${userId}`,
+      payload,
+    );
+  }
+
+  async removeMember(id: string, userId: string) {
+    return this.apiClient.delete<void>(`/projects/${id}/members/${userId}`);
   }
 }

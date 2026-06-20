@@ -19,7 +19,11 @@ export function ProjectsView({ sortParams }: ProjectsViewProps) {
       {isLoading && <Skeleton className='min-h-70 w-full' />}
       {!isLoading &&
         projects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
+          <ProjectCard
+            key={project.id}
+            currentUserId={me?.id}
+            project={project}
+          />
         ))}
     </div>
   );

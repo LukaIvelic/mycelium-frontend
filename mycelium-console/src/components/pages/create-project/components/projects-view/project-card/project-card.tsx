@@ -14,7 +14,7 @@ import type { ProjectCardProps } from '../projects-view.types';
 import { ProjectCardActions } from './project-card-actions';
 import { ProjectCardButton } from './project-card-button';
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ currentUserId, project }: ProjectCardProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
 
   const router = useRouter();
@@ -33,11 +33,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
     project.id,
     setIsDeleteDialogOpen,
   );
+  const canDelete = project.userId === currentUserId;
 
   return (
     <>
       <div className='relative min-h-70'>
         <ProjectCardActions
+          canDelete={canDelete}
           projectName={project.name}
           onOpenClick={handleOpenProject}
           onDeleteClick={handleOpenDeleteDialog}

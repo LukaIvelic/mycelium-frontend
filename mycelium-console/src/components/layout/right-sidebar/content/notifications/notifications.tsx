@@ -1,24 +1,23 @@
 'use client';
 
 import dateFormat from 'dateformat';
-import { AlertTriangle, Info, Timer } from 'lucide-react';
+import { AlertTriangle, Check, CheckCheck, Info, Timer } from 'lucide-react';
 import { Truncate } from '@/components/features/truncate/truncate';
+import { Button } from '@/components/ui/button/button';
 import { Skeleton } from '@/components/ui/skeleton/skeleton';
-import { useLogs } from '@/hooks/use-logs.hook';
-import type { Log } from '@/lib/types/log';
+import { useNotifications } from '@/hooks/use-notifications.hook';
+import type {
+  Notification,
+  NotificationSeverity,
+} from '@/lib/types/notification';
 import { cn } from '@/lib/utils';
 import {
-  NOTIFICATIONS_LOG_LIMIT,
+  NOTIFICATIONS_LIMIT,
   NOTIFICATIONS_MAX_ITEMS,
   NOTIFICATIONS_PATH_TRUNCATE_MAX,
-  NOTIFICATIONS_SLOW_REQUEST_MS,
   NOTIFICATIONS_TIMESTAMP_FORMAT,
 } from './notifications.config';
-import type {
-  NotificationSeverity,
-  NotificationsContentProps,
-  ProjectNotification,
-} from './notifications.types';
+import type { NotificationsContentProps } from './notifications.types';
 
 const severityStyles: Record<NotificationSeverity, string> = {
   critical: 'border-red-400/30 bg-red-500/10 text-red-300',
@@ -33,35 +32,73 @@ const severityIcons = {
 };
 
 export function NotificationsContent({ projectId }: NotificationsContentProps) {
-  const { useLogsByProject } = useLogs();
-  const { data: projectLogs, isLoading } = useLogsByProject(projectId, {
-    limit: NOTIFICATIONS_LOG_LIMIT,
-  });
-  const notifications = createNotifications(projectLogs ?? []);
+  const {
+    useMarkAllNotificationsRead,
+    useMarkNotificationRead,
+    useProjectNotifications,
+  } = useNotifications();
+  const { data: notifications = [], isLoading } = useProjectNotifications(
+    projectId,
+    NOTIFICATIONS_LIMIT,
+  );
+  const markRead = useMarkNotificationRead();
+  const markAllRead = useMarkAllNotificationsRead();
+  const visibleNotifications = notifications.slice(0, NOTIFICATIONS_MAX_ITEMS);
+  const unreadCount = visibleNotifications.filter(
+    (notification) => notification.readAt === null,
+  ).length;
 
   return (
     <div className='w-full h-full flex flex-col justify-start gap-2 overflow-auto no-scrollbar'>
+      <div className='mb-1 flex items-center justify-between gap-2'>
+        <span className='text-sm font-medium text-foreground/85'>
+          Notifications
+        </span>
+        {unreadCount > 0 && (
+          <Button
+            variant='ghost'
+            size='xs'
+            className='text-foreground/55 hover:bg-white/5 hover:text-foreground'
+            disabled={markAllRead.isPending}
+            onClick={() => markAllRead.mutate(projectId)}
+          >
+            <CheckCheck className='size-3' />
+            Mark all
+          </Button>
+        )}
+      </div>
+
       {isLoading && <Skeleton className='h-20 w-full' />}
 
-      {!isLoading && !notifications.length && (
+      {!isLoading && !visibleNotifications.length && (
         <div className='rounded-sm border border-[#434343] bg-[#1d1d1d] px-3 py-4 text-sm text-foreground/50'>
           No notifications.
         </div>
       )}
 
-      {notifications.map((notification) => (
-        <NotificationItem key={notification.id} notification={notification} />
+      {visibleNotifications.map((notification) => (
+        <NotificationItem
+          key={notification.id}
+          notification={notification}
+          onMarkRead={() => markRead.mutate(notification.id)}
+          isMarkingRead={markRead.isPending}
+        />
       ))}
     </div>
   );
 }
 
 function NotificationItem({
+  isMarkingRead,
   notification,
+  onMarkRead,
 }: {
-  notification: ProjectNotification;
+  isMarkingRead: boolean;
+  notification: Notification;
+  onMarkRead: () => void;
 }) {
   const Icon = severityIcons[notification.severity];
+  const isUnread = notification.readAt === null;
 
   return (
     <div
@@ -83,10 +120,23 @@ function NotificationItem({
           <span className='font-medium text-foreground/85'>
             {notification.title}
           </span>
+          {isUnread && <span className='size-1.5 rounded-full bg-primary' />}
         </div>
-        <span className='shrink-0 text-foreground/45'>
-          {dateFormat(notification.timestamp, NOTIFICATIONS_TIMESTAMP_FORMAT)}
-        </span>
+        <div className='flex shrink-0 items-center gap-1'>
+          <span className='text-foreground/45'>
+            {dateFormat(notification.createdAt, NOTIFICATIONS_TIMESTAMP_FORMAT)}
+          </span>
+          <Button
+            variant='ghost'
+            size='icon-xs'
+            aria-label={`Mark ${notification.title} as read`}
+            disabled={!isUnread || isMarkingRead}
+            onClick={onMarkRead}
+            className='size-5 text-foreground/40 hover:bg-white/5 hover:text-foreground'
+          >
+            <Check className='size-3' />
+          </Button>
+        </div>
       </div>
 
       <div className='pl-6 text-xs text-foreground/55'>
@@ -97,45 +147,4 @@ function NotificationItem({
       </div>
     </div>
   );
-}
-
-function createNotifications(logs: Log[]): ProjectNotification[] {
-  const notifications = logs.flatMap((log) => createLogNotifications(log));
-
-  return notifications.slice(0, NOTIFICATIONS_MAX_ITEMS);
-}
-
-function createLogNotifications(log: Log): ProjectNotification[] {
-  const notifications: ProjectNotification[] = [];
-  const requestLabel = `${log.statusCode} ${log.method} ${log.path}`;
-
-  if (log.statusCode >= 500) {
-    notifications.push({
-      description: requestLabel,
-      id: `${log.id}:server-error`,
-      severity: 'critical',
-      timestamp: log.timestamp,
-      title: 'Server error',
-    });
-  } else if (log.statusCode >= 400) {
-    notifications.push({
-      description: requestLabel,
-      id: `${log.id}:client-error`,
-      severity: 'warning',
-      timestamp: log.timestamp,
-      title: 'Request warning',
-    });
-  }
-
-  if (log.durationMs >= NOTIFICATIONS_SLOW_REQUEST_MS) {
-    notifications.push({
-      description: `${log.durationMs} ms ${log.method} ${log.path}`,
-      id: `${log.id}:slow-request`,
-      severity: 'warning',
-      timestamp: log.timestamp,
-      title: 'Slow request',
-    });
-  }
-
-  return notifications;
 }

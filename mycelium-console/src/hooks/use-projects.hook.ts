@@ -3,8 +3,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ProjectService } from '@/api/services/project/project-service';
 import type {
   AddApiKeyPayload,
+  AddProjectMemberPayload,
   CreateProjectPayload,
   ProjectSortParams,
+  UpdateProjectMemberPayload,
   UpdateProjectPayload,
 } from '@/api/services/project/project-service.types';
 
@@ -27,6 +29,7 @@ const projectKeys = {
       sortParams?.sort ?? 'default-sort',
     ] as const,
   hasApiKey: (id: string) => [...projectKeys.one(id), 'has-api-key'] as const,
+  members: (id: string) => [...projectKeys.one(id), 'members'] as const,
 };
 
 function useAllProjects() {
@@ -122,6 +125,60 @@ function useAddApiKey(projectId: string) {
   });
 }
 
+function useProjectMembers(projectId: string | undefined) {
+  return useQuery({
+    queryKey: projectKeys.members(projectId ?? ''),
+    queryFn: () => projectService.findMembers(projectId as string),
+    enabled: Boolean(projectId),
+  });
+}
+
+function useAddProjectMember(projectId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: AddProjectMemberPayload) =>
+      projectService.addMember(projectId, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: projectKeys.members(projectId),
+      });
+      queryClient.invalidateQueries({ queryKey: projectKeys.all });
+    },
+  });
+}
+
+function useUpdateProjectMember(projectId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      payload,
+      userId,
+    }: {
+      payload: UpdateProjectMemberPayload;
+      userId: string;
+    }) => projectService.updateMember(projectId, userId, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: projectKeys.members(projectId),
+      });
+    },
+  });
+}
+
+function useRemoveProjectMember(projectId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (userId: string) =>
+      projectService.removeMember(projectId, userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: projectKeys.members(projectId),
+      });
+      queryClient.invalidateQueries({ queryKey: projectKeys.all });
+    },
+  });
+}
+
 export function useProjects() {
   return {
     useAllProjects,
@@ -134,5 +191,9 @@ export function useProjects() {
     useInvalidateProject,
     useHasApiKey,
     useAddApiKey,
+    useProjectMembers,
+    useAddProjectMember,
+    useUpdateProjectMember,
+    useRemoveProjectMember,
   };
 }

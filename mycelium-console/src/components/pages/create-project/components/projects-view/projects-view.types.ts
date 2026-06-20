@@ -7,6 +7,7 @@ export interface ProjectsViewProps {
 }
 
 export interface ProjectCardProps {
+  currentUserId?: string;
   project: Project;
 }
 
@@ -20,6 +21,7 @@ export interface ProjectCardPreviewProps {
 }
 
 export interface ProjectCardActionsProps {
+  canDelete: boolean;
   onDeleteClick: () => void;
   onOpenClick: () => void;
   projectName: string;
