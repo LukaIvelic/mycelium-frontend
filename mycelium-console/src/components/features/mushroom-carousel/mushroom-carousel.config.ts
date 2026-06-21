@@ -1,7 +1,7 @@
 import type { MushroomImageStyle } from './mushroom-carousel.types';
 
 export const MUSHROOM_IMAGE_BASE_PATH = '/console/images/shrooms/';
-export const MUSHROOM_IMAGE_COUNT = 6;
+const MUSHROOM_IMAGE_COUNT = 6;
 export const MUSHROOM_IMAGE_FIRST_NUMBER = 1;
 export const MUSHROOM_FIRST_VISIBLE_INDEX = 0;
 export const MUSHROOM_DISPLAY_TIME_MS = 500;

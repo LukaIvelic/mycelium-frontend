@@ -8,4 +8,3 @@ export const FORCE_MANY_BODY_STRENGTH = -900;
 export const FORCE_POSITION_STRENGTH = 0.06;
 export const FORCE_SIMULATION_TICKS = 220;
 export const FULL_CIRCLE_RADIANS = Math.PI * 2;
-export const NODE_CENTER_DIVISOR = 2;

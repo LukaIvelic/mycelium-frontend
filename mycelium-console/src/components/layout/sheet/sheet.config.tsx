@@ -7,7 +7,7 @@ import {
   PerformanceMetrics,
 } from './service-details';
 
-export enum SheetTab {
+enum SheetTab {
   Communication = 'Communication',
   GeneralSettings = 'General Settings',
   Logs = 'Logs',

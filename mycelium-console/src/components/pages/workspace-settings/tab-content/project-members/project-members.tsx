@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  type ChangeEvent,
-  type FormEvent,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { type ChangeEvent, type FormEvent, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button/button';
 import {
   Combobox,
@@ -39,7 +33,9 @@ type FormMessage = {
 };
 
 export function ProjectMembers() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
+    null,
+  );
   const [email, setEmail] = useState<string>('');
   const [role, setRole] = useState<AssignableProjectMemberRole>('member');
   const [message, setMessage] = useState<FormMessage | null>(null);
@@ -56,16 +52,23 @@ export function ProjectMembers() {
 
   const { data: projects = [], isLoading: areProjectsLoading } =
     useAllProjectsByUserId(user?.id);
+
+  // Selection is keyed by id and resolved during render: it defaults to the
+  // first project until the user picks another, with no effect-driven copy of
+  // server data into state.
+  const selectedProject = useMemo(
+    () =>
+      projects.find((project) => project.id === selectedProjectId) ??
+      projects[0] ??
+      null,
+    [projects, selectedProjectId],
+  );
+
   const { data: members = [], isLoading: areMembersLoading } =
     useProjectMembers(selectedProject?.id);
   const addMember = useAddProjectMember(selectedProject?.id ?? '');
   const updateMember = useUpdateProjectMember(selectedProject?.id ?? '');
   const removeMember = useRemoveProjectMember(selectedProject?.id ?? '');
-
-  useEffect(() => {
-    if (selectedProject || projects.length === 0) return;
-    setSelectedProject(projects[0]);
-  }, [projects, selectedProject]);
 
   const currentMember = useMemo(
     () => members.find((member) => member.userId === user?.id),
@@ -147,7 +150,9 @@ export function ProjectMembers() {
           <ProjectSelector
             projects={projects}
             value={selectedProject}
-            onValueChange={setSelectedProject}
+            onValueChange={(project) =>
+              setSelectedProjectId(project?.id ?? null)
+            }
           />
         </div>
 
