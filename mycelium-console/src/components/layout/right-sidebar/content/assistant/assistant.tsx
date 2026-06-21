@@ -1,11 +1,11 @@
 'use client';
 
-import { Send, Trash2 } from 'lucide-react';
+import { ArrowUpRight, Send, Trash2 } from 'lucide-react';
 import { type KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { AssistantService } from '@/api/services/assistant/assistant-service';
 import { Button } from '@/components/ui/button/button';
 import { Spinner } from '@/components/ui/spinner/spinner';
 import { Textarea } from '@/components/ui/textarea/textarea';
-import { useAssistant } from '@/hooks/use-assistant.hook';
 import { cn } from '@/lib/utils';
 import {
   ASSISTANT_EMPTY_PROMPTS,
@@ -21,49 +21,74 @@ import {
 } from './assistant.utils';
 import { AssistantMarkdown } from './assistant-markdown';
 
+const assistantService = new AssistantService();
+
 export function AssistantContent({ projectId }: AssistantContentProps) {
   const [draft, setDraft] = useState('');
   const [messages, setMessages] = useState<AssistantPanelMessage[]>([]);
-  const { useSendAssistantMessage } = useAssistant();
-  const sendAssistantMessage = useSendAssistantMessage();
+  const [isStreaming, setIsStreaming] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const isSending = sendAssistantMessage.isPending;
   const messageCount = messages.length;
+  const hasMessages = messageCount > 0;
+  const lastContent = messages[messageCount - 1]?.content;
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: lastContent is an intentional trigger so the thread follows streamed tokens as they arrive
   useEffect(() => {
-    if (!messageCount && !isSending) return;
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [isSending, messageCount]);
+    if (!messageCount) return;
+    messagesEndRef.current?.scrollIntoView({
+      behavior: isStreaming ? 'auto' : 'smooth',
+    });
+  }, [isStreaming, messageCount, lastContent]);
 
   const sendMessage = async (content: string) => {
     const trimmed = content.trim();
-    if (!trimmed || isSending) return;
+    if (!trimmed || isStreaming) return;
 
     const userMessage = createAssistantMessage('user', trimmed);
-    const nextMessages = [...messages, userMessage];
+    const assistantMessage: AssistantPanelMessage = {
+      ...createAssistantMessage('assistant', ''),
+      streaming: true,
+    };
+    const payloadMessages = toAssistantPayloadMessages([
+      ...messages,
+      userMessage,
+    ]);
 
     setDraft('');
-    setMessages(nextMessages);
+    setMessages((current) => [...current, userMessage, assistantMessage]);
+    setIsStreaming(true);
+
+    const updateAssistant = (
+      patch: (message: AssistantPanelMessage) => AssistantPanelMessage,
+    ) =>
+      setMessages((current) =>
+        current.map((message) =>
+          message.id === assistantMessage.id ? patch(message) : message,
+        ),
+      );
 
     try {
-      const response = await sendAssistantMessage.mutateAsync({
-        messages: toAssistantPayloadMessages(nextMessages),
-        projectId,
-      });
-
-      setMessages((current) => [
-        ...current,
-        createAssistantMessage('assistant', response.message.content),
-      ]);
+      await assistantService.streamChat(
+        { messages: payloadMessages, projectId },
+        {
+          onDelta: (delta) =>
+            updateAssistant((message) => ({
+              ...message,
+              content: message.content + delta,
+            })),
+        },
+      );
+      updateAssistant((message) => ({ ...message, streaming: false }));
     } catch (error) {
-      setMessages((current) => [
-        ...current,
-        createAssistantMessage(
-          'assistant',
-          getAssistantErrorMessage(error),
-          true,
-        ),
-      ]);
+      const errorMessage = getAssistantErrorMessage(error);
+      updateAssistant((message) => ({
+        ...message,
+        content: errorMessage,
+        failed: true,
+        streaming: false,
+      }));
+    } finally {
+      setIsStreaming(false);
     }
   };
 
@@ -82,117 +107,153 @@ export function AssistantContent({ projectId }: AssistantContentProps) {
   };
 
   return (
-    <div className='flex h-full min-h-0 w-full flex-col'>
-      <div className='mb-2 flex shrink-0 items-center justify-between gap-2'>
-        <div className='min-w-0'>
-          <div className='truncate text-sm font-medium text-foreground/85'>
-            Assistant
-          </div>
-          <div className='truncate text-xs text-foreground/45'>
-            Project context
-          </div>
-        </div>
+    <div className='flex h-full min-h-0 w-full flex-col px-8 py-4'>
+      <div className='mb-3 flex shrink-0 items-center justify-between gap-2'>
+        <span className='truncate text-sm font-medium text-foreground/85'>
+          Assistant
+        </span>
         <Button
-          aria-label='Clear assistant chat'
-          className='size-7 text-foreground/45 hover:bg-white/5 hover:text-foreground'
-          disabled={!messages.length || sendAssistantMessage.isPending}
+          aria-label='Clear assistant conversation'
+          className='size-6 text-foreground/40 hover:bg-white/5 hover:text-foreground'
+          disabled={!hasMessages || isStreaming}
           onClick={() => setMessages([])}
           size='icon-xs'
           variant='ghost'
         >
-          <Trash2 className='size-3.5' />
+          <Trash2 className='size-3' />
         </Button>
       </div>
 
-      <div className='flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto pr-1 no-scrollbar'>
-        {!messages.length && (
-          <div className='flex flex-col gap-2'>
-            {ASSISTANT_EMPTY_PROMPTS.map((prompt) => (
-              <Button
-                className='h-auto justify-start whitespace-normal rounded-sm border-[#434343] bg-[#1d1d1d] px-2 py-2 text-left text-xs text-foreground/70 hover:bg-[#292929]'
-                disabled={isSending}
-                key={prompt}
-                onClick={() => handlePromptClick(prompt)}
-                size='sm'
-                variant='outline'
-              >
-                {prompt}
-              </Button>
-            ))}
-          </div>
+      <div className='flex min-h-0 flex-1 flex-col overflow-y-auto pr-1 no-scrollbar'>
+        {!hasMessages && (
+          <AssistantEmptyState
+            disabled={isStreaming}
+            onSelect={handlePromptClick}
+          />
         )}
 
-        {messages.map((message) => (
-          <AssistantMessageBubble key={message.id} message={message} />
-        ))}
-
-        {sendAssistantMessage.isPending && (
-          <div className='flex items-center gap-2 rounded-sm border border-[#434343] bg-[#1d1d1d] px-2.5 py-2 text-xs text-foreground/50'>
-            <Spinner className='size-3.5' />
-            Thinking...
+        {hasMessages && (
+          <div className='flex flex-col'>
+            {messages.map((message, index) => (
+              <AssistantThreadItem
+                isFirst={index === 0}
+                key={message.id}
+                message={message}
+              />
+            ))}
           </div>
         )}
 
         <div ref={messagesEndRef} />
       </div>
 
-      <div className='mt-2 flex shrink-0 items-end gap-2'>
-        <Textarea
-          aria-label='Assistant message'
-          className='max-h-28 min-h-10 resize-none rounded-sm border-[#434343] bg-[#1d1d1d] px-2 py-2 text-sm'
-          disabled={isSending}
-          onChange={(event) => setDraft(event.target.value)}
-          onKeyDown={handleDraftKeyDown}
-          placeholder='Ask about this project...'
-          value={draft}
-        />
-        <Button
-          aria-label='Send assistant message'
-          className='size-9 shrink-0'
-          disabled={!draft.trim() || isSending}
-          onClick={handleSubmit}
-          size='icon-lg'
-        >
-          {isSending ? (
-            <Spinner className='size-4' />
-          ) : (
-            <Send className='size-4' />
-          )}
-        </Button>
+      <div className='mt-3 shrink-0'>
+        <div className='rounded-md border border-[#3a3a3a] bg-[#1a1a1a] transition-colors focus-within:border-[#5b5b5b] focus-within:bg-[#1d1d1d]'>
+          <Textarea
+            aria-label='Ask the assistant'
+            className='max-h-32 min-h-9 resize-none border-0 bg-transparent px-3 pt-2.5 pb-1 text-sm leading-relaxed placeholder:text-foreground/30 focus-visible:border-0 focus-visible:ring-0 dark:bg-transparent dark:disabled:bg-transparent'
+            disabled={isStreaming}
+            onChange={(event) => setDraft(event.target.value)}
+            onKeyDown={handleDraftKeyDown}
+            placeholder='Ask about this project...'
+            value={draft}
+          />
+          <div className='flex items-center justify-between gap-2 px-2.5 pb-2'>
+            <span className='flex select-none items-center gap-1 text-[0.65rem] text-foreground/30'>
+              <kbd className='rounded border border-[#3a3a3a] bg-[#262626] px-1 py-px font-sans text-[0.6rem] text-foreground/45'>
+                Enter
+              </kbd>
+              to send
+            </span>
+            <Button
+              aria-label='Send message'
+              className='size-7 rounded-md'
+              disabled={!draft.trim() || isStreaming}
+              onClick={handleSubmit}
+              size='icon-sm'
+            >
+              {isStreaming ? (
+                <Spinner className='size-3.5' />
+              ) : (
+                <Send className='size-3.5' />
+              )}
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-function AssistantMessageBubble({
+function AssistantEmptyState({
+  disabled,
+  onSelect,
+}: {
+  disabled: boolean;
+  onSelect: (prompt: string) => void;
+}) {
+  return (
+    <div className='flex flex-col gap-3'>
+      <p className='px-0.5 text-xs leading-relaxed text-foreground/50'>
+        Ask about activity, failures, or what to inspect next in this project.
+      </p>
+      <div className='flex flex-col gap-1.5'>
+        {ASSISTANT_EMPTY_PROMPTS.map((prompt) => (
+          <button
+            className='group flex items-center gap-2 rounded-sm border border-[#434343] bg-[#1d1d1d] px-2.5 py-2 text-left text-xs text-foreground/70 transition-colors hover:border-[#5a5a5a] hover:bg-[#242424] hover:text-foreground/90 disabled:pointer-events-none disabled:opacity-50'
+            disabled={disabled}
+            key={prompt}
+            onClick={() => onSelect(prompt)}
+            type='button'
+          >
+            <span className='flex-1'>{prompt}</span>
+            <ArrowUpRight className='size-3.5 shrink-0 text-foreground/25 transition-colors group-hover:text-foreground/60' />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AssistantThreadItem({
+  isFirst,
   message,
 }: {
+  isFirst: boolean;
   message: AssistantPanelMessage;
 }) {
-  const isUser = message.role === 'user';
+  if (message.role === 'user') {
+    return (
+      <p
+        className={cn(
+          'break-words whitespace-pre-wrap text-sm font-medium text-foreground/90',
+          !isFirst && 'mt-4 border-t border-[#343434] pt-4',
+        )}
+      >
+        {message.content}
+      </p>
+    );
+  }
+
+  const isAwaitingFirstToken = message.streaming && !message.content;
 
   return (
     <div
       className={cn(
-        'w-full break-words rounded-sm border px-2.5 py-2 text-xs leading-relaxed',
-        isUser
-          ? 'border-[#4d4d4d] bg-[#242424] text-foreground/85'
-          : 'border-[#434343] bg-[#1d1d1d] text-foreground/75',
-        message.failed && 'border-red-400/30 bg-red-500/10 text-red-300',
+        'mt-2 break-words text-xs leading-relaxed',
+        message.failed ? 'text-red-300' : 'text-foreground/70',
       )}
     >
-      <div className='mb-1 text-[0.68rem] font-medium uppercase tracking-normal text-foreground/40'>
-        {isUser ? 'You' : 'Assistant'}
-      </div>
-      <div className={cn(isUser && 'whitespace-pre-wrap')}>
-        {isUser ? (
-          message.content
-        ) : (
-          <AssistantMarkdown failed={message.failed}>
-            {message.content}
-          </AssistantMarkdown>
-        )}
-      </div>
+      {isAwaitingFirstToken ? (
+        <span className='flex items-center gap-2 text-foreground/45'>
+          <Spinner className='size-3.5' />
+          Thinking...
+        </span>
+      ) : (
+        <AssistantMarkdown failed={message.failed}>
+          {message.content}
+        </AssistantMarkdown>
+      )}
     </div>
   );
 }

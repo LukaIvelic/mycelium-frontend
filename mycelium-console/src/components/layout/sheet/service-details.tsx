@@ -155,7 +155,7 @@ export function PerformanceMetrics({ integrationId }: IntegrationLogsProps) {
   const { data: logsData, isFetching } = useLogsByIntegration(integrationId, {
     limit: DETAIL_LOG_LIMIT,
   });
-  const logs = logsData ?? [];
+  const logs = useMemo(() => logsData ?? [], [logsData]);
   const metrics = useMemo(() => createPerformanceMetrics(logs), [logs]);
   const slowestLogs = useMemo(() => getSlowestLogs(logs), [logs]);
 
@@ -239,7 +239,7 @@ export function Communication({ integrationId, service }: CommunicationProps) {
   const { data: logsData, isFetching } = useLogsByIntegration(integrationId, {
     limit: DETAIL_LOG_LIMIT,
   });
-  const logs = logsData ?? [];
+  const logs = useMemo(() => logsData ?? [], [logsData]);
   const summary = useMemo(() => createCommunicationSummary(logs), [logs]);
   const topEndpoints = useMemo(() => getTopEndpoints(logs), [logs]);
 
@@ -466,9 +466,7 @@ function createPerformanceMetrics(logs: Log[]) {
 
 function createCommunicationSummary(logs: Log[]) {
   const protocols = getUniqueValues(logs.map((log) => log.protocol)).join(', ');
-  const callers = getUniqueValues(
-    logs.map((log) => log.callerIntegrationId).filter(Boolean),
-  );
+  const callers = getUniqueValues(logs.map((log) => log.callerIntegrationId));
   const rootRequests = logs.filter((log) => log.parentSpanId === null).length;
 
   return {
@@ -479,8 +477,8 @@ function createCommunicationSummary(logs: Log[]) {
 }
 
 function getSlowestLogs(logs: Log[]) {
-  return [...logs]
-    .sort((left, right) => right.durationMs - left.durationMs)
+  return logs
+    .toSorted((left, right) => right.durationMs - left.durationMs)
     .slice(0, SLOW_REQUEST_COUNT);
 }
 

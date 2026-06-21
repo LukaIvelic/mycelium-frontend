@@ -9,19 +9,19 @@ import type { AssistantPanelMessage } from './assistant.types';
 export function toAssistantPayloadMessages(
   messages: AssistantPanelMessage[],
 ): AssistantMessage[] {
-  return messages
-    .filter((message) => !message.failed)
-    .map(({ content, role }) => ({ content, role }));
+  return messages.flatMap(({ content, failed, role }) =>
+    failed ? [] : [{ content, role }],
+  );
 }
 
 export function getAssistantErrorMessage(error: unknown): string {
   const message = error instanceof Error ? error.message : '';
 
-  if (message.includes('HTTP 429')) {
+  if (message === 'rate_limit' || message.includes('HTTP 429')) {
     return ASSISTANT_ERROR_RATE_LIMIT;
   }
 
-  if (message.includes('HTTP 503')) {
+  if (message === 'missing_key' || message.includes('HTTP 503')) {
     return ASSISTANT_ERROR_MISSING_KEY;
   }
 

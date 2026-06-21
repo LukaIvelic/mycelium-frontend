@@ -14,9 +14,7 @@ export function createOpenApiKeyDialogHandler(
   };
 }
 
-export function createApiKeyCopiedResetHandler(
-  setCopied: (copied: boolean) => void,
-) {
+function createApiKeyCopiedResetHandler(setCopied: (copied: boolean) => void) {
   return function handleCopiedReset(): void {
     setCopied(false);
   };
