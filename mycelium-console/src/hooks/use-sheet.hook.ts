@@ -18,3 +18,9 @@ export function useSheet() {
   const { open, data, openSheet, closeSheet } = useSheetStore();
   return { open, data, openSheet, closeSheet };
 }
+
+export function useSheetActions() {
+  const openSheet = useSheetStore((state) => state.openSheet);
+  const closeSheet = useSheetStore((state) => state.closeSheet);
+  return { openSheet, closeSheet };
+}

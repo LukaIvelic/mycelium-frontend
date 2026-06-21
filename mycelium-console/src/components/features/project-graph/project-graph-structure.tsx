@@ -2,13 +2,13 @@
 
 import { Switch } from '@/components/ui/switch/switch';
 import { cn } from '@/lib/utils';
-import { PROJECT_GRAPH_EDGE_VISIBILITY_LABEL } from './project-graph.config';
-import type { ProjectGraphEdgeVisibilityProps } from './project-graph-edge-visibility.types';
+import { PROJECT_GRAPH_STRUCTURE_LABEL } from './project-graph.config';
+import type { ProjectGraphStructureProps } from './project-graph-structure.types';
 
-export function ProjectGraphEdgeVisibility({
+export function ProjectGraphStructure({
   onCheckedChange,
-  showAllEdges,
-}: ProjectGraphEdgeVisibilityProps) {
+  applyStructure,
+}: ProjectGraphStructureProps) {
   return (
     <div
       className={cn(
@@ -17,11 +17,11 @@ export function ProjectGraphEdgeVisibility({
       )}
     >
       <span className='text-sm text-foreground/70'>
-        {PROJECT_GRAPH_EDGE_VISIBILITY_LABEL}
+        {PROJECT_GRAPH_STRUCTURE_LABEL}
       </span>
       <Switch
-        aria-label={PROJECT_GRAPH_EDGE_VISIBILITY_LABEL}
-        checked={showAllEdges}
+        aria-label={PROJECT_GRAPH_STRUCTURE_LABEL}
+        checked={applyStructure}
         onCheckedChange={onCheckedChange}
         className={cn(
           'data-checked:bg-foreground/90',

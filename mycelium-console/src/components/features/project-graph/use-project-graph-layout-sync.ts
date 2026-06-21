@@ -3,8 +3,10 @@ import { syncProjectGraphLayout } from './project-graph.handlers';
 import type { UseProjectGraphLayoutSyncParams } from './project-graph.types';
 
 export function useProjectGraphLayoutSync({
+  applyStructure,
   findById,
   layout,
+  projectId,
   setEdges,
   setNodes,
 }: UseProjectGraphLayoutSyncParams): void {
@@ -13,6 +15,13 @@ export function useProjectGraphLayoutSync({
       return;
     }
 
-    void syncProjectGraphLayout({ layout, findById, setNodes, setEdges });
-  }, [findById, layout, setEdges, setNodes]);
+    void syncProjectGraphLayout({
+      applyStructure,
+      layout,
+      findById,
+      projectId,
+      setNodes,
+      setEdges,
+    });
+  }, [applyStructure, findById, layout, projectId, setEdges, setNodes]);
 }

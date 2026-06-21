@@ -11,18 +11,43 @@ import {
   ProjectGraphPrefix,
   SERVICE_NODE_MICROSERVICE_COUNT,
 } from './project-graph.config';
+import type { StoredNodePositions } from './project-graph.persistence';
 import type { GraphNode, GraphPosition } from './project-graph.types';
 
 export async function buildProjectGraphNodes(
   layout: ReactFlowLayout,
   findById: (id: string) => Promise<Service>,
+  storedPositions: StoredNodePositions,
+  applyStructure: boolean,
 ): Promise<Node[]> {
   const positionsByNodeId = createForcePositions(layout.nodes, layout.edges);
   const nodePromises = layout.nodes.map((node) => {
-    return buildProjectGraphNode(node, positionsByNodeId, findById);
+    const position = resolveProjectGraphNodePosition(
+      node,
+      positionsByNodeId,
+      storedPositions,
+      applyStructure,
+    );
+
+    return buildProjectGraphNode(node, position, findById);
   });
 
   return Promise.all(nodePromises);
+}
+
+function resolveProjectGraphNodePosition(
+  node: GraphNode,
+  positionsByNodeId: Map<string, GraphPosition>,
+  storedPositions: StoredNodePositions,
+  applyStructure: boolean,
+): GraphPosition {
+  const forcePosition = positionsByNodeId.get(node.id) ?? EMPTY_GRAPH_POSITION;
+
+  if (applyStructure) {
+    return forcePosition;
+  }
+
+  return storedPositions[node.id] ?? forcePosition;
 }
 
 export function buildProjectGraphEdges(layout: ReactFlowLayout): Edge[] {
@@ -35,10 +60,9 @@ export function buildProjectGraphEdges(layout: ReactFlowLayout): Edge[] {
 
 async function buildProjectGraphNode(
   node: GraphNode,
-  positionsByNodeId: Map<string, GraphPosition>,
+  position: GraphPosition,
   findById: (id: string) => Promise<Service>,
 ): Promise<Node> {
-  const position = positionsByNodeId.get(node.id) ?? EMPTY_GRAPH_POSITION;
   const serviceId = getServiceId(node.id);
 
   if (!serviceId) {

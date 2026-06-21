@@ -1,5 +1,6 @@
 import { applyNodeChanges, type Node } from '@xyflow/react';
 import type { Dispatch, MouseEvent, SetStateAction } from 'react';
+import { readStoredNodePositions } from './project-graph.persistence';
 import type { SyncProjectGraphLayoutParams } from './project-graph.types';
 import {
   buildProjectGraphEdges,
@@ -48,6 +49,14 @@ export function createProjectGraphEdgeVisibilityChangeHandler(
   };
 }
 
+export function createProjectGraphStructureChangeHandler(
+  setApplyStructure: Dispatch<SetStateAction<boolean>>,
+) {
+  return function handleProjectGraphStructureChange(checked: boolean): void {
+    setApplyStructure(checked);
+  };
+}
+
 export function createProjectNodesChangeHandler(
   setNodes: Dispatch<SetStateAction<Node[]>>,
 ) {
@@ -59,12 +68,20 @@ export function createProjectNodesChangeHandler(
 }
 
 export async function syncProjectGraphLayout({
+  applyStructure,
   findById,
   layout,
+  projectId,
   setEdges,
   setNodes,
 }: SyncProjectGraphLayoutParams): Promise<void> {
-  const nodes = await buildProjectGraphNodes(layout, findById);
+  const storedPositions = readStoredNodePositions(projectId);
+  const nodes = await buildProjectGraphNodes(
+    layout,
+    findById,
+    storedPositions,
+    applyStructure,
+  );
   const edges = buildProjectGraphEdges(layout);
 
   setNodes(nodes);

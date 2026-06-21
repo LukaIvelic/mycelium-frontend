@@ -31,15 +31,19 @@ export interface ForceNode extends GraphPosition {
 }
 
 export interface SyncProjectGraphLayoutParams {
+  applyStructure: boolean;
   findById: (id: string) => Promise<Service>;
   layout: ReactFlowLayout;
+  projectId: string;
   setEdges: Dispatch<SetStateAction<Edge[]>>;
   setNodes: Dispatch<SetStateAction<Node[]>>;
 }
 
 export interface UseProjectGraphLayoutSyncParams {
+  applyStructure: boolean;
   findById: (id: string) => Promise<Service>;
   layout: ReactFlowLayout | undefined;
+  projectId: string;
   setEdges: Dispatch<SetStateAction<Edge[]>>;
   setNodes: Dispatch<SetStateAction<Node[]>>;
 }
