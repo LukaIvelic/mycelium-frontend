@@ -8,7 +8,14 @@ import {
   ReactFlow,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { use, useEffect, useState } from 'react';
+import {
+  type Dispatch,
+  type SetStateAction,
+  use,
+  useCallback,
+  useEffect,
+  useReducer,
+} from 'react';
 import { Sheet } from '@/components/layout/sheet/sheet';
 import { useReactFlowLayout } from '@/hooks/use-react-flow-layout.hook';
 import { useServices } from '@/hooks/use-services.hook';
@@ -37,12 +44,108 @@ import { useProjectGraphLayoutSync } from './use-project-graph-layout-sync';
 import { useProjectGraphMounted } from './use-project-graph-mounted';
 import { useProjectGraphPositionPersistence } from './use-project-graph-position-persistence';
 
+interface ProjectGraphState {
+  nodes: Node[];
+  edges: Edge[];
+  selectedNodeId: string | null;
+  showAllEdges: boolean;
+  applyStructure: boolean;
+}
+
+type ProjectGraphAction =
+  | { type: 'nodesChanged'; value: SetStateAction<Node[]> }
+  | { type: 'edgesChanged'; value: SetStateAction<Edge[]> }
+  | {
+      type: 'selectedNodeChanged';
+      value: SetStateAction<string | null>;
+    }
+  | { type: 'edgeVisibilityChanged'; value: SetStateAction<boolean> }
+  | { type: 'structureChanged'; value: SetStateAction<boolean> };
+
+const PROJECT_GRAPH_INITIAL_STATE: ProjectGraphState = {
+  nodes: [],
+  edges: [],
+  selectedNodeId: null,
+  showAllEdges: false,
+  applyStructure: false,
+};
+
+function resolveSetStateAction<T>(
+  currentValue: T,
+  value: SetStateAction<T>,
+): T {
+  return typeof value === 'function'
+    ? (value as (previousValue: T) => T)(currentValue)
+    : value;
+}
+
+function projectGraphReducer(
+  state: ProjectGraphState,
+  action: ProjectGraphAction,
+): ProjectGraphState {
+  switch (action.type) {
+    case 'nodesChanged':
+      return {
+        ...state,
+        nodes: resolveSetStateAction(state.nodes, action.value),
+      };
+    case 'edgesChanged':
+      return {
+        ...state,
+        edges: resolveSetStateAction(state.edges, action.value),
+      };
+    case 'selectedNodeChanged':
+      return {
+        ...state,
+        selectedNodeId: resolveSetStateAction(
+          state.selectedNodeId,
+          action.value,
+        ),
+      };
+    case 'edgeVisibilityChanged':
+      return {
+        ...state,
+        showAllEdges: resolveSetStateAction(state.showAllEdges, action.value),
+      };
+    case 'structureChanged':
+      return {
+        ...state,
+        applyStructure: resolveSetStateAction(
+          state.applyStructure,
+          action.value,
+        ),
+      };
+  }
+}
+
 export function ProjectGraph({ params }: ProjectGraphProps) {
-  const [nodes, setNodes] = useState<Node[]>([]);
-  const [edges, setEdges] = useState<Edge[]>([]);
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  const [showAllEdges, setShowAllEdges] = useState<boolean>(false);
-  const [applyStructure, setApplyStructure] = useState<boolean>(false);
+  const [
+    { nodes, edges, selectedNodeId, showAllEdges, applyStructure },
+    dispatch,
+  ] = useReducer(projectGraphReducer, PROJECT_GRAPH_INITIAL_STATE);
+  const setNodes = useCallback<Dispatch<SetStateAction<Node[]>>>((value) => {
+    dispatch({ type: 'nodesChanged', value });
+  }, []);
+  const setEdges = useCallback<Dispatch<SetStateAction<Edge[]>>>((value) => {
+    dispatch({ type: 'edgesChanged', value });
+  }, []);
+  const setSelectedNodeId = useCallback<
+    Dispatch<SetStateAction<string | null>>
+  >((value) => {
+    dispatch({ type: 'selectedNodeChanged', value });
+  }, []);
+  const setShowAllEdges = useCallback<Dispatch<SetStateAction<boolean>>>(
+    (value) => {
+      dispatch({ type: 'edgeVisibilityChanged', value });
+    },
+    [],
+  );
+  const setApplyStructure = useCallback<Dispatch<SetStateAction<boolean>>>(
+    (value) => {
+      dispatch({ type: 'structureChanged', value });
+    },
+    [],
+  );
 
   const hasMounted = useProjectGraphMounted();
   const { id: projectId } = use(params);
@@ -71,7 +174,7 @@ export function ProjectGraph({ params }: ProjectGraphProps) {
 
   useEffect(() => {
     return createProjectGraphExitHandler(setSelectedNodeId, closeSheet);
-  }, [closeSheet]);
+  }, [closeSheet, setSelectedNodeId]);
 
   useProjectGraphLayoutSync({
     applyStructure,

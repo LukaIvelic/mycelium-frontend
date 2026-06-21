@@ -47,19 +47,22 @@ export class AssistantService {
     const decoder = new TextDecoder();
     let buffer = '';
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+    const readNextChunk = (): Promise<void> =>
+      reader.read().then(({ done, value }) => {
+        if (done) return;
 
-      buffer += decoder.decode(value, { stream: true });
-      let boundary = buffer.indexOf(STREAM_EVENT_SEPARATOR);
-      while (boundary !== -1) {
-        const rawEvent = buffer.slice(0, boundary);
-        buffer = buffer.slice(boundary + STREAM_EVENT_SEPARATOR.length);
-        boundary = buffer.indexOf(STREAM_EVENT_SEPARATOR);
-        this.dispatchEvent(rawEvent, handlers);
-      }
-    }
+        buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split(STREAM_EVENT_SEPARATOR);
+        buffer = events.pop() ?? '';
+
+        for (const rawEvent of events) {
+          this.dispatchEvent(rawEvent, handlers);
+        }
+
+        return readNextChunk();
+      });
+
+    await readNextChunk();
   }
 
   private dispatchEvent(
