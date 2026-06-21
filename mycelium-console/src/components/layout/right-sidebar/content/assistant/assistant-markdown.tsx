@@ -37,20 +37,20 @@ export function AssistantMarkdown({
           <code
             className={cn(
               className,
-              'rounded-sm bg-black/25 px-1 py-0.5 font-mono text-[0.72rem]',
+              'rounded-sm bg-black/25 px-1 py-0.5 font-mono text-[0.84rem]',
             )}
           >
             {codeChildren}
           </code>
         ),
         h1: ({ children: headingChildren }) => (
-          <h1 className='mt-1 mb-2 font-medium text-sm'>{headingChildren}</h1>
+          <h1 className='mt-1 mb-2 font-medium text-base'>{headingChildren}</h1>
         ),
         h2: ({ children: headingChildren }) => (
-          <h2 className='mt-1 mb-2 font-medium text-sm'>{headingChildren}</h2>
+          <h2 className='mt-1 mb-2 font-medium text-base'>{headingChildren}</h2>
         ),
         h3: ({ children: headingChildren }) => (
-          <h3 className='mt-1 mb-1.5 font-medium text-xs'>{headingChildren}</h3>
+          <h3 className='mt-1 mb-1.5 font-medium text-sm'>{headingChildren}</h3>
         ),
         hr: () => <hr className='my-2 border-[#434343]' />,
         li: ({ children: itemChildren }) => (
@@ -61,6 +61,9 @@ export function AssistantMarkdown({
         ),
         p: ({ children: paragraphChildren }) => (
           <p className='mb-2 last:mb-0'>{paragraphChildren}</p>
+        ),
+        strong: ({ children: strongChildren }) => (
+          <strong className='font-semibold'>{strongChildren}</strong>
         ),
         pre: ({ children: preChildren }) => (
           <pre className='my-2 max-w-full overflow-x-auto rounded-sm border border-[#434343] bg-black/25 p-2'>

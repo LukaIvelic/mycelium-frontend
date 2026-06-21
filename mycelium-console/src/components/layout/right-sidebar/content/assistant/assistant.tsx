@@ -226,7 +226,7 @@ function AssistantThreadItem({
     return (
       <p
         className={cn(
-          'break-words whitespace-pre-wrap text-sm font-medium text-foreground/90',
+          'break-words whitespace-pre-wrap text-base font-medium text-foreground/90',
           !isFirst && 'mt-4 border-t border-[#343434] pt-4',
         )}
       >
@@ -240,7 +240,7 @@ function AssistantThreadItem({
   return (
     <div
       className={cn(
-        'mt-2 break-words text-xs leading-relaxed',
+        'mt-2 break-words text-sm leading-relaxed',
         message.failed ? 'text-red-300' : 'text-foreground/70',
       )}
     >
