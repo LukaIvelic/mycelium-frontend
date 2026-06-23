@@ -1,4 +1,6 @@
 export interface SheetServiceDetails {
   description?: string | null;
-  name: string;
+  key?: string | null;
+  name?: string | null;
+  origin?: string | null;
 }

@@ -4,9 +4,15 @@ import type {
   AddApiKeyPayload,
   AddApiKeyResponse,
   AddProjectMemberPayload,
+  CommunicationSettings,
+  CommunicationSettingsPayload,
   CreateProjectPayload,
   HasApiKeyResponse,
+  PerformanceSettings,
+  PerformanceSettingsPayload,
   ProjectMemberResponse,
+  ProjectRegionSettings,
+  ProjectRegionSettingsPayload,
   ProjectSortParams,
   UpdateProjectMemberPayload,
   UpdateProjectPayload,
@@ -85,5 +91,69 @@ export class ProjectService {
 
   async removeMember(id: string, userId: string) {
     return this.apiClient.delete<void>(`/projects/${id}/members/${userId}`);
+  }
+
+  async findPerformanceSettings(id: string) {
+    return this.apiClient.get<PerformanceSettings>(
+      `/projects/${id}/settings/performance`,
+    );
+  }
+
+  async updatePerformanceSettings(
+    id: string,
+    payload: PerformanceSettingsPayload,
+  ) {
+    return this.apiClient.patch<PerformanceSettings>(
+      `/projects/${id}/settings/performance`,
+      payload,
+    );
+  }
+
+  async resetPerformanceSettings(id: string) {
+    return this.apiClient.delete<void>(`/projects/${id}/settings/performance`);
+  }
+
+  async findCommunicationSettings(id: string) {
+    return this.apiClient.get<CommunicationSettings>(
+      `/projects/${id}/settings/communication`,
+    );
+  }
+
+  async updateCommunicationSettings(
+    id: string,
+    payload: CommunicationSettingsPayload,
+  ) {
+    return this.apiClient.patch<CommunicationSettings>(
+      `/projects/${id}/settings/communication`,
+      payload,
+    );
+  }
+
+  async resetCommunicationSettings(id: string) {
+    return this.apiClient.delete<void>(
+      `/projects/${id}/settings/communication`,
+    );
+  }
+
+  async findRegionSettings(id: string) {
+    return this.apiClient.get<ProjectRegionSettings>(
+      `/projects/${id}/settings/region-localization`,
+    );
+  }
+
+  async updateRegionSettings(
+    id: string,
+    payload: ProjectRegionSettingsPayload,
+  ) {
+    return this.apiClient.patch<ProjectRegionSettings>(
+      `/projects/${id}/settings/region-localization`,
+      payload,
+    );
+  }
+
+  async resetRegionSettings(id: string) {
+    return this.apiClient.delete<void>(
+      `/projects/${id}/settings/region-localization`,
+    );
   }
 }

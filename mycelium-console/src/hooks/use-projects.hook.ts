@@ -4,7 +4,10 @@ import { ProjectService } from '@/api/services/project/project-service';
 import type {
   AddApiKeyPayload,
   AddProjectMemberPayload,
+  CommunicationSettingsPayload,
   CreateProjectPayload,
+  PerformanceSettingsPayload,
+  ProjectRegionSettingsPayload,
   ProjectSortParams,
   UpdateProjectMemberPayload,
   UpdateProjectPayload,
@@ -30,6 +33,12 @@ const projectKeys = {
     ] as const,
   hasApiKey: (id: string) => [...projectKeys.one(id), 'has-api-key'] as const,
   members: (id: string) => [...projectKeys.one(id), 'members'] as const,
+  performanceSettings: (id: string) =>
+    [...projectKeys.one(id), 'settings', 'performance'] as const,
+  communicationSettings: (id: string) =>
+    [...projectKeys.one(id), 'settings', 'communication'] as const,
+  regionSettings: (id: string) =>
+    [...projectKeys.one(id), 'settings', 'region-localization'] as const,
 };
 
 function useAllProjects() {
@@ -179,6 +188,106 @@ function useRemoveProjectMember(projectId: string) {
   });
 }
 
+function useProjectPerformanceSettings(projectId: string | undefined) {
+  return useQuery({
+    queryKey: projectKeys.performanceSettings(projectId ?? ''),
+    queryFn: () => projectService.findPerformanceSettings(projectId as string),
+    enabled: Boolean(projectId),
+  });
+}
+
+function useUpdateProjectPerformanceSettings(projectId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: PerformanceSettingsPayload) =>
+      projectService.updatePerformanceSettings(projectId, payload),
+    onSuccess: (updated) => {
+      queryClient.setQueryData(
+        projectKeys.performanceSettings(projectId),
+        updated,
+      );
+    },
+  });
+}
+
+function useResetProjectPerformanceSettings(projectId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => projectService.resetPerformanceSettings(projectId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: projectKeys.performanceSettings(projectId),
+      });
+    },
+  });
+}
+
+function useProjectCommunicationSettings(projectId: string | undefined) {
+  return useQuery({
+    queryKey: projectKeys.communicationSettings(projectId ?? ''),
+    queryFn: () =>
+      projectService.findCommunicationSettings(projectId as string),
+    enabled: Boolean(projectId),
+  });
+}
+
+function useUpdateProjectCommunicationSettings(projectId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: CommunicationSettingsPayload) =>
+      projectService.updateCommunicationSettings(projectId, payload),
+    onSuccess: (updated) => {
+      queryClient.setQueryData(
+        projectKeys.communicationSettings(projectId),
+        updated,
+      );
+    },
+  });
+}
+
+function useResetProjectCommunicationSettings(projectId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => projectService.resetCommunicationSettings(projectId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: projectKeys.communicationSettings(projectId),
+      });
+    },
+  });
+}
+
+function useProjectRegionSettings(projectId: string | undefined) {
+  return useQuery({
+    queryKey: projectKeys.regionSettings(projectId ?? ''),
+    queryFn: () => projectService.findRegionSettings(projectId as string),
+    enabled: Boolean(projectId),
+  });
+}
+
+function useUpdateProjectRegionSettings(projectId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: ProjectRegionSettingsPayload) =>
+      projectService.updateRegionSettings(projectId, payload),
+    onSuccess: (updated) => {
+      queryClient.setQueryData(projectKeys.regionSettings(projectId), updated);
+    },
+  });
+}
+
+function useResetProjectRegionSettings(projectId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => projectService.resetRegionSettings(projectId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: projectKeys.regionSettings(projectId),
+      });
+    },
+  });
+}
+
 export function useProjects() {
   return {
     useAllProjects,
@@ -195,5 +304,14 @@ export function useProjects() {
     useAddProjectMember,
     useUpdateProjectMember,
     useRemoveProjectMember,
+    useProjectPerformanceSettings,
+    useUpdateProjectPerformanceSettings,
+    useResetProjectPerformanceSettings,
+    useProjectCommunicationSettings,
+    useUpdateProjectCommunicationSettings,
+    useResetProjectCommunicationSettings,
+    useProjectRegionSettings,
+    useUpdateProjectRegionSettings,
+    useResetProjectRegionSettings,
   };
 }

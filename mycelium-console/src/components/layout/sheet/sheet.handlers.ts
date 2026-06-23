@@ -12,6 +12,6 @@ export function syncSheetServiceDetails(
     return;
   }
 
-  setServiceName(data.name);
+  setServiceName(data.name ?? data.key ?? data.origin ?? SHEET_EMPTY_VALUE);
   setServiceDescription(data.description ?? SHEET_EMPTY_VALUE);
 }

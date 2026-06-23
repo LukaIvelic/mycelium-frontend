@@ -13,6 +13,10 @@ export class ApiClient {
     return this.request<T>(endpoint, HttpMethod.POST, body);
   }
 
+  async put<T, B = unknown>(endpoint: string, body: B): Promise<T> {
+    return this.request<T>(endpoint, HttpMethod.PUT, body);
+  }
+
   async patch<T, B = unknown>(endpoint: string, body: B): Promise<T> {
     return this.request<T>(endpoint, HttpMethod.PATCH, body);
   }

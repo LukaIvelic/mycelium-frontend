@@ -20,6 +20,8 @@ export interface ProjectSortParams {
   sort: ProjectSortDirection;
 }
 
+export type HeaderFilterLevel = 'HIGH' | 'MEDIUM' | 'METADATA' | 'ALL';
+
 export type CreateProjectPayload = {
   name: string;
   description?: string;
@@ -50,4 +52,50 @@ export type AddApiKeyResponse = {
 
 export type HasApiKeyResponse = {
   hasActiveApiKey: boolean;
+};
+
+export type PerformanceSettingsPayload = {
+  captureMetrics?: boolean;
+  slowRequestThresholdMs?: number;
+  notifyOnSlowRequests?: boolean;
+  notifyOnFailedRequests?: boolean;
+  warningStatusCode?: number;
+  criticalStatusCode?: number;
+};
+
+export type PerformanceSettings = Required<PerformanceSettingsPayload> & {
+  projectId?: string;
+  integrationId?: string;
+  createdAt: string | null;
+  updatedAt: string | null;
+};
+
+export type CommunicationSettingsPayload = {
+  subscribeToFetch?: boolean;
+  subscribeToHttp?: boolean;
+  captureBody?: boolean;
+  bodyMaxBytes?: number;
+  captureStreamBodies?: boolean;
+  headerFilterLevel?: HeaderFilterLevel;
+};
+
+export type CommunicationSettings = Required<CommunicationSettingsPayload> & {
+  projectId?: string;
+  integrationId?: string;
+  createdAt: string | null;
+  updatedAt: string | null;
+};
+
+export type ProjectRegionSettingsPayload = {
+  primaryRegion?: string;
+  dataResidency?: string;
+  failoverRegion?: string;
+  timezone?: string;
+  dateFormat?: string;
+};
+
+export type ProjectRegionSettings = Required<ProjectRegionSettingsPayload> & {
+  projectId: string;
+  createdAt: string | null;
+  updatedAt: string | null;
 };

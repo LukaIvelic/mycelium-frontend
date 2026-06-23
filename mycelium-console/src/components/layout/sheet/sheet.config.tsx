@@ -44,6 +44,7 @@ export function createSheetTabContent(
   const settingsContent = (
     <GeneralSettings
       key={SheetTab.GeneralSettings}
+      integrationId={integrationId}
       service={service}
       isLoading={isServiceLoading}
     />

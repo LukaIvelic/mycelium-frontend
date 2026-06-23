@@ -102,10 +102,10 @@ function buildServiceGraphNode(
   service: Service,
 ): Node {
   const nodeContentService = {
-    name: service.name,
-    description: service.description,
-    meta: service.version,
-    repository: service.repository,
+    name: service.name ?? service.key ?? service.origin,
+    description: service.description ?? undefined,
+    meta: service.version ?? undefined,
+    repository: service.repository ?? undefined,
   };
   const content = <NodeContent service={nodeContentService} />;
   const data = Object.assign({}, node.data, {
