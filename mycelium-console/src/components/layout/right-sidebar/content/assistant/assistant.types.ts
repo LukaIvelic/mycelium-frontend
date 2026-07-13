@@ -8,4 +8,5 @@ export interface AssistantPanelMessage extends AssistantMessage {
   id: string;
   failed?: boolean;
   streaming?: boolean;
+  stopped?: boolean;
 }

@@ -37,6 +37,7 @@ export class AssistantService {
         ...(token && { Authorization: `Bearer ${token}` }),
       },
       body: JSON.stringify(payload),
+      signal: handlers.signal,
     });
 
     if (!response.ok || !response.body) {

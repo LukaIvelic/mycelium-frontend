@@ -5,6 +5,8 @@ export interface AssistantMessage {
   role: AssistantMessageRole;
 }
 
+export type AssistantModel = 'gpt-5.6-luna' | 'gpt-5.6-sol' | 'gpt-5.6-terra';
+
 export interface AssistantUsage {
   inputTokens?: number;
   outputTokens?: number;
