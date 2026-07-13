@@ -49,6 +49,7 @@ export function getSheetFocusedLogId(payload: unknown): string | null {
 export function createSheetTabContent(
   integrationId: string,
   focusedLogId: string | null,
+  onDismissFocusedLog: () => void,
   service: Service | undefined,
   isServiceLoading: boolean,
 ): Map<string, ReactNode> {
@@ -57,6 +58,7 @@ export function createSheetTabContent(
       key={SheetTab.Logs}
       focusedLogId={focusedLogId}
       integrationId={integrationId}
+      onDismissFocusedLog={onDismissFocusedLog}
     />
   );
   const settingsContent = (

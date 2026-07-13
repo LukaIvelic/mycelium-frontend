@@ -4,6 +4,7 @@ import type { Log, LogDetail } from '@/lib/types/log';
 export interface LogsProps {
   focusedLogId?: string | null;
   integrationId: string;
+  onDismissFocusedLog?: () => void;
 }
 
 export interface LogsControlsProps {

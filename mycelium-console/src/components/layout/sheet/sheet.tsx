@@ -1,7 +1,7 @@
 'use client';
 
 import { X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTabs } from '@/components/features/tabs/use-tabs';
 import { Button } from '@/components/ui/button/button';
 import { Skeleton } from '@/components/ui/skeleton/skeleton';
@@ -25,7 +25,17 @@ export function Sheet() {
 
   const { open, closeSheet, data: id } = useSheet();
   const integrationId = getSheetServiceId(id) ?? SHEET_EMPTY_VALUE;
-  const focusedLogId = getSheetFocusedLogId(id);
+  const rawFocusedLogId = getSheetFocusedLogId(id);
+  const [dismissedFocusedLogId, setDismissedFocusedLogId] = useState<
+    string | null
+  >(null);
+  const focusedLogId =
+    rawFocusedLogId === dismissedFocusedLogId ? null : rawFocusedLogId;
+  const dismissFocusedLog = useCallback(() => {
+    if (rawFocusedLogId) {
+      setDismissedFocusedLogId(rawFocusedLogId);
+    }
+  }, [rawFocusedLogId]);
   const { tabs, activeTab, setActiveTab } = useTabs({
     items: SHEET_TABS,
   });
@@ -35,6 +45,7 @@ export function Sheet() {
   const tabsContent = createSheetTabContent(
     integrationId,
     focusedLogId,
+    dismissFocusedLog,
     data,
     isLoading,
   );
@@ -44,10 +55,18 @@ export function Sheet() {
   }, [data]);
 
   useEffect(() => {
-    if (focusedLogId) {
+    setDismissedFocusedLogId(null);
+
+    if (rawFocusedLogId) {
       setActiveTab(SheetTab.Logs);
     }
-  }, [focusedLogId, setActiveTab]);
+  }, [rawFocusedLogId, setActiveTab]);
+
+  useEffect(() => {
+    if (rawFocusedLogId && activeTab !== SheetTab.Logs) {
+      setDismissedFocusedLogId(rawFocusedLogId);
+    }
+  }, [activeTab, rawFocusedLogId]);
 
   return (
     <div

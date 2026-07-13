@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton/skeleton';
 import { useLogs } from '@/hooks/use-logs.hook';
 import { cn } from '@/lib/utils';
@@ -18,11 +18,17 @@ import {
 import type { LogsProps } from './logs.types';
 import { LogsControls } from './logs-controls';
 
-export function Logs({ focusedLogId, integrationId }: LogsProps) {
+export function Logs({
+  focusedLogId,
+  integrationId,
+  onDismissFocusedLog,
+}: LogsProps) {
   const [requestedOpenLogIds, setRequestedOpenLogIds] = useState<Set<string>>(
     new Set(),
   );
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const lastScrolledLogIdRef = useRef<string | null>(null);
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   const queryClient = useQueryClient();
   const { useLogsByIntegration } = useLogs();
@@ -53,7 +59,35 @@ export function Logs({ focusedLogId, integrationId }: LogsProps) {
   );
 
   useEffect(() => {
-    if (!focusedLogId || !logs.some((log) => log.id === focusedLogId)) {
+    const root = rootRef.current;
+
+    if (!root || !focusedLogId) {
+      return;
+    }
+
+    const dismissFocus = () => onDismissFocusedLog?.();
+
+    root.addEventListener('keydown', dismissFocus);
+    root.addEventListener('pointerdown', dismissFocus);
+    root.addEventListener('wheel', dismissFocus);
+
+    return () => {
+      root.removeEventListener('keydown', dismissFocus);
+      root.removeEventListener('pointerdown', dismissFocus);
+      root.removeEventListener('wheel', dismissFocus);
+    };
+  }, [focusedLogId, onDismissFocusedLog]);
+
+  useEffect(() => {
+    if (
+      !focusedLogId ||
+      lastScrolledLogIdRef.current === focusedLogId ||
+      !logs.some((log) => log.id === focusedLogId)
+    ) {
+      if (!focusedLogId) {
+        lastScrolledLogIdRef.current = null;
+      }
+
       return;
     }
 
@@ -65,6 +99,8 @@ export function Logs({ focusedLogId, integrationId }: LogsProps) {
       return new Set([...currentIds, focusedLogId]);
     });
 
+    lastScrolledLogIdRef.current = focusedLogId;
+
     requestAnimationFrame(() => {
       document
         .getElementById(createSheetLogElementId(focusedLogId))
@@ -73,7 +109,7 @@ export function Logs({ focusedLogId, integrationId }: LogsProps) {
   }, [focusedLogId, logs]);
 
   return (
-    <div className={cn('flex flex-col gap-3 no-scrollbar')}>
+    <div ref={rootRef} className={cn('flex flex-col gap-3 no-scrollbar')}>
       <LogsControls
         canToggleAll={hasLogs}
         isRefreshing={isRefreshing || isFetching}
