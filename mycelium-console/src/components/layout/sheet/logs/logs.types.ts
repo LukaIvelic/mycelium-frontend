@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { Log, LogDetail } from '@/lib/types/log';
 
 export interface LogsProps {
+  focusedLogId?: string | null;
   integrationId: string;
 }
 
@@ -18,6 +19,7 @@ export interface LogMetaRowProps {
 }
 
 export interface LogRowProps {
+  isFocused?: boolean;
   isOpen: boolean;
   log: Log;
   onToggleLog: (logId: string) => void;

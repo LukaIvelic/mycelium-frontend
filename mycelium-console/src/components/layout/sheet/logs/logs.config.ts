@@ -29,3 +29,7 @@ export const LOG_DETAIL_ANIMATION_DURATION_CLASS = 'duration-200';
 export const LOG_BYTES_PER_KILOBYTE = 1024;
 export const LOG_SIZE_PRECISION = 1;
 export const EMPTY_LOGS: Log[] = [];
+
+export function createSheetLogElementId(logId: string): string {
+  return `sheet-log-${logId}`;
+}

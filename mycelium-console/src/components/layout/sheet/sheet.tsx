@@ -10,9 +10,11 @@ import { useSheet } from '@/hooks/use-sheet.hook';
 import { cn } from '@/lib/utils';
 import {
   createSheetTabContent,
+  getSheetFocusedLogId,
   getSheetServiceId,
   SHEET_EMPTY_VALUE,
   SHEET_TABS,
+  SheetTab,
 } from './sheet.config';
 import { syncSheetServiceDetails } from './sheet.handlers';
 
@@ -23,17 +25,29 @@ export function Sheet() {
 
   const { open, closeSheet, data: id } = useSheet();
   const integrationId = getSheetServiceId(id) ?? SHEET_EMPTY_VALUE;
-  const { tabs, activeTab } = useTabs({
+  const focusedLogId = getSheetFocusedLogId(id);
+  const { tabs, activeTab, setActiveTab } = useTabs({
     items: SHEET_TABS,
   });
   const { useFindById } = useServices();
   const serviceId = getSheetServiceId(id);
   const { data, isLoading } = useFindById(serviceId || null);
-  const tabsContent = createSheetTabContent(integrationId, data, isLoading);
+  const tabsContent = createSheetTabContent(
+    integrationId,
+    focusedLogId,
+    data,
+    isLoading,
+  );
 
   useEffect(() => {
     syncSheetServiceDetails(data, setServiceName, setServiceDescription);
   }, [data]);
+
+  useEffect(() => {
+    if (focusedLogId) {
+      setActiveTab(SheetTab.Logs);
+    }
+  }, [focusedLogId, setActiveTab]);
 
   return (
     <div

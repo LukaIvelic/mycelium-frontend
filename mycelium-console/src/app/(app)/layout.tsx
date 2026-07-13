@@ -23,11 +23,11 @@ export default function AppLayout({ children }: AppLayoutProps) {
   }, [pathname, closeRightSidebar]);
 
   return (
-    <SidebarProvider>
+    <SidebarProvider className='m-4 h-[calc(100svh-2rem)] w-[calc(100%-2rem)]'>
       <AppSidebar />
       <SidebarInset>
         <AppHeader />
-        <div className={cn('flex flex-1 min-h-0', state && 'gap-x-2  pr-4')}>
+        <div className={cn('flex flex-1 min-h-0', state && 'gap-x-2')}>
           <div
             className={cn(
               'flex min-h-0 flex-1 flex-col',

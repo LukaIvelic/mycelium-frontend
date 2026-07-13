@@ -1,11 +1,21 @@
 import { getSmoothStepPath } from '@xyflow/react';
-import type { EdgeEndpoints } from './magic-ui-beam-edge.types';
+import type {
+  EdgeEndpoints,
+  MagicBeamEdgePathLayout,
+} from './magic-ui-beam-edge.types';
 
 export function createMagicBeamEdgePath(
   endpoints: EdgeEndpoints,
   borderRadius: number,
 ): string {
-  const [path] = getSmoothStepPath({
+  return createMagicBeamEdgePathLayout(endpoints, borderRadius).path;
+}
+
+export function createMagicBeamEdgePathLayout(
+  endpoints: EdgeEndpoints,
+  borderRadius: number,
+): MagicBeamEdgePathLayout {
+  const [path, labelX, labelY] = getSmoothStepPath({
     sourceX: endpoints.sourceX,
     sourceY: endpoints.sourceY,
     sourcePosition: endpoints.sourcePosition,
@@ -15,5 +25,5 @@ export function createMagicBeamEdgePath(
     borderRadius,
   });
 
-  return path;
+  return { labelX, labelY, path };
 }

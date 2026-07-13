@@ -16,6 +16,7 @@ export function HoverCardContent({
   sideOffset = HOVER_CARD_DEFAULT_SIDE_OFFSET,
   align = HOVER_CARD_DEFAULT_ALIGN,
   alignOffset = HOVER_CARD_DEFAULT_ALIGN_OFFSET,
+  anchor,
   ...props
 }: HoverCardContentProps) {
   return (
@@ -23,6 +24,7 @@ export function HoverCardContent({
       <PreviewCardPrimitive.Positioner
         align={align}
         alignOffset={alignOffset}
+        anchor={anchor}
         side={side}
         sideOffset={sideOffset}
         className='isolate z-50'

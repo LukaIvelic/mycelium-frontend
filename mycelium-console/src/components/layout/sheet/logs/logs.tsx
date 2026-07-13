@@ -1,10 +1,14 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton/skeleton';
 import { useLogs } from '@/hooks/use-logs.hook';
 import { cn } from '@/lib/utils';
 import { LogRow } from './log-row';
-import { EMPTY_LOGS, MANUAL_REFRESH_QUERY_OPTIONS } from './logs.config';
+import {
+  createSheetLogElementId,
+  EMPTY_LOGS,
+  MANUAL_REFRESH_QUERY_OPTIONS,
+} from './logs.config';
 import {
   createRefreshLogsHandler,
   createToggleAllLogsHandler,
@@ -14,7 +18,7 @@ import {
 import type { LogsProps } from './logs.types';
 import { LogsControls } from './logs-controls';
 
-export function Logs({ integrationId }: LogsProps) {
+export function Logs({ focusedLogId, integrationId }: LogsProps) {
   const [requestedOpenLogIds, setRequestedOpenLogIds] = useState<Set<string>>(
     new Set(),
   );
@@ -48,6 +52,26 @@ export function Logs({ integrationId }: LogsProps) {
     setIsRefreshing,
   );
 
+  useEffect(() => {
+    if (!focusedLogId || !logs.some((log) => log.id === focusedLogId)) {
+      return;
+    }
+
+    setRequestedOpenLogIds((currentIds) => {
+      if (currentIds.has(focusedLogId)) {
+        return currentIds;
+      }
+
+      return new Set([...currentIds, focusedLogId]);
+    });
+
+    requestAnimationFrame(() => {
+      document
+        .getElementById(createSheetLogElementId(focusedLogId))
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }, [focusedLogId, logs]);
+
   return (
     <div className={cn('flex flex-col gap-3 no-scrollbar')}>
       <LogsControls
@@ -62,6 +86,7 @@ export function Logs({ integrationId }: LogsProps) {
       {logs.map((log) => (
         <LogRow
           key={log.id}
+          isFocused={log.id === focusedLogId}
           log={log}
           isOpen={openLogIds.has(log.id)}
           onToggleLog={handleToggleLog}

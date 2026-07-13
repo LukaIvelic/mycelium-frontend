@@ -7,5 +7,5 @@ export interface HoverCardContentProps
   extends PreviewCardPrimitive.Popup.Props,
     Pick<
       PreviewCardPrimitive.Positioner.Props,
-      'align' | 'alignOffset' | 'side' | 'sideOffset'
+      'align' | 'alignOffset' | 'anchor' | 'side' | 'sideOffset'
     > {}

@@ -10,5 +10,6 @@ export function useTabs({ items }: UseTabsProps) {
       <Tabs items={items} activeTab={activeTab} setActiveTab={setActiveTab} />
     ),
     activeTab,
+    setActiveTab,
   };
 }

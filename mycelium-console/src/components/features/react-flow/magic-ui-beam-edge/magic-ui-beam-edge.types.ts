@@ -1,7 +1,13 @@
 import type { EdgeProps, Position } from '@xyflow/react';
+import type {
+  ReactFlowEdgeCommunication,
+  ReactFlowEdgeRequestSummary,
+} from '@/api/services/react-flow/react-flow-service.types';
 
 export interface MagicBeamEdgeData {
   borderRadius?: number;
+  communicationCount?: number;
+  communications?: ReactFlowEdgeCommunication[];
   delay?: number;
   duration?: number;
   gradientStartColor?: string;
@@ -9,6 +15,15 @@ export interface MagicBeamEdgeData {
   pathOpacity?: number;
   pathWidth?: number;
   reverse?: boolean;
+  requests?: ReactFlowEdgeRequestSummary[];
+  sourceLabel?: string;
+  targetLabel?: string;
+}
+
+export interface MagicBeamEdgePathLayout {
+  labelX: number;
+  labelY: number;
+  path: string;
 }
 
 export interface EdgeEndpoints {

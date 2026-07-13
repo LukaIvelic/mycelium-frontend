@@ -7,7 +7,7 @@ import {
   PerformanceMetrics,
 } from './service-details';
 
-enum SheetTab {
+export enum SheetTab {
   Communication = 'Communication',
   GeneralSettings = 'General Settings',
   Logs = 'Logs',
@@ -23,8 +23,13 @@ export const SHEET_TABS = [
   SheetTab.Communication,
 ];
 
-export function getSheetServiceId(id: unknown): string | null {
-  const selectedId = String(id ?? SHEET_EMPTY_VALUE);
+interface SheetPayload {
+  focusedLogId?: unknown;
+  serviceId?: unknown;
+}
+
+export function getSheetServiceId(payload: unknown): string | null {
+  const selectedId = getSheetPayloadServiceId(payload);
 
   if (!selectedId.startsWith(SHEET_INTEGRATION_PREFIX)) {
     return null;
@@ -33,13 +38,26 @@ export function getSheetServiceId(id: unknown): string | null {
   return selectedId.replace(SHEET_INTEGRATION_PREFIX, SHEET_EMPTY_VALUE).trim();
 }
 
+export function getSheetFocusedLogId(payload: unknown): string | null {
+  if (!isSheetPayload(payload) || typeof payload.focusedLogId !== 'string') {
+    return null;
+  }
+
+  return payload.focusedLogId;
+}
+
 export function createSheetTabContent(
   integrationId: string,
+  focusedLogId: string | null,
   service: Service | undefined,
   isServiceLoading: boolean,
 ): Map<string, ReactNode> {
   const logsContent = (
-    <Logs key={SheetTab.Logs} integrationId={integrationId} />
+    <Logs
+      key={SheetTab.Logs}
+      focusedLogId={focusedLogId}
+      integrationId={integrationId}
+    />
   );
   const settingsContent = (
     <GeneralSettings
@@ -69,4 +87,16 @@ export function createSheetTabContent(
     [SheetTab.PerformanceMetrics, performanceContent],
     [SheetTab.Communication, communicationContent],
   ]);
+}
+
+function getSheetPayloadServiceId(payload: unknown): string {
+  if (isSheetPayload(payload) && typeof payload.serviceId === 'string') {
+    return payload.serviceId;
+  }
+
+  return String(payload ?? SHEET_EMPTY_VALUE);
+}
+
+function isSheetPayload(payload: unknown): payload is SheetPayload {
+  return typeof payload === 'object' && payload !== null;
 }
