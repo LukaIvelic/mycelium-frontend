@@ -17,6 +17,7 @@ export function HoverCardContent({
   align = HOVER_CARD_DEFAULT_ALIGN,
   alignOffset = HOVER_CARD_DEFAULT_ALIGN_OFFSET,
   anchor,
+  collisionAvoidance,
   ...props
 }: HoverCardContentProps) {
   return (
@@ -25,6 +26,7 @@ export function HoverCardContent({
         align={align}
         alignOffset={alignOffset}
         anchor={anchor}
+        collisionAvoidance={collisionAvoidance}
         side={side}
         sideOffset={sideOffset}
         className='isolate z-50'
