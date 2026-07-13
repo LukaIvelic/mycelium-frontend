@@ -23,7 +23,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   }, [pathname, closeRightSidebar]);
 
   return (
-    <SidebarProvider className='m-4 h-[calc(100svh-2rem)] w-[calc(100%-2rem)]'>
+    <SidebarProvider className='h-svh w-full'>
       <AppSidebar />
       <SidebarInset>
         <AppHeader />
